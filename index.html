@@ -181,6 +181,17 @@
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
+                    <label for="nivelSuporte" class="block text-gray-700 font-semibold mb-2">Nível de Suporte:</label>
+                    <select id="nivelSuporte" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="" disabled selected>Selecione o nível de suporte predominante</option>
+                        <option value="maximo">Máximo</option>
+                        <option value="moderado">Moderado</option>
+                        <option value="leve">Leve</option>
+                        <option value="minimo">Mínimo</option>
+                        <option value="sem apoio">Sem apoio</option>
+                    </select>
+                </div>
+                <div>
                     <label for="resultados" class="block text-gray-700 font-semibold mb-2">Resultados:</label>
                     <select id="resultados" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <option value="" disabled selected>selecione um resultado</option>
@@ -422,6 +433,7 @@
             const avaliacao = document.getElementById('avaliacao').checked;
             const paragrafoFinal = document.getElementById('paragrafo-final');
             const estilo = document.getElementById('estilo').value;
+            const nivelSuporte = document.getElementById('nivelSuporte').value;
 
             const esquemasFisicosOriginal = [
                 ...getCheckedValues('expCorporal'),
@@ -452,42 +464,105 @@
                     textoIntercorrencias = ` Intercorrências: ${formatList(intercorrencias, genero)}.`;
                 }
             }
-
-            const textoObservacoes = observacoes ? ` ${observacoes}.` : "";
             
-            const textoAvaliacao = avaliacao ? " Foi feita avaliação formal e as atividades suportaram a mesma." : "";
-            const textoDevolutiva = devolutiva ? " Foi feita devolutiva aos responsáveis acerca do processo terapêutico até então, com trocas de informações, resposta à eventuais dúvidas, enriquecimento de processo de anamnese e investigação clínica ao sistema de cuidados do paciente." : "";
-
             const nomeCapitalizado = nome.charAt(0).toUpperCase() + nome.slice(1);
             
+            let textoAvaliacao = "";
+            if (avaliacao) {
+                if (estilo === 'estilo1' || estilo === 'estilo2') {
+                    textoAvaliacao = ` Avaliação formal foi realizada, e as atividades executadas apoiaram tal processo.`;
+                } else if (estilo === 'estilo3' || estilo === 'estilo4') {
+                    textoAvaliacao = ` A sessão também incluiu uma avaliação formal, com as atividades servindo de apoio para a mesma.`;
+                }
+            }
+
+            let textoDevolutiva = "";
+            if (devolutiva) {
+                if (estilo === 'estilo1' || estilo === 'estilo2') {
+                    textoDevolutiva = ` Devolutiva foi feita aos responsáveis a respeito do processo terapêutico, possibilitando troca de informações, sanando dúvidas e enriquecendo a anamnese e investigação clínica do sistema de cuidados de ${nomeCapitalizado}.`;
+                } else if (estilo === 'estilo3' || estilo === 'estilo4') {
+                    textoDevolutiva = ` Houve uma devolutiva aos responsáveis sobre o progresso de ${nomeCapitalizado}, onde conversamos, tirei dúvidas e aprimorei a compreensão do contexto ${genero === 'masculino' ? 'dele' : 'dela'}.`;
+                }
+            }
+
+            let textoObservacoes = observacoes ? ` ${observacoes}.` : "";
+            
+            let textoNivelSuporte = "";
+            if (nivelSuporte) {
+                let descricaoSuporte;
+                if (nivelSuporte === 'maximo') {
+                    descricaoSuporte = "totalmente físico, necessitando de assistência completa para realizar a atividade.";
+                } else if (nivelSuporte === 'moderado') {
+                    descricaoSuporte = "parcialmente físico, recebendo um toque ou guia suave para iniciar/continuar a atividade.";
+                } else if (nivelSuporte === 'leve') {
+                    descricaoSuporte = "visual, sem contato físico, com gestos e demonstrações para entender a ação.";
+                } else if (nivelSuporte === 'minimo') {
+                    descricaoSuporte = "verbal, precisando apenas de uma orientação verbal para completar a tarefa.";
+                } else if (nivelSuporte === 'sem apoio') {
+                    descricaoSuporte = "independente, realizando a atividade de forma completamente autônoma.";
+                }
+
+                if (estilo === 'estilo1' || estilo === 'estilo2') {
+                    textoNivelSuporte = ` O nível de suporte predominante foi ${descricaoSuporte}.`;
+                } else if (estilo === 'estilo3' || estilo === 'estilo4') {
+                    textoNivelSuporte = ` ${genero === 'masculino' ? 'Ele' : 'Ela'} precisou de um suporte ${descricaoSuporte}.`;
+                }
+            }
+
             let template;
             const estiloEscolhido = estilo === 'aleatorio' ? `estilo${Math.floor(Math.random() * 5) + 1}` : estilo;
             
             switch (estiloEscolhido) {
                 case 'estilo1':
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. O paciente demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo2':
-                    template = `${nomeCapitalizado}, ${acompanhanteStatus} ${acompanhante}, apresentou-se com uma disposição emocional ${disposicaoAdaptada}. Seu estado físico evidenciou ${textoEsquemas}. Os recursos utilizados foram ${textoRecursos}, o que suportou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}. O paciente demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado}, ${acompanhanteStatus} ${acompanhante}, apresentou-se com uma disposição emocional ${disposicaoAdaptada}. Seu estado físico evidenciou ${textoEsquemas}. Os recursos utilizados foram ${textoRecursos}, o que suportou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo3':
-                    template = `${nomeCapitalizado} chegou com ${acompanhante}, com uma disposição ${disposicaoAdaptada}. No geral, ${genero === 'masculino' ? 'ele' : 'ela'} se mostrou ${textoEsquemas}. Usamos ${textoRecursos} para trabalhar ${textoObjetivos} e a abordagem de ${textoAbordagem}. A sessão teve um resultado de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado} chegou com ${acompanhante}, com uma disposição ${disposicaoAdaptada}. No geral, ${genero === 'masculino' ? 'ele' : 'ela'} se mostrou ${textoEsquemas}. Usamos ${textoRecursos} para trabalhar ${textoObjetivos} e a abordagem de ${textoAbordagem}. A sessão teve um resultado de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo4':
-                    template = `No atendimento de hoje, ${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, mostrando-se ${disposicaoAdaptada}. O esquema corporal evidenciou ${textoEsquemas}. Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com os recursos ${textoRecursos}, explorando os objetivos de ${textoObjetivos} através da abordagem de ${textoAbordagem}, levando aos resultados de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `No atendimento de hoje, ${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, mostrando-se ${disposicaoAdaptada}. O esquema corporal evidenciou ${textoEsquemas}. Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com os recursos ${textoRecursos}, explorando os objetivos de ${textoObjetivos} através da abordagem de ${textoAbordagem}, levando aos resultados de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo5':
-                    template = `**Atendimento de ${nomeCapitalizado}**
+                    const observacoesEspeciais = [observacoes];
+                    if (avaliacao) {
+                        observacoesEspeciais.push("Avaliação formal foi realizada, e as atividades executadas apoiaram tal processo.");
+                    }
+                    if (devolutiva) {
+                        observacoesEspeciais.push(`Devolutiva foi feita aos responsáveis a respeito do processo terapêutico, possibilitando troca de informações, sanando dúvidas e enriquecendo a anamnese e investigação clínica do sistema de cuidados de ${nomeCapitalizado}.`);
+                    }
+                    if (nivelSuporte) {
+                        let descricaoSuporte;
+                        if (nivelSuporte === 'maximo') {
+                            descricaoSuporte = "Máximo (Totalmente Físico): O paciente necessita de assistência física completa do musicoterapeuta para realizar a atividade. O profissional guia os movimentos do paciente, que pode estar passivo ou oferecer pouca resistência. Este tipo de suporte é usado quando a criança não consegue iniciar ou completar a tarefa por conta própria.";
+                        } else if (nivelSuporte === 'moderado') {
+                            descricaoSuporte = "Moderado (Parcialmente Físico): O paciente recebe uma assistência física parcial, como um toque ou uma guia suave para iniciar ou continuar a atividade. O terapeuta não realiza a tarefa pelo paciente, mas o auxilia a completar o movimento.";
+                        } else if (nivelSuporte === 'leve') {
+                            descricaoSuporte = "Leve (Visual): O suporte é visual, sem contato físico. O terapeuta pode usar gestos, demonstrar a atividade ou apontar para o objeto, para que o paciente possa entender e imitar a ação.";
+                        } else if (nivelSuporte === 'minimo') {
+                            descricaoSuporte = "Mínimo (Verbal): O paciente precisa apenas de uma orientação verbal para realizar a atividade. O terapeuta utiliza instruções claras ou pistas verbais para incentivar o paciente a completar a tarefa.";
+                        } else if (nivelSuporte === 'sem apoio') {
+                            descricaoSuporte = "Sem apoio (Independente): O paciente realiza a atividade de forma completamente autônoma, sem a necessidade de qualquer tipo de ajuda verbal, visual ou física. A tarefa é realizada de forma consistente e independente.";
+                        }
+                        observacoesEspeciais.push(`Nível de Suporte Predominante: ${descricaoSuporte}`);
+                    }
+
+                    const textoObservacoesEstilo5 = observacoesEspeciais.filter(Boolean).map(obs => obs.trim()).join('\n- ');
                     
-- **Disposição Emocional:** ${disposicaoAdaptada}
-- **Aspectos Físicos/Corporais:** ${textoEsquemas}
-- **Recursos Utilizados:** ${textoRecursos}
-- **Objetivos da Sessão:** ${textoObjetivos}
-- **Abordagem Utilizada:** ${textoAbordagem}
-- **Resultados:** ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `Atendimento de ${nomeCapitalizado}
+                    
+- Disposição Emocional: ${disposicaoAdaptada}
+- Aspectos Físicos/Corporais: ${textoEsquemas}
+- Recursos Utilizados: ${textoRecursos}
+- Objetivos da Sessão: ${textoObjetivos}
+- Abordagem Utilizada: ${textoAbordagem}
+- Resultados: ${resultados}${textoIntercorrencias}
+- Observações: ${textoObservacoesEstilo5}`;
                     break;
                 default:
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. O paciente demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
             }
 
