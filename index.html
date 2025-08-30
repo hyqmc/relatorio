@@ -82,6 +82,43 @@
                 </div>
             </div>
         </div>
+        
+        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
+            <label class="block text-gray-700 font-semibold mb-2">Recursos Utilizados (escolha um ou mais):</label>
+            <div class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
+                <h4 class="font-medium text-gray-800 mt-1 mb-2">Sonoro-musicais:</h4>
+                <div id="recursosMusicais" class="pl-4">
+                    <label class="block mb-1"><input type="checkbox" value="ukulele" class="mr-2">ukulele</label>
+                    <label class="block mb-1"><input type="checkbox" value="xilofone" class="mr-2">xilofone</label>
+                    <label class="block mb-1"><input type="checkbox" value="metalofone" class="mr-2">metalofone</label>
+                    <label class="block mb-1"><input type="checkbox" value="teclado" class="mr-2">teclado</label>
+                    <label class="block mb-1"><input type="checkbox" value="cabulete" class="mr-2">cabulete</label>
+                    <label class="block mb-1"><input type="checkbox" value="ganza ovinho" class="mr-2">ganzá ovinho</label>
+                    <label class="block mb-1"><input type="checkbox" value="caxixi" class="mr-2">caxixi</label>
+                    <label class="block mb-1"><input type="checkbox" value="surdo" class="mr-2">surdo</label>
+                    <label class="block mb-1"><input type="checkbox" value="tamborim" class="mr-2">tamborim</label>
+                    <label class="block mb-1"><input type="checkbox" value="cajon" class="mr-2">cajón</label>
+                    <label class="block mb-1"><input type="checkbox" value="clavas" class="mr-2">clavas</label>
+                    <label class="block mb-1"><input type="checkbox" value="violao" class="mr-2">violão</label>
+                    <label class="block mb-1"><input type="checkbox" value="flauta de bloco" class="mr-2">flauta de bloco</label>
+                    <label class="block mb-1"><input type="checkbox" value="flauta transversal (pife)" class="mr-2">flauta transversal (pife)</label>
+                    <label class="block mb-1"><input type="checkbox" value="kalimba" class="mr-2">kalimba</label>
+                </div>
+                <h4 class="font-medium text-gray-800 mt-4 mb-2">Extra-musicais:</h4>
+                <div id="recursosExtraMusicais" class="pl-4">
+                    <label class="block mb-1"><input type="checkbox" value="cartoes musicais" class="mr-2">cartões musicais</label>
+                    <label class="block mb-1"><input type="checkbox" value="baralho musical" class="mr-2">baralho musical</label>
+                    <label class="block mb-1"><input type="checkbox" value="baralho convencional" class="mr-2">baralho convencional</label>
+                    <label class="block mb-1"><input type="checkbox" value="dados" class="mr-2">dados</label>
+                    <label class="block mb-1"><input type="checkbox" value="lapis de escrever" class="mr-2">lápis de escrever</label>
+                    <label class="block mb-1"><input type="checkbox" value="lapis de cor" class="mr-2">lápis de cor</label>
+                    <label class="block mb-1"><input type="checkbox" value="giz de cera" class="mr-2">giz de cera</label>
+                    <label class="block mb-1"><input type="checkbox" value="tesoura" class="mr-2">tesoura</label>
+                    <label class="block mb-1"><input type="checkbox" value="papel" class="mr-2">papel</label>
+                    <label class="block mb-1"><input type="checkbox" value="origami" class="mr-2">origami</label>
+                </div>
+            </div>
+        </div>
 
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <label class="block text-gray-700 font-semibold mb-2">Principais Objetivos (escolha um ou mais):</label>
@@ -236,181 +273,4 @@
         const termosRespiracao = { // Geralmente neutros para respiração
             masculino: [
                 "respiração com arritmia", "respiração contida ou sufocada",
-                "respiração curta e peitoral", "respiração profunda e abdominal",
-                "respiração rápida e ofegante"
-            ],
-            feminino: [
-                "respiração com arritmia", "respiração contida ou sufocada",
-                "respiração curta e peitoral", "respiração profunda e abdominal",
-                "respiração rápida e ofegante"
-            ]
-        };
-
-
-        function preencherSelect(elementId, termos, genero) {
-            const select = document.getElementById(elementId);
-            select.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
-            termos[genero].forEach((termo, index) => {
-                const option = document.createElement('option');
-                option.value = termos.masculino[index]; 
-                option.textContent = termo;
-                select.appendChild(option);
-            });
-        }
-
-        function preencherCheckboxes(elementId, termos, genero) {
-            const container = document.getElementById(elementId);
-            const currentCheckedValues = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
-            container.innerHTML = '';
-            
-            termos[genero].forEach((termo, index) => {
-                const label = document.createElement('label');
-                label.className = 'block mb-1';
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'mr-2';
-                checkbox.value = termos.masculino[index]; 
-                
-                if (currentCheckedValues.includes(checkbox.value)) {
-                    checkbox.checked = true;
-                }
-
-                label.appendChild(checkbox);
-                label.appendChild(document.createTextNode(termo));
-                container.appendChild(label);
-            });
-        }
-
-        function ajustarTermosPorGenero() {
-            const genero = document.getElementById('genero').value;
-
-            preencherSelect('disposicao', termosDisposicao, genero);
-            preencherCheckboxes('expCorporal', termosExpCorporal, genero);
-            preencherCheckboxes('expFacial', termosExpFacial, genero);
-            preencherCheckboxes('posturaTonus', termosPosturaTonus, genero);
-            preencherCheckboxes('respiracao', termosRespiracao, genero); 
-        }
-
-        document.addEventListener('DOMContentLoaded', ajustarTermosPorGenero);
-
-
-        function getCheckedValues(containerId) {
-            const container = document.getElementById(containerId);
-            const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
-            return Array.from(checkboxes).map(checkbox => checkbox.value);
-        }
-
-        function adaptarTermo(termoOriginal, genero) {
-            const listas = [termosDisposicao, termosExpCorporal, termosExpFacial, termosPosturaTonus, termosRespiracao];
-            for (const lista of listas) {
-                const index = lista.masculino.indexOf(termoOriginal);
-                if (index !== -1) {
-                    return lista[genero][index];
-                }
-            }
-            return termoOriginal;
-        }
-
-
-        function formatList(items, genero) {
-            if (items.length === 0) {
-                return '';
-            }
-            const itensAdaptados = items.map(item => adaptarTermo(item, genero));
-
-            if (itensAdaptados.length === 1) {
-                return itensAdaptados[0];
-            }
-            if (itensAdaptados.length === 2) {
-                return itensAdaptados.join(' e ');
-            }
-            const lastItem = itensAdaptados.pop();
-            return itensAdaptados.join(', ') + ' e ' + lastItem;
-        }
-
-        function copiarParagrafo() {
-            const paragrafo = document.getElementById('paragrafo-final').textContent;
-            const copyButton = document.getElementById('copy-button');
-            
-            navigator.clipboard.writeText(paragrafo).then(() => {
-                const originalText = copyButton.textContent;
-                copyButton.textContent = "Copiado!";
-                setTimeout(() => {
-                    copyButton.textContent = originalText;
-                }, 2000);
-            }).catch(err => {
-                console.error('Falha ao copiar o texto: ', err);
-            });
-        }
-
-        function gerarParagrafo() {
-            const nome = document.getElementById('nome').value.trim();
-            const acompanhante = document.getElementById('acompanhante').value.trim();
-            const acompanhanteStatus = document.getElementById('acompanhanteStatus').value;
-            const genero = document.getElementById('genero').value;
-            const disposicaoOriginal = document.getElementById('disposicao').value;
-            const resultados = document.getElementById('resultados').value;
-            const devolutiva = document.getElementById('devolutiva').checked;
-            const avaliacao = document.getElementById('avaliacao').checked;
-            const paragrafoFinal = document.getElementById('paragrafo-final');
-            const estilo = document.getElementById('estilo').value;
-
-            const esquemasFisicosOriginal = [
-                ...getCheckedValues('expCorporal'),
-                ...getCheckedValues('expFacial'),
-                ...getCheckedValues('posturaTonus'),
-                ...getCheckedValues('respiracao')
-            ];
-
-            const objetivos = getCheckedValues('objetivos');
-            const abordagem = getCheckedValues('abordagem');
-            const intercorrencias = getCheckedValues('intercorrencias');
-
-            const disposicaoAdaptada = adaptarTermo(disposicaoOriginal, genero);
-            const textoEsquemas = formatList(esquemasFisicosOriginal, genero);
-            const textoObjetivos = formatList(objetivos, genero);
-            const textoAbordagem = formatList(abordagem, genero);
-            
-            let textoIntercorrencias = "";
-            if (intercorrencias.length > 0) {
-                if (intercorrencias.includes("não houveram intercorrencias")) {
-                    textoIntercorrencias = "Não houveram intercorrências.";
-                } else {
-                    textoIntercorrencias = `Intercorrências: ${formatList(intercorrencias, genero)}.`;
-                }
-            }
-            
-            const textoAvaliacao = avaliacao ? " Foi feita avaliação formal e as atividades suportaram a mesma." : "";
-            const textoDevolutiva = devolutiva ? " Foi feita devolutiva aos responsáveis acerca do processo terapêutico até então, com trocas de informações, resposta à eventuais dúvidas, enriquecimento de processo de anamnese e investigação clínica ao sistema de cuidados do paciente." : "";
-
-            const nomeCapitalizado = nome.charAt(0).toUpperCase() + nome.slice(1);
-            
-            let template;
-            const estiloEscolhido = estilo === 'aleatorio' ? `estilo${Math.floor(Math.random() * 5) + 1}` : estilo;
-            
-            switch (estiloEscolhido) {
-                case 'estilo1':
-                    template = `O paciente ${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os objetivos focados na sessão foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. O paciente demonstrou ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
-                    break;
-                case 'estilo2':
-                    template = `${nomeCapitalizado}, ${acompanhanteStatus} ${acompanhante}, apresentou-se com uma disposição emocional ${disposicaoAdaptada}. Seu estado físico evidenciou ${textoEsquemas}. O encontro visou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}, resultando em ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
-                    break;
-                case 'estilo3':
-                    template = `A sessão com ${nomeCapitalizado} iniciou-se com o paciente ${acompanhanteStatus} ${acompanhante}, manifestando uma disposição ${disposicaoAdaptada}. Seu corpo expressava ${textoEsquemas}. As atividades conduzidas por ${textoAbordagem} tiveram como foco ${textoObjetivos}, culminando em ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
-                    break;
-                case 'estilo4':
-                    template = `${nomeCapitalizado} esteve presente na sessão, ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Foram observados os seguintes aspectos corporais: ${textoEsquemas}. Em busca dos objetivos de ${textoObjetivos}, a sessão utilizou a abordagem de ${textoAbordagem}. Ao final, os resultados foram ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
-                    break;
-                case 'estilo5':
-                    template = `No atendimento de hoje, ${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, mostrando-se ${disposicaoAdaptada}. O esquema corporal evidenciou ${textoEsquemas}. A sessão teve como objetivo ${textoObjetivos}, com abordagem de ${textoAbordagem}, levando aos resultados de ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
-                    break;
-                default:
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os objetivos focados na sessão foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. O paciente demonstrou ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
-                    break;
-            }
-
-            paragrafoFinal.textContent = template;
-        }
-    </script>
-</body>
-</html>
+                "respiração curta e peitoral", "respiração profun
