@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Relatórios Terapêuticos</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            /* Aplicando a fonte Open Sans ao corpo da página */
+            font-family: 'Open Sans', sans-serif;
             background-color: #f4f7f9;
         }
+        
     </style>
 </head>
 <body class="p-6">
@@ -28,6 +31,13 @@
                 <input type="text" id="acompanhante" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: Maria (mãe)">
             </div>
             <div class="col-span-1 md:col-span-2">
+                <label for="acompanhanteStatus" class="block text-gray-700 font-semibold mb-2">Chegou com o acompanhante ou aguardava?</label>
+                <select id="acompanhanteStatus" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="chegou acompanhado por">chegou acompanhado por</option>
+                    <option value="aguardava junto à">aguardava junto à</option>
+                </select>
+            </div>
+            <div class="col-span-1 md:col-span-2">
                 <label for="genero" class="block text-gray-700 font-semibold mb-2">Gênero do Paciente:</label>
                 <select id="genero" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="ajustarTermosPorGenero()">
                     <option value="masculino" selected>Masculino</option>
@@ -39,7 +49,8 @@
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <label for="disposicao" class="block text-gray-700 font-semibold mb-2">Disposição Emocional:</label>
             <select id="disposicao" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </select>
+                
+</select>
         </div>
 
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
@@ -48,22 +59,26 @@
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">1. expressividade corporal</h4>
                     <div id="expCorporal">
-                        </div>
+                        
+</div>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">2. expressividade facial</h4>
                     <div id="expFacial">
-                        </div>
+                        
+</div>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">3. postura e tônus</h4>
                     <div id="posturaTonus">
-                        </div>
+                        
+</div>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">4. respiração</h4>
                     <div id="respiracao">
-                        </div>
+                        
+</div>
                 </div>
             </div>
         </div>
@@ -118,18 +133,6 @@
             </div>
 
             <div class="mt-6">
-                <label for="estilo" class="block text-gray-700 font-semibold mb-2">Estilo:</label>
-                <select id="estilo" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="aleatorio" selected>Aleatório</option>
-                    <option value="estilo1">Estilo 1</option>
-                    <option value="estilo2">Estilo 2</option>
-                    <option value="estilo3">Estilo 3</option>
-                    <option value="estilo4">Estilo 4</option>
-                    <option value="estilo5">Estilo 5</option>
-                </select>
-            </div>
-
-            <div class="mt-6">
                 <label class="block text-gray-700 font-semibold mb-2">Intercorrências:</label>
                 <div id="intercorrencias" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
                     <label class="block mb-1"><input type="checkbox" value="comeu durante atendimento" class="mr-2">comeu durante o atendimento</label>
@@ -151,6 +154,18 @@
                     <input type="checkbox" id="avaliacao" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500">
                     <label for="avaliacao" class="ml-2 text-gray-700 font-semibold">Avaliação</label>
                 </div>
+            </div>
+
+            <div class="mt-6">
+                <label for="estilo" class="block text-gray-700 font-semibold mb-2">Estilo de Texto:</label>
+                <select id="estilo" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="aleatorio" selected>Aleatório</option>
+                    <option value="estilo1">Estilo 1</option>
+                    <option value="estilo2">Estilo 2</option>
+                    <option value="estilo3">Estilo 3</option>
+                    <option value="estilo4">Estilo 4</option>
+                    <option value="estilo5">Estilo 5</option>
+                </select>
             </div>
         </div>
 
@@ -237,7 +252,7 @@
             select.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
             termos[genero].forEach((termo, index) => {
                 const option = document.createElement('option');
-                option.value = termos.masculino[index]; // O valor interno sempre será o masculino para facilitar a lógica de adaptação no getCheckedValues
+                option.value = termos.masculino[index]; 
                 option.textContent = termo;
                 select.appendChild(option);
             });
@@ -254,7 +269,7 @@
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.className = 'mr-2';
-                checkbox.value = termos.masculino[index]; // O valor interno sempre será o masculino para facilitar a lógica de adaptação
+                checkbox.value = termos.masculino[index]; 
                 
                 if (currentCheckedValues.includes(checkbox.value)) {
                     checkbox.checked = true;
@@ -273,11 +288,9 @@
             preencherCheckboxes('expCorporal', termosExpCorporal, genero);
             preencherCheckboxes('expFacial', termosExpFacial, genero);
             preencherCheckboxes('posturaTonus', termosPosturaTonus, genero);
-            preencherCheckboxes('respiracao', termosRespiracao, genero); // Respiração é geralmente neutra, mas mantemos a chamada
+            preencherCheckboxes('respiracao', termosRespiracao, genero); 
         }
 
-
-        // Chamar ao carregar a página para preencher as opções iniciais
         document.addEventListener('DOMContentLoaded', ajustarTermosPorGenero);
 
 
@@ -287,9 +300,7 @@
             return Array.from(checkboxes).map(checkbox => checkbox.value);
         }
 
-        // Função auxiliar para adaptar um termo individualmente
         function adaptarTermo(termoOriginal, genero) {
-            // Verifica em cada lista de termos para encontrar e adaptar
             const listas = [termosDisposicao, termosExpCorporal, termosExpFacial, termosPosturaTonus, termosRespiracao];
             for (const lista of listas) {
                 const index = lista.masculino.indexOf(termoOriginal);
@@ -297,7 +308,7 @@
                     return lista[genero][index];
                 }
             }
-            return termoOriginal; // Retorna o original se não encontrar (é neutro ou não mapeado)
+            return termoOriginal;
         }
 
 
@@ -305,7 +316,6 @@
             if (items.length === 0) {
                 return '';
             }
-            // Adapta cada item da lista
             const itensAdaptados = items.map(item => adaptarTermo(item, genero));
 
             if (itensAdaptados.length === 1) {
@@ -336,15 +346,15 @@
         function gerarParagrafo() {
             const nome = document.getElementById('nome').value.trim();
             const acompanhante = document.getElementById('acompanhante').value.trim();
+            const acompanhanteStatus = document.getElementById('acompanhanteStatus').value;
             const genero = document.getElementById('genero').value;
-            const disposicaoOriginal = document.getElementById('disposicao').value; // Pega o valor base (masculino)
+            const disposicaoOriginal = document.getElementById('disposicao').value;
             const resultados = document.getElementById('resultados').value;
             const devolutiva = document.getElementById('devolutiva').checked;
             const avaliacao = document.getElementById('avaliacao').checked;
             const paragrafoFinal = document.getElementById('paragrafo-final');
             const estilo = document.getElementById('estilo').value;
 
-            // Pega os valores originais (masculinos) dos checkboxes
             const esquemasFisicosOriginal = [
                 ...getCheckedValues('expCorporal'),
                 ...getCheckedValues('expFacial'),
@@ -356,9 +366,8 @@
             const abordagem = getCheckedValues('abordagem');
             const intercorrencias = getCheckedValues('intercorrencias');
 
-            // Adapta os termos selecionados para o gênero escolhido
             const disposicaoAdaptada = adaptarTermo(disposicaoOriginal, genero);
-            const textoEsquemas = formatList(esquemasFisicosOriginal, genero); // Passa o gênero para formatList
+            const textoEsquemas = formatList(esquemasFisicosOriginal, genero);
             const textoObjetivos = formatList(objetivos, genero);
             const textoAbordagem = formatList(abordagem, genero);
             
@@ -367,7 +376,7 @@
                 if (intercorrencias.includes("não houveram intercorrencias")) {
                     textoIntercorrencias = "Não houveram intercorrências.";
                 } else {
-                    textoIntercorrencias = `Intercorrencias: ${formatList(intercorrencias, genero)}.`;
+                    textoIntercorrencias = `Intercorrências: ${formatList(intercorrencias, genero)}.`;
                 }
             }
             
@@ -381,22 +390,22 @@
             
             switch (estiloEscolhido) {
                 case 'estilo1':
-                    template = `O paciente ${nome}, chegou acompanhado por ${acompanhante}, aparentando estar ${disposicaoAdaptada} com ${textoEsquemas}. A sessão teve a(s) abordagem(ns) ${textoAbordagem}, focando nos objetivos ${textoObjetivos}. ${nomeCapitalizado} demonstrou ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `O paciente ${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os objetivos focados na sessão foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. O paciente demonstrou ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
                 case 'estilo2':
-                    template = `Na sessão de hoje, ${nome} e ${acompanhante} estiveram presentes. A dinâmica da sessão foi marcada por um estado emocional ${disposicaoAdaptada} e manifestações como ${textoEsquemas}. As abordagens de ${textoAbordagem} foram utilizadas, com foco nos objetivos de ${textoObjetivos}. Ao longo do encontro, o paciente apresentou ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado}, ${acompanhanteStatus} ${acompanhante}, apresentou-se com uma disposição emocional ${disposicaoAdaptada}. Seu estado físico evidenciou ${textoEsquemas}. O encontro visou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}, resultando em ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
                 case 'estilo3':
-                    template = `O encontro terapêutico com ${nome} e ${acompanhante} iniciou-se com o paciente expressando uma disposição ${disposicaoAdaptada}. Observou-se um quadro físico de ${textoEsquemas}. A sessão foi conduzida através de ${textoAbordagem}, com foco principal em ${textoObjetivos}. O paciente apresentou ${resultados} ao final das atividades. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `A sessão com ${nomeCapitalizado} iniciou-se com o paciente ${acompanhanteStatus} ${acompanhante}, manifestando uma disposição ${disposicaoAdaptada}. Seu corpo expressava ${textoEsquemas}. As atividades conduzidas por ${textoAbordagem} tiveram como foco ${textoObjetivos}, culminando em ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
                 case 'estilo4':
-                    template = `O paciente ${nome}, acompanhado por ${acompanhante}, iniciou a sessão com um estado ${disposicaoAdaptada} e um esquema corporal com ${textoEsquemas}. Com o intuito de atingir os objetivos de ${textoObjetivos}, a sessão explorou as abordagens de ${textoAbordagem}. Ao longo do processo, ${nomeCapitalizado} demonstrou ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado} esteve presente na sessão, ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Foram observados os seguintes aspectos corporais: ${textoEsquemas}. Em busca dos objetivos de ${textoObjetivos}, a sessão utilizou a abordagem de ${textoAbordagem}. Ao final, os resultados foram ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
                 case 'estilo5':
-                    template = `A sessão teve início com o paciente ${nome}, em companhia de ${acompanhante}, manifestando uma disposição ${disposicaoAdaptada} e com ${textoEsquemas}. O trabalho terapêutico utilizou ${textoAbordagem}, com o propósito de desenvolver ${textoObjetivos}. Os resultados da sessão indicaram ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `No atendimento de hoje, ${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, mostrando-se ${disposicaoAdaptada}. O esquema corporal evidenciou ${textoEsquemas}. A sessão teve como objetivo ${textoObjetivos}, com abordagem de ${textoAbordagem}, levando aos resultados de ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
                 default:
-                    template = `O paciente ${nome}, chegou acompanhado por ${acompanhante}, aparentando estar ${disposicaoAdaptada} com ${textoEsquemas}. A sessão teve a(s) abordagem(ns) ${textoAbordagem}, focando nos objetivos ${textoObjetivos}. ${nomeCapitalizado} demonstrou ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os objetivos focados na sessão foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. O paciente demonstrou ${resultados}. ${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
             }
 
