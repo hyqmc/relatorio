@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Relatórios Terapêuticos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f9;
+        }
+    </style>
+</head>
+<body class="p-6">
+
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Gerador de Relatórios Terapêuticos</h1>
+        <p class="text-gray-600 mb-8 text-center">Preencha os campos abaixo para gerar o parágrafo.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="nome" class="block text-gray-700 font-semibold mb-2">Nome do Paciente:</label>
+                <input type="text" id="nome" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: João Silva">
+            </div>
+            <div>
+                <label for="acompanhante" class="block text-gray-700 font-semibold mb-2">Acompanhante:</label>
+                <input type="text" id="acompanhante" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: Maria (mãe)">
+            </div>
+            <div class="col-span-1 md:col-span-2">
+                <label for="genero" class="block text-gray-700 font-semibold mb-2">Gênero do Paciente:</label>
+                <select id="genero" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="ajustarTermosPorGenero()">
+                    <option value="masculino" selected>Masculino</option>
+                    <option value="feminino">Feminino</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
+            <label for="disposicao" class="block text-gray-700 font-semibold mb-2">Disposição Emocional:</label>
+            <select id="disposicao" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </select>
+        </div>
+
+        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
+            <h3 class="block text-gray-700 font-semibold mb-4">Esquema Físico/Corporal:</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">1. expressividade corporal</h4>
+                    <div id="expCorporal">
+                        </div>
+                </div>
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">2. expressividade facial</h4>
+                    <div id="expFacial">
+                        </div>
+                </div>
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">3. postura e tônus</h4>
+                    <div id="posturaTonus">
+                        </div>
+                </div>
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">4. respiração</h4>
+                    <div id="respiracao">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
+            <label class="block text-gray-700 font-semibold mb-2">Principais Objetivos (escolha um ou mais):</label>
+            <div id="objetivos" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
+                <label class="block mb-1"><input type="checkbox" value="desenvolver controle respiratório consciente" class="mr-2">desenvolver controle respiratório consciente</label>
+                <label class="block mb-1"><input type="checkbox" value="desenvolver habilidades cognitivas" class="mr-2">desenvolver habilidades cognitivas</label>
+                <label class="block mb-1"><input type="checkbox" value="dispor ambiente de expressão emocional segura" class="mr-2">dispor ambiente de expressão emocional segura</label>
+                <label class="block mb-1"><input type="checkbox" value="encontro com processos de subjetivação" class="mr-2">encontro com processos de subjetivação</label>
+                <label class="block mb-1"><input type="checkbox" value="estimular a criatividade e a imaginação" class="mr-2">estimular a criatividade e a imaginação</label>
+                <label class="block mb-1"><input type="checkbox" value="facilitar a comunicação verbal e não-verbal" class="mr-2">facilitar a comunicação verbal e não-verbal</label>
+                <label class="block mb-1"><input type="checkbox" value="melhorar o bem-estar psicossomático" class="mr-2">melhorar o bem-estar psicossomático</label>
+                <label class="block mb-1"><input type="checkbox" value="promover autonomia, autoria e desenvolvimento lúdico de papéis" class="mr-2">promover autonomia, autoria e desenvolvimento lúdico de papéis</label>
+                <label class="block mb-1"><input type="checkbox" value="promover conhecimento profundo de si" class="mr-2">promover conhecimento profundo de si</label>
+                <label class="block mb-1"><input type="checkbox" value="promover crescimento pessoal e individuação" class="mr-2">promover crescimento pessoal e individuação</label>
+                <label class="block mb-1"><input type="checkbox" value="promover noções proprioceptivas" class="mr-2">promover noções proprioceptivas</label>
+                <label class="block
