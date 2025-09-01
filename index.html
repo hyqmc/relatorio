@@ -485,11 +485,20 @@
             const isMultiple = select.hasAttribute('multiple');
             
             // Salva as seleções atuais se for múltipla
-            const currentValues = isMultiple ? Array.from(select.options).filter(opt => opt.selected).map(opt => opt.value) : [select.value];
+            const currentValues = Array.from(select.options).filter(opt => opt.selected).map(opt => opt.value);
             
-            select.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
+            select.innerHTML = '';
             const termosGenero = termos[termoKey][genero];
             const termosMasculino = termos[termoKey]['masculino'];
+
+            if (!isMultiple) {
+                const optionPlaceholder = document.createElement('option');
+                optionPlaceholder.value = "";
+                optionPlaceholder.textContent = "Selecione uma opção";
+                optionPlaceholder.disabled = true;
+                optionPlaceholder.selected = true;
+                select.appendChild(optionPlaceholder);
+            }
 
             termosGenero.forEach((termo, index) => {
                 const option = document.createElement('option');
@@ -521,10 +530,13 @@
 
         function getSelectedValues(selectId) {
             const select = document.getElementById(selectId);
-            if (select.hasAttribute('multiple')) {
-                return Array.from(select.options).filter(opt => opt.selected).map(opt => opt.value);
+            const isMultiple = select.hasAttribute('multiple');
+            if (isMultiple) {
+                return Array.from(select.options)
+                    .filter(opt => opt.selected)
+                    .map(opt => opt.value);
             } else {
-                return [select.value].filter(Boolean);
+                return select.value ? [select.value] : [];
             }
         }
 
@@ -672,19 +684,19 @@ descricaoSuporte = "independente, realizando a atividade de forma completamente 
 
             // Novos textos de resultados
             let textoResultados = '';
-            if (desempenhoGeral && desempenhoHistorico && mudancaEmocional) {
+            if (desempenhoGeral || desempenhoHistorico || mudancaEmocional || mudancasFisicas.length > 0 || suportePercebido.length > 0) {
                 if (estilo === 'estilo1' || estilo === 'estilo2') {
-                    const desempenhoGeralTxt = `Em relação ao desempenho geral, o paciente ${desempenhoGeral}. `;
-                    const desempenhoHistoricoTxt = `Sua performance se apresentou ${desempenhoHistorico}. `;
-                    const mudancaEmocionalTxt = `Quanto à disposição emocional, ${mudancaEmocional}. `;
+                    const desempenhoGeralTxt = desempenhoGeral ? `Em relação ao desempenho geral, o paciente ${desempenhoGeral}. ` : '';
+                    const desempenhoHistoricoTxt = desempenhoHistorico ? `Sua performance se apresentou ${desempenhoHistorico}. ` : '';
+                    const mudancaEmocionalTxt = mudancaEmocional ? `Quanto à disposição emocional, ${mudancaEmocional}. ` : '';
                     const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `As mudanças no esquema físico observadas foram: ${formatList(mudancasFisicas, genero)}. ` : '';
                     const suportePercebidoTxt = suportePercebido.length > 0 ? `No nível de suporte percebido, foram notadas: ${formatList(suportePercebido, genero)}. ` : '';
 
                     textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
                 } else if (estilo === 'estilo3' || estilo === 'estilo4') {
-                    const desempenhoGeralTxt = `${nomeCapitalizado} ${desempenhoGeral} nas atividades propostas. `;
-                    const desempenhoHistoricoTxt = `O que está ${desempenhoHistorico}. `;
-                    const mudancaEmocionalTxt = `Sua disposição emocional ${mudancaEmocional}. `;
+                    const desempenhoGeralTxt = desempenhoGeral ? `${nomeCapitalizado} ${desempenhoGeral} nas atividades propostas. ` : '';
+                    const desempenhoHistoricoTxt = desempenhoHistorico ? `O que está ${desempenhoHistorico}. ` : '';
+                    const mudancaEmocionalTxt = mudancaEmocional ? `Sua disposição emocional ${mudancaEmocional}. ` : '';
                     const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `Houve também mudanças no corpo, como ${formatList(mudancasFisicas, genero)}. ` : '';
                     const suportePercebidoTxt = suportePercebido.length > 0 ? `Sobre o suporte, percebemos: ${formatList(suportePercebido, genero)}. ` : '';
 
@@ -738,8 +750,19 @@ descricaoSuporte = "independente, realizando a atividade de forma completamente 
                     if (elementosSimbolicos) {
                          observacoesEspeciais.push(`Elementos Simbólicos: ${elementosSimbolicos}.`);
                     }
+                    if (intercorrencias.length > 0) {
+                        observacoesEspeciais.push(`Intercorrências: ${formatList(intercorrencias, genero)}.`);
+                    }
+
 
                     const textoObservacoesEstilo5 = observacoesEspeciais.filter(Boolean).map(obs => obs.trim()).join('\n- ');
+                    
+                    const resultadosEstilo5 = [];
+                    if (desempenhoGeral) resultadosEstilo5.push(`- Desempenho Geral: ${desempenhoGeral}.`);
+                    if (desempenhoHistorico) resultadosEstilo5.push(`- Comparação Histórica: ${desempenhoHistorico}.`);
+                    if (mudancaEmocional) resultadosEstilo5.push(`- Mudança Emocional: ${mudancaEmocional}.`);
+                    if (mudancasFisicas.length > 0) resultadosEstilo5.push(`- Mudanças Físicas: ${formatList(mudancasFisicas, genero)}.`);
+                    if (suportePercebido.length > 0) resultadosEstilo5.push(`- Nível de Suporte Percebido: ${formatList(suportePercebido, genero)}.`);
 
                     template = `Atendimento de ${nomeCapitalizado}
 
@@ -749,8 +772,10 @@ descricaoSuporte = "independente, realizando a atividade de forma completamente 
 - Recursos da abordagem: ${textoRecursosAbordagem}
 - Objetivos da Sessão: ${textoObjetivos}
 - Abordagem Utilizada: ${textoAbordagem}
-- Resultados: ${desempenhoGeral} e ${desempenhoHistorico}. Mudança emocional: ${mudancaEmocional}. Mudanças físicas: ${formatList(mudancasFisicas, genero)}. Nível de suporte percebido: ${formatList(suportePercebido, genero)}.${textoIntercorrencias}
-- Observações: ${textoObservacoesEstilo5}`;
+- Resultados:
+${resultadosEstilo5.join('\n')}
+- Outras Observações:
+${textoObservacoesEstilo5}`;
                     break;
                 default:
                     template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se a presença de ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursosInteragiu} e ${textoRecursosAbordagem}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${textoResultados}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
