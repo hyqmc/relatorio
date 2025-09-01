@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            /* Aplicando a fonte Open Sans ao corpo da página */
             font-family: 'Open Sans', sans-serif;
             background-color: #f4f7f9;
         }
@@ -480,11 +479,15 @@
 
         function preencherSelect(elementId, termos, genero) {
             const select = document.getElementById(elementId);
+            const currentValue = select.value;
             select.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
             termos[genero].forEach((termo, index) => {
                 const option = document.createElement('option');
                 option.value = termos.masculino[index];
                 option.textContent = termo;
+                if (option.value === currentValue) {
+                    option.selected = true;
+                }
                 select.appendChild(option);
             });
         }
