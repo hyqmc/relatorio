@@ -529,14 +529,8 @@
 
         document.getElementById('genero').addEventListener('change', ajustarTermosPorGenero);
         
-        // Novo onload: carrega os termos masculinos por padrão e ajusta apenas com a troca de gênero.
-        window.onload = function() {
-            preencherSelect('disposicao', 'disposicao', 'masculino');
-            preencherSelect('expCorporal', 'expCorporal', 'masculino');
-            preencherSelect('expFacial', 'expFacial', 'masculino');
-            preencherSelect('posturaTonus', 'posturaTonus', 'masculino');
-            preencherSelect('respiracao', 'respiracao', 'masculino');
-        };
+        // Chamada inicial para preencher os selects ao carregar a página
+        document.addEventListener('DOMContentLoaded', ajustarTermosPorGenero);
 
         function getCheckedValues(containerId) {
             const container = document.getElementById(containerId);
@@ -766,7 +760,7 @@
                          observacoesEspeciais.push(`Elementos Simbólicos: ${elementosSimbolicos}.`);
                     }
                     if (intercorrencias.length > 0) {
-                        observacoesEspeciais.push(`Intercorrências: ${formatList(intercorrencias, genero)}.`);
+                        observacoesEspeciais.push(`Intercorrencias: ${formatList(intercorrencias, genero)}.`);
                     }
 
 
