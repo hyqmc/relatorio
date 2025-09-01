@@ -11,6 +11,9 @@
             font-family: 'Open Sans', sans-serif;
             background-color: #f4f7f9;
         }
+        select[multiple] {
+            height: 150px;
+        }
     </style>
 </head>
 <body class="p-6">
@@ -66,13 +69,15 @@
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">3. postura e tônus</h4>
-                    <select id="posturaTonus" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <select id="posturaTonus" multiple class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </select>
+                    <p class="text-sm text-gray-500 mt-2">Segure a tecla Ctrl (Windows) ou Command (Mac) para selecionar múltiplos itens.</p>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">4. respiração</h4>
-                    <select id="respiracao" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <select id="respiracao" multiple class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </select>
+                    <p class="text-sm text-gray-500 mt-2">Segure a tecla Ctrl (Windows) ou Command (Mac) para selecionar múltiplos itens.</p>
                 </div>
             </div>
         </div>
@@ -477,7 +482,11 @@
 
         function preencherSelect(elementId, termoKey, genero) {
             const select = document.getElementById(elementId);
-            const currentValue = select.value;
+            const isMultiple = select.hasAttribute('multiple');
+            
+            // Salva as seleções atuais se for múltipla
+            const currentValues = isMultiple ? Array.from(select.options).filter(opt => opt.selected).map(opt => opt.value) : [select.value];
+            
             select.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
             const termosGenero = termos[termoKey][genero];
             const termosMasculino = termos[termoKey]['masculino'];
@@ -486,7 +495,7 @@
                 const option = document.createElement('option');
                 option.value = termosMasculino[index];
                 option.textContent = termo;
-                if (option.value === currentValue) {
+                if (currentValues.includes(option.value)) {
                     option.selected = true;
                 }
                 select.appendChild(option);
@@ -510,9 +519,13 @@
             return Array.from(checkboxes).map(checkbox => checkbox.value);
         }
 
-        function getSelectedValue(selectId) {
+        function getSelectedValues(selectId) {
             const select = document.getElementById(selectId);
-            return select.value;
+            if (select.hasAttribute('multiple')) {
+                return Array.from(select.options).filter(opt => opt.selected).map(opt => opt.value);
+            } else {
+                return [select.value].filter(Boolean);
+            }
         }
 
         function adaptarTermo(termoOriginal, genero) {
@@ -558,29 +571,29 @@
         function gerarParagrafo() {
             const nome = document.getElementById('nome').value.trim();
             const acompanhante = document.getElementById('acompanhante').value.trim();
-            const acompanhanteStatus = getSelectedValue('acompanhanteStatus');
-            const genero = getSelectedValue('genero');
-            const disposicaoOriginal = getSelectedValue('disposicao');
+            const acompanhanteStatus = getSelectedValues('acompanhanteStatus')[0];
+            const genero = getSelectedValues('genero')[0];
+            const disposicaoOriginal = getSelectedValues('disposicao')[0];
             const observacoes = document.getElementById('observacoes').value.trim();
             const elementosSimbolicos = document.getElementById('elementosSimbolicos').value.trim();
             const devolutiva = document.getElementById('devolutiva').checked;
             const avaliacao = document.getElementById('avaliacao').checked;
             const paragrafoFinal = document.getElementById('paragrafo-final');
-            const estilo = getSelectedValue('estilo');
-            const nivelSuporte = getSelectedValue('nivelSuporte');
+            const estilo = getSelectedValues('estilo')[0];
+            const nivelSuporte = getSelectedValues('nivelSuporte')[0];
 
             // Novos resultados
-            const desempenhoGeral = getSelectedValue('desempenhoGeral');
-            const desempenhoHistorico = getSelectedValue('desempenhoHistorico');
-            const mudancaEmocional = getSelectedValue('mudancaEmocional');
+            const desempenhoGeral = getSelectedValues('desempenhoGeral')[0];
+            const desempenhoHistorico = getSelectedValues('desempenhoHistorico')[0];
+            const mudancaEmocional = getSelectedValues('mudancaEmocional')[0];
             const mudancasFisicas = getCheckedValues('mudancasFisicas');
             const suportePercebido = getCheckedValues('suportePercebido');
 
             const esquemasFisicosOriginal = [
-                getSelectedValue('expCorporal'),
-                getSelectedValue('expFacial'),
-                getSelectedValue('posturaTonus'),
-                getSelectedValue('respiracao')
+                ...getSelectedValues('expCorporal'),
+                ...getSelectedValues('expFacial'),
+                ...getSelectedValues('posturaTonus'),
+                ...getSelectedValues('respiracao')
             ].filter(Boolean); // Remove valores vazios
 
             const recursosInteragiu = getCheckedValues('recursosInteragiu').concat(getCheckedValues('recursosExtraInteragiu'));
@@ -645,7 +658,7 @@
                 } else if (nivelSuporte === 'minimo') {
                     descricaoSuporte = "verbal, precisando apenas de uma orientação verbal para completar a tarefa.";
                 } else if (nivelSuporte === 'sem apoio') {
-                    descricaoSuporte = "independente, realizando a atividade de forma completamente autônoma.";
+descricaoSuporte = "independente, realizando a atividade de forma completamente autônoma.";
                 }
 
                 if (estilo === 'estilo1' || estilo === 'estilo2') {
