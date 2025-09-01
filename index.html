@@ -12,7 +12,6 @@
             font-family: 'Open Sans', sans-serif;
             background-color: #f4f7f9;
         }
-        
     </style>
 </head>
 <body class="p-6">
@@ -50,8 +49,7 @@
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <label for="disposicao" class="block text-gray-700 font-semibold mb-2">Disposição Emocional:</label>
             <select id="disposicao" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                
-</select>
+                </select>
         </div>
 
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
@@ -60,26 +58,22 @@
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">1. expressividade corporal</h4>
                     <div id="expCorporal">
-                        
-</div>
+                        </div>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">2. expressividade facial</h4>
                     <div id="expFacial">
-                        
-</div>
+                        </div>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">3. postura e tônus</h4>
                     <div id="posturaTonus">
-                        
-</div>
+                        </div>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">4. respiração</h4>
                     <div id="respiracao">
-                        
-</div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -215,7 +209,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <label class="block text-gray-700 font-semibold mb-2">Elementos da sala com que o paciente interagiu (escolha um ou mais):</label>
             <div id="elementosSala" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
@@ -251,7 +245,7 @@
                 <label class="block mb-1"><input type="checkbox" value="tratar de sofrimento psíquico" class="mr-2">tratar de sofrimento psíquico</label>
             </div>
         </div>
-        
+
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <label class="block text-gray-700 font-semibold mb-2">Abordagem (escolha um ou mais):</label>
             <div id="abordagem" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
@@ -341,7 +335,7 @@
                     <textarea id="observacoes" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="Adicione observações adicionais aqui..."></textarea>
                 </div>
             </div>
-            
+
             <div class="mt-6">
                 <label for="elementosSimbolicos" class="block text-gray-700 font-semibold mb-2">Elementos Simbólicos:</label>
                 <textarea id="elementosSimbolicos" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="Adicione partilhas de sonhos, relatos de experiências, referências culturais, etc."></textarea>
@@ -362,7 +356,7 @@
                     <label class="block mb-1"><input type="checkbox" value="subiu em cadeiras e móveis" class="mr-2">subiu em cadeiras e móveis</label>
                 </div>
             </div>
-            
+
             <div class="mt-6 flex flex-col sm:flex-row gap-6">
                 <div class="flex items-center">
                     <input type="checkbox" id="devolutiva" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500">
@@ -447,7 +441,7 @@
             }
         };
 
-        const termosRespiracao = { 
+        const termosRespiracao = {
             masculino: {
                 padrao: ["nasal", "bucal", "curta", "longa", "superficial", "profunda"],
                 tipo: ["diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular"],
@@ -463,7 +457,6 @@
                 ritmo_frequencia: ["ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)", "frequencia anormalmente lenta (bradipneia)"]
             }
         };
-
 
         function preencherSelect(elementId, termos, genero) {
             const select = document.getElementById(elementId);
@@ -485,18 +478,18 @@
                 // É um array simples
                 termos[genero].forEach((termo, index) => {
                     const option = document.createElement('option');
-                    option.value = termos.masculino[index]; 
+                    option.value = termos.masculino[index];
                     option.textContent = termo;
                     select.appendChild(option);
                 });
             }
         }
-        
+
         function preencherCheckboxes(elementId, termos, genero) {
             const container = document.getElementById(elementId);
             const currentCheckedValues = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
             container.innerHTML = '';
-            
+
             if (termos.constructor === Object) {
                 for (const categoria in termos[genero]) {
                     const h4 = document.createElement('h4');
@@ -513,7 +506,7 @@
                         checkbox.type = 'checkbox';
                         checkbox.className = 'mr-2';
                         checkbox.value = termos.masculino[categoria][index];
-                        
+
                         if (currentCheckedValues.includes(checkbox.value)) {
                             checkbox.checked = true;
                         }
@@ -531,8 +524,8 @@
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.className = 'mr-2';
-                    checkbox.value = termos.masculino[index]; 
-                    
+                    checkbox.value = termos.masculino[index];
+
                     if (currentCheckedValues.includes(checkbox.value)) {
                         checkbox.checked = true;
                     }
@@ -551,7 +544,7 @@
             preencherCheckboxes('expCorporal', termosExpCorporal, genero);
             preencherCheckboxes('expFacial', termosExpFacial, genero);
             preencherCheckboxes('posturaTonus', termosPosturaTonus, genero);
-            preencherCheckboxes('respiracao', termosRespiracao, genero); 
+            preencherCheckboxes('respiracao', termosRespiracao, genero);
         }
 
         document.addEventListener('DOMContentLoaded', ajustarTermosPorGenero);
@@ -562,14 +555,14 @@
             const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
             return Array.from(checkboxes).map(checkbox => checkbox.value);
         }
-        
+
         function getSelectedValues(selectId) {
             const select = document.getElementById(selectId);
             return select.value;
         }
 
         function adaptarTermo(termoOriginal, genero) {
-            const listas = [termosDisposicao, termosExpCorporal, termosExpFacial];
+            const listas = [termosDisposicao];
             for (const lista of listas) {
                 const index = lista.masculino.indexOf(termoOriginal);
                 if (index !== -1) {
@@ -577,7 +570,7 @@
                 }
             }
             // Para as listas que têm estrutura de objeto
-            for (const lista of [termosPosturaTonus, termosRespiracao]) {
+            for (const lista of [termosExpCorporal, termosExpFacial, termosPosturaTonus, termosRespiracao]) {
                 for (const categoria in lista.masculino) {
                     const index = lista.masculino[categoria].indexOf(termoOriginal);
                     if (index !== -1) {
@@ -607,7 +600,7 @@
         function copiarParagrafo() {
             const paragrafo = document.getElementById('paragrafo-final').textContent;
             const copyButton = document.getElementById('copy-button');
-            
+
             navigator.clipboard.writeText(paragrafo).then(() => {
                 const originalText = copyButton.textContent;
                 copyButton.textContent = "Copiado!";
@@ -626,7 +619,7 @@
             const genero = document.getElementById('genero').value;
             const disposicaoOriginal = document.getElementById('disposicao').value;
             const observacoes = document.getElementById('observacoes').value.trim();
-            const elementosSimbolicos = document.getElementById('elementosSimbolicos').value.trim(); // Novo campo
+            const elementosSimbolicos = document.getElementById('elementosSimbolicos').value.trim();
             const devolutiva = document.getElementById('devolutiva').checked;
             const avaliacao = document.getElementById('avaliacao').checked;
             const paragrafoFinal = document.getElementById('paragrafo-final');
@@ -673,9 +666,9 @@
             } else {
                  textoIntercorrencias = " Sem intercorrências.";
             }
-            
+
             const nomeCapitalizado = nome.charAt(0).toUpperCase() + nome.slice(1);
-            
+
             let textoAvaliacao = "";
             if (avaliacao) {
                 if (estilo === 'estilo1' || estilo === 'estilo2') {
@@ -696,7 +689,7 @@
 
             let textoObservacoes = observacoes ? ` ${observacoes}.` : "";
             let textoElementosSimbolicos = elementosSimbolicos ? ` Os seguintes elementos simbólicos foram notados: ${elementosSimbolicos}.` : "";
-            
+
             let textoNivelSuporte = "";
             if (nivelSuporte) {
                 let descricaoSuporte;
@@ -718,9 +711,9 @@
                     textoNivelSuporte = ` ${genero === 'masculino' ? 'Ele' : 'Ela'} precisou de um suporte ${descricaoSuporte}.`;
                 }
             }
-            
+
             const textoElementosSala = elementosSala.length > 0 ? ` Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com elementos da sala como ${formatList(elementosSala, genero)}.` : "";
-            
+
             // Novos textos de resultados
             let textoResultados = '';
             if (estilo === 'estilo1' || estilo === 'estilo2') {
@@ -729,7 +722,7 @@
                 const mudancaEmocionalTxt = mudancaEmocional ? `Quanto à disposição emocional, ${mudancaEmocional}. ` : '';
                 const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `As mudanças no esquema físico observadas foram: ${formatList(mudancasFisicas, genero)}. ` : '';
                 const suportePercebidoTxt = suportePercebido.length > 0 ? `No nível de suporte percebido, foram notadas: ${formatList(suportePercebido, genero)}. ` : '';
-                
+
                 textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
             } else if (estilo === 'estilo3' || estilo === 'estilo4') {
                 const desempenhoGeralTxt = desempenhoGeral ? `${nomeCapitalizado} ${desempenhoGeral} nas atividades propostas. ` : '';
@@ -743,7 +736,7 @@
 
             let template;
             const estiloEscolhido = estilo === 'aleatorio' ? `estilo${Math.floor(Math.random() * 5) + 1}` : estilo;
-            
+
             switch (estiloEscolhido) {
                 case 'estilo1':
                     template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Seu esquema físico observou a presença de ${textoEsquemas}. Os recursos com que ${genero === 'masculino' ? 'ele' : 'ela'} interagiu foram ${textoRecursosInteragiu}. Os recursos utilizados na abordagem terapêutica foram ${textoRecursosAbordagem}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
@@ -788,9 +781,9 @@
                     }
 
                     const textoObservacoesEstilo5 = observacoesEspeciais.filter(Boolean).map(obs => obs.trim()).join('\n- ');
-                    
+
                     template = `Atendimento de ${nomeCapitalizado}
-                    
+
 - Disposição Emocional: ${disposicaoAdaptada}
 - Aspectos Físicos/Corporais: ${textoEsquemas}
 - Recursos que interagiu: ${textoRecursosInteragiu}
