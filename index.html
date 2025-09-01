@@ -167,7 +167,7 @@
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <label class="block text-gray-700 font-semibold mb-2">Abordagem (escolha um ou mais):</label>
             <div id="abordagem" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
-                <label class="block mb-1"><input type="checkbox" value="atividades artísticas complementares" class="mr-2">atividades artísticas complementares</label>
+                <label class="block mb-1"><input type="checkbox" value="atividades artísticas complementares (AACs)" class="mr-2">atividades artísticas complementares (AACs)</label>
                 <label class="block mb-1"><input type="checkbox" value="corpo e movimento" class="mr-2">corpo e movimento</label>
                 <label class="block mb-1"><input type="checkbox" value="musicoterapia baseada em recursos" class="mr-2">musicoterapia baseada em recursos</label>
                 <label class="block mb-1"><input type="checkbox" value="musicoterapia composicional" class="mr-2">musicoterapia composicional</label>
@@ -175,6 +175,7 @@
                 <label class="block mb-1"><input type="checkbox" value="musicoterapia psicodinâmica" class="mr-2">musicoterapia psicodinâmica</label>
                 <label class="block mb-1"><input type="checkbox" value="musicoterapia receptiva" class="mr-2">musicoterapia receptiva</label>
                 <label class="block mb-1"><input type="checkbox" value="musicoterapia recriativa" class="mr-2">musicoterapia recriativa</label>
+                <label class="block mb-1"><input type="checkbox" value="repertório tradicional infantil brasileiro (MTIB)" class="mr-2">repertório tradicional infantil brasileiro (MTIB)</label>
             </div>
         </div>
 
@@ -214,7 +215,8 @@
                 <label class="block text-gray-700 font-semibold mb-2">Intercorrências:</label>
                 <div id="intercorrencias" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
                     <label class="block mb-1"><input type="checkbox" value="comeu durante atendimento" class="mr-2">comeu durante o atendimento</label>
-                    <label class="block mb-1"><input type="checkbox" value="foi ao banheiro" class="mr-2">foi ao banheiro</label>
+                    <label class="block mb-1"><input type="checkbox" value="pediu para beber água" class="mr-2">pediu para beber água</label>
+                    <label class="block mb-1"><input type="checkbox" value="pediu para ir ao banheiro" class="mr-2">pediu para ir ao banheiro</label>
                     <label class="block mb-1"><input type="checkbox" value="machucou-se durante movimentação na sala" class="mr-2">machucou-se durante movimentação na sala</label>
                     <label class="block mb-1"><input type="checkbox" value="não houveram intercorrencias" class="mr-2">não houveram intercorrências</label>
                     <label class="block mb-1"><input type="checkbox" value="pediu para sair" class="mr-2">pediu para sair</label>
@@ -289,12 +291,12 @@
             masculino: [
                 "apático", "cabisbaixo", "choroso", "com olheiras", "com rubor", "mandíbula tensa",
                 "olhar pendente/cansado", "olhar vazio/ausente/disperso", "semblante triste",
-                "sorridente", "sorriso inautêntico"
+                "sorridente", "sorriso inautêntico", "tranquilo"
             ],
             feminino: [
                 "apática", "cabisbaixa", "chorosa", "com olheiras", "com rubor", "mandíbula tensa",
                 "olhar pendente/cansado", "olhar vazio/ausente/disperso", "semblante triste",
-                "sorridente", "sorriso inautêntico"
+                "sorridente", "sorriso inautêntico", "tranquila"
             ]
         };
 
@@ -302,12 +304,12 @@
             masculino: [
                 "postura curvada e tônus baixo", "postura desequilibrada e assimétrica",
                 "postura erguida e tônus firme", "tensão evidente em membros inferiores",
-                "tensão evidente em ombros", "tensão evidente em pescoço", "tônus flácido ou fragilizado"
+                "tensão evidente em ombros", "tensão evidente em pescoço", "tônus flácido ou fragilizado", "postura curvada com tônus firme"
             ],
             feminino: [
                 "postura curvada e tônus baixa", "postura desequilibrada e assimétrica",
                 "postura erguida e tônus firme", "tensão evidente em membros inferiores",
-                "tensão evidente em ombros", "tensão evidente em pescoço", "tônus flácido ou fragilizado"
+                "tensão evidente em ombros", "tensão evidente em pescoço", "tônus flácido ou fragilizado", "postura curvada com tônus firme"
             ]
         };
 
@@ -459,10 +461,12 @@
             let textoIntercorrencias = "";
             if (intercorrencias.length > 0) {
                 if (intercorrencias.includes("não houveram intercorrencias")) {
-                    textoIntercorrencias = " Não houveram intercorrências.";
+                    textoIntercorrencias = " Sem intercorrências.";
                 } else {
-                    textoIntercorrencias = ` Intercorrências: ${formatList(intercorrencias, genero)}.`;
+                    textoIntercorrencias = ` As intercorrências observadas foram: ${formatList(intercorrencias, genero)}.`;
                 }
+            } else {
+                 textoIntercorrencias = " Sem intercorrências.";
             }
             
             const nomeCapitalizado = nome.charAt(0).toUpperCase() + nome.slice(1);
@@ -493,7 +497,7 @@
                 if (nivelSuporte === 'maximo') {
                     descricaoSuporte = "totalmente físico, necessitando de assistência completa para realizar a atividade.";
                 } else if (nivelSuporte === 'moderado') {
-                    descricaoSuporte = "parcialmente físico, recebendo um toque ou guia suave para iniciar/continuar a atividade.";
+                    descricaoSuporte = "parcialmente físico, recebendo um toque ou guia suave para iniciar ou continuar a atividade.";
                 } else if (nivelSuporte === 'leve') {
                     descricaoSuporte = "visual, sem contato físico, com gestos e demonstrações para entender a ação.";
                 } else if (nivelSuporte === 'minimo') {
@@ -514,13 +518,13 @@
             
             switch (estiloEscolhido) {
                 case 'estilo1':
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
+                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Seu esquema físico observou a presença de ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo2':
-                    template = `${nomeCapitalizado}, ${acompanhanteStatus} ${acompanhante}, apresentou-se com uma disposição emocional ${disposicaoAdaptada}. Seu estado físico evidenciou ${textoEsquemas}. Os recursos utilizados foram ${textoRecursos}, o que suportou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
+                    template = `${nomeCapitalizado}, ${acompanhanteStatus} ${acompanhante}, apresentou uma disposição emocional ${disposicaoAdaptada}. O estado físico evidenciado foi ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}, o que suportou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo3':
-                    template = `${nomeCapitalizado} chegou com ${acompanhante}, com uma disposição ${disposicaoAdaptada}. No geral, ${genero === 'masculino' ? 'ele' : 'ela'} se mostrou ${textoEsquemas}. Usamos ${textoRecursos} para trabalhar ${textoObjetivos} e a abordagem de ${textoAbordagem}. A sessão teve um resultado de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
+                    template = `${nomeCapitalizado} chegou com ${acompanhante}, com uma disposição ${disposicaoAdaptada}. No geral, ${genero === 'masculino' ? 'ele' : 'ela'} se mostrou com ${textoEsquemas}. Usamos ${textoRecursos} para trabalhar ${textoObjetivos} e a abordagem de ${textoAbordagem}. A sessão teve um resultado de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo4':
                     template = `No atendimento de hoje, ${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, mostrando-se ${disposicaoAdaptada}. O esquema corporal evidenciou ${textoEsquemas}. Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com os recursos ${textoRecursos}, explorando os objetivos de ${textoObjetivos} através da abordagem de ${textoAbordagem}, levando aos resultados de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
@@ -562,7 +566,7 @@
 - Observações: ${textoObservacoesEstilo5}`;
                     break;
                 default:
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se: ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se a presença de ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
             }
 
