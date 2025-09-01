@@ -1,4 +1,4 @@
-<!DO<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,7 @@
             </div>
             <div class="col-span-1 md:col-span-2">
                 <label for="genero" class="block text-gray-700 font-semibold mb-2">Gênero do Paciente:</label>
-                <select id="genero" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="ajustarTermosPorGenero()">
+                <select id="genero" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <option value="masculino" selected>Masculino</option>
                     <option value="feminino">Feminino</option>
                 </select>
@@ -482,12 +482,13 @@
 
         function preencherSelect(elementId, termoKey, genero) {
             const select = document.getElementById(elementId);
+            if (!select) return; // Garante que o elemento existe antes de tentar manipulá-lo
+
             const isMultiple = select.hasAttribute('multiple');
-            
-            // Salva as seleções atuais se for múltipla
             const currentValues = Array.from(select.options).filter(opt => opt.selected).map(opt => opt.value);
             
             select.innerHTML = '';
+            
             const termosGenero = termos[termoKey][genero];
             const termosMasculino = termos[termoKey]['masculino'];
 
@@ -502,8 +503,8 @@
 
             termosGenero.forEach((termo, index) => {
                 const option = document.createElement('option');
-                option.value = termosMasculino[index];
-                option.textContent = termo;
+                option.value = termosMasculino[index]; // Mantém o valor original para a lógica
+                option.textContent = termo; // Exibe o termo adaptado
                 if (currentValues.includes(option.value)) {
                     option.selected = true;
                 }
@@ -520,10 +521,11 @@
             preencherSelect('respiracao', 'respiracao', genero);
         }
 
-        // Adiciona um listener para garantir que a função seja chamada após a DOM estar completamente carregada
-        document.addEventListener('DOMContentLoaded', () => {
-            ajustarTermosPorGenero();
-        });
+        // Adiciona um listener para o evento de 'change' no select de gênero
+        document.getElementById('genero').addEventListener('change', ajustarTermosPorGenero);
+
+        // Adiciona um listener para o evento 'DOMContentLoaded' para preencher as opções na primeira vez
+        document.addEventListener('DOMContentLoaded', ajustarTermosPorGenero);
 
 
         function getCheckedValues(containerId) {
@@ -534,6 +536,7 @@
 
         function getSelectedValues(selectId) {
             const select = document.getElementById(selectId);
+            if (!select) return [];
             const isMultiple = select.hasAttribute('multiple');
             if (isMultiple) {
                 return Array.from(select.options)
