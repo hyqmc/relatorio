@@ -53,26 +53,26 @@
 
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <h3 class="block text-gray-700 font-semibold mb-4">Esquema Físico/Corporal:</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">1. expressividade corporal</h4>
-                    <div id="expCorporal">
-                        </div>
+                    <select id="expCorporal" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </select>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">2. expressividade facial</h4>
-                    <div id="expFacial">
-                        </div>
+                    <select id="expFacial" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </select>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">3. postura e tônus</h4>
-                    <div id="posturaTonus">
-                        </div>
+                    <select id="posturaTonus" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </select>
                 </div>
                 <div class="bg-white p-4 rounded-md border border-gray-200">
                     <h4 class="font-medium text-gray-800 mb-2">4. respiração</h4>
-                    <div id="respiracao">
-                        </div>
+                    <select id="respiracao" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </select>
                 </div>
             </div>
         </div>
@@ -392,98 +392,99 @@
     </div>
 
     <script>
-        const termosDisposicao = {
-            masculino: [
-                "alegre", "amedrontado", "ansioso", "calmo", "culposo", "depressivo",
-                "enciumado", "enojado", "envergonhado", "entediado", "esperançoso",
-                "fascinado", "grato", "orgulhoso", "otimista", "pessimista", "queixoso",
-                "raivoso", "saudoso", "surpreso", "tranquilo", "triste", "desesperado"
-            ],
-            feminino: [
-                "alegre", "amedrontada", "ansiosa", "calma", "culposa", "depressiva",
-                "enciumada", "enojada", "envergonhada", "entediada", "esperançosa",
-                "fascinada", "grata", "orgulhosa", "otimista", "pessimista", "queixosa",
-                "raivosa", "saudosa", "surpresa", "tranquila", "triste", "desesperada"
-            ]
+        const termos = {
+            disposicao: {
+                masculino: [
+                    "alegre", "amedrontado", "ansioso", "calmo", "culposo", "depressivo",
+                    "enciumado", "enojado", "envergonhado", "entediado", "esperançoso",
+                    "fascinado", "grato", "orgulhoso", "otimista", "pessimista", "queixoso",
+                    "raivoso", "saudoso", "surpreso", "tranquilo", "triste", "desesperado"
+                ],
+                feminino: [
+                    "alegre", "amedrontada", "ansiosa", "calma", "culposa", "depressiva",
+                    "enciumada", "enojada", "envergonhada", "entediada", "esperançosa",
+                    "fascinada", "grata", "orgulhosa", "otimista", "pessimista", "queixosa",
+                    "raivosa", "saudosa", "surpresa", "tranquila", "triste", "desesperada"
+                ]
+            },
+            expCorporal: {
+                masculino: [
+                    "gestos rígidos e controlados", "inquieto", "introspectivo/fechado",
+                    "movimentos abertos e fluidos", "movimentando-se rapidamente",
+                    "movimentando-se vagarosamente"
+                ],
+                feminino: [
+                    "gestos rígidos e controlados", "inquieta", "introspectiva/fechada",
+                    "movimentos abertos e fluidos", "movimentando-se rapidamente",
+                    "movimentando-se vagarosamente"
+                ]
+            },
+            expFacial: {
+                masculino: [
+                    "apático", "cabisbaixo", "choroso", "com olheiras", "com rubor",
+                    "mandíbula tensa", "olhar pendente/cansado",
+                    "olhar vazio/ausente/disperso", "semblante triste", "sorridente",
+                    "sorriso inautêntico", "tranquilo"
+                ],
+                feminino: [
+                    "apática", "cabisbaixa", "chorosa", "com olheiras", "com rubor",
+                    "mandíbula tensa", "olhar pendente/cansado",
+                    "olhar vazio/ausente/disperso", "semblante triste", "sorridente",
+                    "sorriso inautêntico", "tranquila"
+                ]
+            },
+            posturaTonus: {
+                masculino: [
+                    "postura relaxada", "postura neutra e equilibrada", "postura dominante",
+                    "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica",
+                    "tônus normal", "hipotônico", "hipertônico", "com ombros tensos",
+                    "com pescoço tenso", "com braços tensos", "com punhos cerrados",
+                    "com pernas esticadas", "com baixa articulação de membros",
+                    "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)",
+                    "com aparente desvio postural (escoliose)"
+                ],
+                feminino: [
+                    "postura relaxada", "postura neutra e equilibrada", "postura dominante",
+                    "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica",
+                    "tônus normal", "hipotônica", "hipertônica", "com ombros tensos",
+                    "com pescoço tenso", "com braços tensos", "com punhos cerrados",
+                    "com pernas esticadas", "com baixa articulação de membros",
+                    "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)",
+                    "com aparente desvio postural (escoliose)"
+                ]
+            },
+            respiracao: {
+                masculino: [
+                    "nasal", "bucal", "curta", "longa", "superficial", "profunda",
+                    "diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular",
+                    "ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)",
+                    "esforço respiratório (músculo de pescoço e ombros)",
+                    "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)",
+                    "ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)",
+                    "frequencia anormalmente lenta (bradipneia)"
+                ],
+                feminino: [
+                    "nasal", "bucal", "curta", "longa", "superficial", "profunda",
+                    "diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular",
+                    "ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)",
+                    "esforço respiratório (músculo de pescoço e ombros)",
+                    "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)",
+                    "ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)",
+                    "frequencia anormalmente lenta (bradipneia)"
+                ]
+            }
         };
 
-        const termosExpCorporal = {
-            masculino: [
-                "gestos rígidos e controlados", "inquieto", "introspectivo/fechado",
-                "movimentos abertos e fluidos", "movimentando-se rapidamente",
-                "movimentando-se vagarosamente"
-            ],
-            feminino: [
-                "gestos rígidos e controlados", "inquieta", "introspectiva/fechada",
-                "movimentos abertos e fluidos", "movimentando-se rapidamente",
-                "movimentando-se vagarosamente"
-            ]
-        };
-
-        const termosExpFacial = {
-            masculino: [
-                "apático", "cabisbaixo", "choroso", "com olheiras", "com rubor",
-                "mandíbula tensa", "olhar pendente/cansado",
-                "olhar vazio/ausente/disperso", "semblante triste", "sorridente",
-                "sorriso inautêntico", "tranquilo"
-            ],
-            feminino: [
-                "apática", "cabisbaixa", "chorosa", "com olheiras", "com rubor",
-                "mandíbula tensa", "olhar pendente/cansado",
-                "olhar vazio/ausente/disperso", "semblante triste", "sorridente",
-                "sorriso inautêntico", "tranquila"
-            ]
-        };
-
-        const termosPosturaTonus = {
-            masculino: [
-                "postura relaxada", "postura neutra e equilibrada", "postura dominante",
-                "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica",
-                "tônus normal", "hipotônico", "hipertônico", "com ombros tensos",
-                "com pescoço tenso", "com braços tensos", "com punhos cerrados",
-                "com pernas esticadas", "com baixa articulação de membros",
-                "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)",
-                "com aparente desvio postural (escoliose)"
-            ],
-            feminino: [
-                "postura relaxada", "postura neutra e equilibrada", "postura dominante",
-                "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica",
-                "tônus normal", "hipotônica", "hipertônica", "com ombros tensos",
-                "com pescoço tenso", "com braços tensos", "com punhos cerrados",
-                "com pernas esticadas", "com baixa articulação de membros",
-                "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)",
-                "com aparente desvio postural (escoliose)"
-            ]
-        };
-
-        const termosRespiracao = {
-            masculino: [
-                "nasal", "bucal", "curta", "longa", "superficial", "profunda",
-                "diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular",
-                "ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)",
-                "esforço respiratório (músculo de pescoço e ombros)",
-                "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)",
-                "ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)",
-                "frequencia anormalmente lenta (bradipneia)"
-            ],
-            feminino: [
-                "nasal", "bucal", "curta", "longa", "superficial", "profunda",
-                "diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular",
-                "ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)",
-                "esforço respiratório (músculo de pescoço e ombros)",
-                "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)",
-                "ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)",
-                "frequencia anormalmente lenta (bradipneia)"
-            ]
-        };
-
-        function preencherSelect(elementId, termos, genero) {
+        function preencherSelect(elementId, termoKey, genero) {
             const select = document.getElementById(elementId);
             const currentValue = select.value;
             select.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
-            termos[genero].forEach((termo, index) => {
+            const termosGenero = termos[termoKey][genero];
+            const termosMasculino = termos[termoKey]['masculino'];
+
+            termosGenero.forEach((termo, index) => {
                 const option = document.createElement('option');
-                option.value = termos.masculino[index];
+                option.value = termosMasculino[index];
                 option.textContent = termo;
                 if (option.value === currentValue) {
                     option.selected = true;
@@ -492,41 +493,16 @@
             });
         }
 
-        function preencherCheckboxes(elementId, termos, genero) {
-            const container = document.getElementById(elementId);
-            const currentCheckedValues = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
-            container.innerHTML = '';
-
-            termos[genero].forEach((termo, index) => {
-                const label = document.createElement('label');
-                label.className = 'block mb-1';
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'mr-2';
-                checkbox.value = termos.masculino[index];
-
-                if (currentCheckedValues.includes(checkbox.value)) {
-                    checkbox.checked = true;
-                }
-
-                label.appendChild(checkbox);
-                label.appendChild(document.createTextNode(termo));
-                container.appendChild(label);
-            });
-        }
-
         function ajustarTermosPorGenero() {
             const genero = document.getElementById('genero').value;
-
-            preencherSelect('disposicao', termosDisposicao, genero);
-            preencherCheckboxes('expCorporal', termosExpCorporal, genero);
-            preencherCheckboxes('expFacial', termosExpFacial, genero);
-            preencherCheckboxes('posturaTonus', termosPosturaTonus, genero);
-            preencherCheckboxes('respiracao', termosRespiracao, genero);
+            preencherSelect('disposicao', 'disposicao', genero);
+            preencherSelect('expCorporal', 'expCorporal', genero);
+            preencherSelect('expFacial', 'expFacial', genero);
+            preencherSelect('posturaTonus', 'posturaTonus', genero);
+            preencherSelect('respiracao', 'respiracao', genero);
         }
 
         document.addEventListener('DOMContentLoaded', ajustarTermosPorGenero);
-
 
         function getCheckedValues(containerId) {
             const container = document.getElementById(containerId);
@@ -534,34 +510,26 @@
             return Array.from(checkboxes).map(checkbox => checkbox.value);
         }
 
-        function getSelectedValues(selectId) {
+        function getSelectedValue(selectId) {
             const select = document.getElementById(selectId);
             return select.value;
         }
 
         function adaptarTermo(termoOriginal, genero) {
-            const listas = [
-                termosDisposicao,
-                termosExpCorporal,
-                termosExpFacial,
-                termosPosturaTonus,
-                termosRespiracao
-            ];
-            for (const lista of listas) {
-                const index = lista.masculino.indexOf(termoOriginal);
+            for (const key in termos) {
+                const index = termos[key]['masculino'].indexOf(termoOriginal);
                 if (index !== -1) {
-                    return lista[genero][index];
+                    return termos[key][genero][index];
                 }
             }
             return termoOriginal;
         }
-
+        
         function formatList(items, genero) {
             if (items.length === 0) {
                 return '';
             }
             const itensAdaptados = items.map(item => adaptarTermo(item, genero));
-
             if (itensAdaptados.length === 1) {
                 return itensAdaptados[0];
             }
@@ -590,30 +558,30 @@
         function gerarParagrafo() {
             const nome = document.getElementById('nome').value.trim();
             const acompanhante = document.getElementById('acompanhante').value.trim();
-            const acompanhanteStatus = document.getElementById('acompanhanteStatus').value;
-            const genero = document.getElementById('genero').value;
-            const disposicaoOriginal = document.getElementById('disposicao').value;
+            const acompanhanteStatus = getSelectedValue('acompanhanteStatus');
+            const genero = getSelectedValue('genero');
+            const disposicaoOriginal = getSelectedValue('disposicao');
             const observacoes = document.getElementById('observacoes').value.trim();
             const elementosSimbolicos = document.getElementById('elementosSimbolicos').value.trim();
             const devolutiva = document.getElementById('devolutiva').checked;
             const avaliacao = document.getElementById('avaliacao').checked;
             const paragrafoFinal = document.getElementById('paragrafo-final');
-            const estilo = document.getElementById('estilo').value;
-            const nivelSuporte = document.getElementById('nivelSuporte').value;
+            const estilo = getSelectedValue('estilo');
+            const nivelSuporte = getSelectedValue('nivelSuporte');
 
             // Novos resultados
-            const desempenhoGeral = getSelectedValues('desempenhoGeral');
-            const desempenhoHistorico = getSelectedValues('desempenhoHistorico');
-            const mudancaEmocional = getSelectedValues('mudancaEmocional');
+            const desempenhoGeral = getSelectedValue('desempenhoGeral');
+            const desempenhoHistorico = getSelectedValue('desempenhoHistorico');
+            const mudancaEmocional = getSelectedValue('mudancaEmocional');
             const mudancasFisicas = getCheckedValues('mudancasFisicas');
             const suportePercebido = getCheckedValues('suportePercebido');
 
             const esquemasFisicosOriginal = [
-                ...getCheckedValues('expCorporal'),
-                ...getCheckedValues('expFacial'),
-                ...getCheckedValues('posturaTonus'),
-                ...getCheckedValues('respiracao')
-            ];
+                getSelectedValue('expCorporal'),
+                getSelectedValue('expFacial'),
+                getSelectedValue('posturaTonus'),
+                getSelectedValue('respiracao')
+            ].filter(Boolean); // Remove valores vazios
 
             const recursosInteragiu = getCheckedValues('recursosInteragiu').concat(getCheckedValues('recursosExtraInteragiu'));
             const recursosAbordagem = getCheckedValues('recursosAbordagem').concat(getCheckedValues('recursosExtraAbordagem'));
