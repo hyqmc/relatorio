@@ -409,80 +409,84 @@
         };
 
         const termosExpCorporal = {
-            masculino: {
-                expressividade: ["gestos rígidos e controlados", "inquieto", "introspectivo/fechado", "movimentos abertos e fluidos", "movimentando-se rapidamente", "movimentando-se vagarosamente"]
-            },
-            feminino: {
-                expressividade: ["gestos rígidos e controlados", "inquieta", "introspectiva/fechada", "movimentos abertos e fluidos", "movimentando-se rapidamente", "movimentando-se vagarosamente"]
-            }
+            masculino: [
+                "gestos rígidos e controlados", "inquieto", "introspectivo/fechado",
+                "movimentos abertos e fluidos", "movimentando-se rapidamente",
+                "movimentando-se vagarosamente"
+            ],
+            feminino: [
+                "gestos rígidos e controlados", "inquieta", "introspectiva/fechada",
+                "movimentos abertos e fluidos", "movimentando-se rapidamente",
+                "movimentando-se vagarosamente"
+            ]
         };
 
         const termosExpFacial = {
-            masculino: {
-                expressividade: ["apático", "cabisbaixo", "choroso", "com olheiras", "com rubor", "mandíbula tensa", "olhar pendente/cansado", "olhar vazio/ausente/disperso", "semblante triste", "sorridente", "sorriso inautêntico", "tranquilo"]
-            },
-            feminino: {
-                expressividade: ["apática", "cabisbaixa", "chorosa", "com olheiras", "com rubor", "mandíbula tensa", "olhar pendente/cansado", "olhar vazio/ausente/disperso", "semblante triste", "sorridente", "sorriso inautêntico", "tranquila"]
-            }
+            masculino: [
+                "apático", "cabisbaixo", "choroso", "com olheiras", "com rubor",
+                "mandíbula tensa", "olhar pendente/cansado",
+                "olhar vazio/ausente/disperso", "semblante triste", "sorridente",
+                "sorriso inautêntico", "tranquilo"
+            ],
+            feminino: [
+                "apática", "cabisbaixa", "chorosa", "com olheiras", "com rubor",
+                "mandíbula tensa", "olhar pendente/cansado",
+                "olhar vazio/ausente/disperso", "semblante triste", "sorridente",
+                "sorriso inautêntico", "tranquila"
+            ]
         };
 
         const termosPosturaTonus = {
-            masculino: {
-                postura: ["postura relaxada", "postura neutra e equilibrada", "postura dominante", "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica"],
-                tonus: ["tônus normal", "hipotônico", "hipertônico"],
-                tensao: ["com ombros tensos", "com pescoço tenso", "com braços tensos", "com punhos cerrados", "com pernas esticadas"],
-                desvio: ["com baixa articulação de membros", "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)", "com aparente desvio postural (escoliose)"]
-            },
-            feminino: {
-                postura: ["postura relaxada", "postura neutra e equilibrada", "postura dominante", "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica"],
-                tonus: ["tônus normal", "hipotônica", "hipertônica"],
-                tensao: ["com ombros tensos", "com pescoço tenso", "com braços tensos", "com punhos cerrados", "com pernas esticadas"],
-                desvio: ["com baixa articulação de membros", "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)", "com aparente desvio postural (escoliose)"]
-            }
+            masculino: [
+                "postura relaxada", "postura neutra e equilibrada", "postura dominante",
+                "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica",
+                "tônus normal", "hipotônico", "hipertônico", "com ombros tensos",
+                "com pescoço tenso", "com braços tensos", "com punhos cerrados",
+                "com pernas esticadas", "com baixa articulação de membros",
+                "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)",
+                "com aparente desvio postural (escoliose)"
+            ],
+            feminino: [
+                "postura relaxada", "postura neutra e equilibrada", "postura dominante",
+                "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica",
+                "tônus normal", "hipotônica", "hipertônica", "com ombros tensos",
+                "com pescoço tenso", "com braços tensos", "com punhos cerrados",
+                "com pernas esticadas", "com baixa articulação de membros",
+                "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)",
+                "com aparente desvio postural (escoliose)"
+            ]
         };
 
         const termosRespiracao = {
-            masculino: {
-                padrao: ["nasal", "bucal", "curta", "longa", "superficial", "profunda"],
-                tipo: ["diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular"],
-                ruidos: ["ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)"],
-                esforco: ["esforço respiratório (músculo de pescoço e ombros)", "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)"],
-                ritmo_frequencia: ["ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)", "frequencia anormalmente lenta (bradipneia)"]
-            },
-            feminino: {
-                padrao: ["nasal", "bucal", "curta", "longa", "superficial", "profunda"],
-                tipo: ["diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular"],
-                ruidos: ["ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)"],
-                esforco: ["esforço respiratório (músculo de pescoço e ombros)", "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)"],
-                ritmo_frequencia: ["ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)", "frequencia anormalmente lenta (bradipneia)"]
-            }
+            masculino: [
+                "nasal", "bucal", "curta", "longa", "superficial", "profunda",
+                "diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular",
+                "ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)",
+                "esforço respiratório (músculo de pescoço e ombros)",
+                "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)",
+                "ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)",
+                "frequencia anormalmente lenta (bradipneia)"
+            ],
+            feminino: [
+                "nasal", "bucal", "curta", "longa", "superficial", "profunda",
+                "diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular",
+                "ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)",
+                "esforço respiratório (músculo de pescoço e ombros)",
+                "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)",
+                "ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)",
+                "frequencia anormalmente lenta (bradipneia)"
+            ]
         };
 
         function preencherSelect(elementId, termos, genero) {
             const select = document.getElementById(elementId);
             select.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
-            if (termos.constructor === Object) {
-                // É um objeto de categorias
-                for (const categoria in termos[genero]) {
-                    const optgroup = document.createElement('optgroup');
-                    optgroup.label = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-                    termos[genero][categoria].forEach(termo => {
-                        const option = document.createElement('option');
-                        option.value = termo;
-                        option.textContent = termo;
-                        optgroup.appendChild(option);
-                    });
-                    select.appendChild(optgroup);
-                }
-            } else {
-                // É um array simples
-                termos[genero].forEach((termo, index) => {
-                    const option = document.createElement('option');
-                    option.value = termos.masculino[index];
-                    option.textContent = termo;
-                    select.appendChild(option);
-                });
-            }
+            termos[genero].forEach((termo, index) => {
+                const option = document.createElement('option');
+                option.value = termos.masculino[index];
+                option.textContent = termo;
+                select.appendChild(option);
+            });
         }
 
         function preencherCheckboxes(elementId, termos, genero) {
@@ -490,51 +494,22 @@
             const currentCheckedValues = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
             container.innerHTML = '';
 
-            if (termos.constructor === Object) {
-                for (const categoria in termos[genero]) {
-                    const h4 = document.createElement('h4');
-                    h4.className = 'font-medium text-gray-800 mt-2 mb-2';
-                    h4.textContent = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-                    container.appendChild(h4);
+            termos[genero].forEach((termo, index) => {
+                const label = document.createElement('label');
+                label.className = 'block mb-1';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'mr-2';
+                checkbox.value = termos.masculino[index];
 
-                    const div = document.createElement('div');
-                    div.className = 'pl-4';
-                    termos[genero][categoria].forEach((termo, index) => {
-                        const label = document.createElement('label');
-                        label.className = 'block mb-1';
-                        const checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
-                        checkbox.className = 'mr-2';
-                        checkbox.value = termos.masculino[categoria][index];
-
-                        if (currentCheckedValues.includes(checkbox.value)) {
-                            checkbox.checked = true;
-                        }
-
-                        label.appendChild(checkbox);
-                        label.appendChild(document.createTextNode(termo));
-                        div.appendChild(label);
-                    });
-                    container.appendChild(div);
+                if (currentCheckedValues.includes(checkbox.value)) {
+                    checkbox.checked = true;
                 }
-            } else {
-                 termos[genero].forEach((termo, index) => {
-                    const label = document.createElement('label');
-                    label.className = 'block mb-1';
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.className = 'mr-2';
-                    checkbox.value = termos.masculino[index];
 
-                    if (currentCheckedValues.includes(checkbox.value)) {
-                        checkbox.checked = true;
-                    }
-
-                    label.appendChild(checkbox);
-                    label.appendChild(document.createTextNode(termo));
-                    container.appendChild(label);
-                });
-            }
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(termo));
+                container.appendChild(label);
+            });
         }
 
         function ajustarTermosPorGenero() {
@@ -562,20 +537,17 @@
         }
 
         function adaptarTermo(termoOriginal, genero) {
-            const listas = [termosDisposicao];
+            const listas = [
+                termosDisposicao,
+                termosExpCorporal,
+                termosExpFacial,
+                termosPosturaTonus,
+                termosRespiracao
+            ];
             for (const lista of listas) {
                 const index = lista.masculino.indexOf(termoOriginal);
                 if (index !== -1) {
                     return lista[genero][index];
-                }
-            }
-            // Para as listas que têm estrutura de objeto
-            for (const lista of [termosExpCorporal, termosExpFacial, termosPosturaTonus, termosRespiracao]) {
-                for (const categoria in lista.masculino) {
-                    const index = lista.masculino[categoria].indexOf(termoOriginal);
-                    if (index !== -1) {
-                        return lista[genero][categoria][index];
-                    }
                 }
             }
             return termoOriginal;
@@ -716,23 +688,26 @@
 
             // Novos textos de resultados
             let textoResultados = '';
-            if (estilo === 'estilo1' || estilo === 'estilo2') {
-                const desempenhoGeralTxt = desempenhoGeral ? `Em relação ao desempenho geral, o paciente ${desempenhoGeral}. ` : '';
-                const desempenhoHistoricoTxt = desempenhoHistorico ? `Sua performance se apresentou ${desempenhoHistorico}. ` : '';
-                const mudancaEmocionalTxt = mudancaEmocional ? `Quanto à disposição emocional, ${mudancaEmocional}. ` : '';
-                const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `As mudanças no esquema físico observadas foram: ${formatList(mudancasFisicas, genero)}. ` : '';
-                const suportePercebidoTxt = suportePercebido.length > 0 ? `No nível de suporte percebido, foram notadas: ${formatList(suportePercebido, genero)}. ` : '';
+            if (desempenhoGeral && desempenhoHistorico && mudancaEmocional) {
+                if (estilo === 'estilo1' || estilo === 'estilo2') {
+                    const desempenhoGeralTxt = `Em relação ao desempenho geral, o paciente ${desempenhoGeral}. `;
+                    const desempenhoHistoricoTxt = `Sua performance se apresentou ${desempenhoHistorico}. `;
+                    const mudancaEmocionalTxt = `Quanto à disposição emocional, ${mudancaEmocional}. `;
+                    const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `As mudanças no esquema físico observadas foram: ${formatList(mudancasFisicas, genero)}. ` : '';
+                    const suportePercebidoTxt = suportePercebido.length > 0 ? `No nível de suporte percebido, foram notadas: ${formatList(suportePercebido, genero)}. ` : '';
 
-                textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
-            } else if (estilo === 'estilo3' || estilo === 'estilo4') {
-                const desempenhoGeralTxt = desempenhoGeral ? `${nomeCapitalizado} ${desempenhoGeral} nas atividades propostas. ` : '';
-                const desempenhoHistoricoTxt = desempenhoHistorico ? `O que está ${desempenhoHistorico}. ` : '';
-                const mudancaEmocionalTxt = mudancaEmocional ? `Sua disposição emocional ${mudancaEmocional}. ` : '';
-                const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `Houve também mudanças no corpo, como ${formatList(mudancasFisicas, genero)}. ` : '';
-                const suportePercebidoTxt = suportePercebido.length > 0 ? `Sobre o suporte, percebemos: ${formatList(suportePercebido, genero)}. ` : '';
+                    textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
+                } else if (estilo === 'estilo3' || estilo === 'estilo4') {
+                    const desempenhoGeralTxt = `${nomeCapitalizado} ${desempenhoGeral} nas atividades propostas. `;
+                    const desempenhoHistoricoTxt = `O que está ${desempenhoHistorico}. `;
+                    const mudancaEmocionalTxt = `Sua disposição emocional ${mudancaEmocional}. `;
+                    const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `Houve também mudanças no corpo, como ${formatList(mudancasFisicas, genero)}. ` : '';
+                    const suportePercebidoTxt = suportePercebido.length > 0 ? `Sobre o suporte, percebemos: ${formatList(suportePercebido, genero)}. ` : '';
 
-                textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
+                    textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
+                }
             }
+
 
             let template;
             const estiloEscolhido = estilo === 'aleatorio' ? `estilo${Math.floor(Math.random() * 5) + 1}` : estilo;
