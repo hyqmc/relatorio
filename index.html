@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DO<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -520,7 +520,11 @@
             preencherSelect('respiracao', 'respiracao', genero);
         }
 
-        document.addEventListener('DOMContentLoaded', ajustarTermosPorGenero);
+        // Adiciona um listener para garantir que a função seja chamada após a DOM estar completamente carregada
+        document.addEventListener('DOMContentLoaded', () => {
+            ajustarTermosPorGenero();
+        });
+
 
         function getCheckedValues(containerId) {
             const container = document.getElementById(containerId);
