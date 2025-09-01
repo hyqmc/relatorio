@@ -27,14 +27,15 @@
                 <input type="text" id="nome" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: João Silva">
             </div>
             <div>
-                <label for="acompanhante" class="block text-gray-700 font-semibold mb-2">Acompanhante:</label>
+                <label for="acompanhante" class="block text-gray-700 font-semibold mb-2">Companhia:</label>
                 <input type="text" id="acompanhante" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: Maria (mãe)">
             </div>
             <div class="col-span-1 md:col-span-2">
-                <label for="acompanhanteStatus" class="block text-gray-700 font-semibold mb-2">Chegou com o acompanhante ou aguardava?</label>
+                <label for="acompanhanteStatus" class="block text-gray-700 font-semibold mb-2">Status da Companhia:</label>
                 <select id="acompanhanteStatus" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="chegou acompanhado por">chegou acompanhado por</option>
+                    <option value="chegou acompanhado de">chegou acompanhado de</option>
                     <option value="aguardava junto à">aguardava junto à</option>
+                    <option value="realizou a sessão acompanhado de">realizou a sessão acompanhado de</option>
                 </select>
             </div>
             <div class="col-span-1 md:col-span-2">
@@ -82,18 +83,20 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <label class="block text-gray-700 font-semibold mb-2">Recursos Utilizados (escolha um ou mais):</label>
+            <label class="block text-gray-700 font-semibold mb-2">Recursos com que o paciente interagiu durante a sessão (escolha um ou mais):</label>
             <div class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
                 <h4 class="font-medium text-gray-800 mt-1 mb-2">Sonoro-musicais:</h4>
-                <div id="recursosMusicais" class="pl-4">
+                <div id="recursosInteragiu" class="pl-4">
                     <label class="block mb-1"><input type="checkbox" value="agogô" class="mr-2">agogô</label>
                     <label class="block mb-1"><input type="checkbox" value="apito" class="mr-2">apito</label>
                     <label class="block mb-1"><input type="checkbox" value="atabaque" class="mr-2">atabaque</label>
                     <label class="block mb-1"><input type="checkbox" value="baquetas" class="mr-2">baquetas</label>
                     <label class="block mb-1"><input type="checkbox" value="berimbau" class="mr-2">berimbau</label>
+                    <label class="block mb-1"><input type="checkbox" value="bumbo" class="mr-2">bumbo</label>
                     <label class="block mb-1"><input type="checkbox" value="cabulete" class="mr-2">cabulete</label>
+                    <label class="block mb-1"><input type="checkbox" value="caixa de som" class="mr-2">caixa de som</label>
                     <label class="block mb-1"><input type="checkbox" value="cajon" class="mr-2">cajón</label>
                     <label class="block mb-1"><input type="checkbox" value="cavaquinho" class="mr-2">cavaquinho</label>
                     <label class="block mb-1"><input type="checkbox" value="caxixi" class="mr-2">caxixi</label>
@@ -107,6 +110,7 @@
                     <label class="block mb-1"><input type="checkbox" value="meia lua" class="mr-2">meia lua</label>
                     <label class="block mb-1"><input type="checkbox" value="meia lua de pé" class="mr-2">meia lua de pé</label>
                     <label class="block mb-1"><input type="checkbox" value="metalofone" class="mr-2">metalofone</label>
+                    <label class="block mb-1"><input type="checkbox" value="microfone" class="mr-2">microfone</label>
                     <label class="block mb-1"><input type="checkbox" value="ocarina" class="mr-2">ocarina</label>
                     <label class="block mb-1"><input type="checkbox" value="pandeiro" class="mr-2">pandeiro</label>
                     <label class="block mb-1"><input type="checkbox" value="rabeca" class="mr-2">rabeca</label>
@@ -116,12 +120,13 @@
                     <label class="block mb-1"><input type="checkbox" value="tamborim" class="mr-2">tamborim</label>
                     <label class="block mb-1"><input type="checkbox" value="teclado" class="mr-2">teclado</label>
                     <label class="block mb-1"><input type="checkbox" value="triângulo" class="mr-2">triângulo</label>
+                    <label class="block mb-1"><input type="checkbox" value="tubos sonoros" class="mr-2">tubos sonoros</label>
                     <label class="block mb-1"><input type="checkbox" value="ukulele" class="mr-2">ukulele</label>
                     <label class="block mb-1"><input type="checkbox" value="violao" class="mr-2">violão</label>
                     <label class="block mb-1"><input type="checkbox" value="xilofone" class="mr-2">xilofone</label>
                 </div>
                 <h4 class="font-medium text-gray-800 mt-4 mb-2">Extra-musicais:</h4>
-                <div id="recursosExtraMusicais" class="pl-4">
+                <div id="recursosExtraInteragiu" class="pl-4">
                     <label class="block mb-1"><input type="checkbox" value="baralho convencional" class="mr-2">baralho convencional</label>
                     <label class="block mb-1"><input type="checkbox" value="baralho musical" class="mr-2">baralho musical</label>
                     <label class="block mb-1"><input type="checkbox" value="bolas de vinil" class="mr-2">bolas de vinil</label>
@@ -142,6 +147,89 @@
                     <label class="block mb-1"><input type="checkbox" value="tinta acrílica" class="mr-2">tinta acrílica</label>
                     <label class="block mb-1"><input type="checkbox" value="tinta guache" class="mr-2">tinta guache</label>
                 </div>
+            </div>
+        </div>
+
+        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
+            <label class="block text-gray-700 font-semibold mb-2">Recursos utilizados na abordagem terapêutica (escolha um ou mais):</label>
+            <div class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
+                <h4 class="font-medium text-gray-800 mt-1 mb-2">Sonoro-musicais:</h4>
+                <div id="recursosAbordagem" class="pl-4">
+                    <label class="block mb-1"><input type="checkbox" value="agogô" class="mr-2">agogô</label>
+                    <label class="block mb-1"><input type="checkbox" value="apito" class="mr-2">apito</label>
+                    <label class="block mb-1"><input type="checkbox" value="atabaque" class="mr-2">atabaque</label>
+                    <label class="block mb-1"><input type="checkbox" value="baquetas" class="mr-2">baquetas</label>
+                    <label class="block mb-1"><input type="checkbox" value="berimbau" class="mr-2">berimbau</label>
+                    <label class="block mb-1"><input type="checkbox" value="bumbo" class="mr-2">bumbo</label>
+                    <label class="block mb-1"><input type="checkbox" value="cabulete" class="mr-2">cabulete</label>
+                    <label class="block mb-1"><input type="checkbox" value="caixa de som" class="mr-2">caixa de som</label>
+                    <label class="block mb-1"><input type="checkbox" value="cajon" class="mr-2">cajón</label>
+                    <label class="block mb-1"><input type="checkbox" value="cavaquinho" class="mr-2">cavaquinho</label>
+                    <label class="block mb-1"><input type="checkbox" value="caxixi" class="mr-2">caxixi</label>
+                    <label class="block mb-1"><input type="checkbox" value="clavas" class="mr-2">clavas</label>
+                    <label class="block mb-1"><input type="checkbox" value="flauta de bloco" class="mr-2">flauta de bloco</label>
+                    <label class="block mb-1"><input type="checkbox" value="flauta transversal (pife)" class="mr-2">flauta transversal (pife)</label>
+                    <label class="block mb-1"><input type="checkbox" value="flauta apito" class="mr-2">flauta apito</label>
+                    <label class="block mb-1"><input type="checkbox" value="gaita de boca" class="mr-2">gaita de boca</label>
+                    <label class="block mb-1"><input type="checkbox" value="ganza ovinho" class="mr-2">ganzá ovinho</label>
+                    <label class="block mb-1"><input type="checkbox" value="kalimba" class="mr-2">kalimba</label>
+                    <label class="block mb-1"><input type="checkbox" value="meia lua" class="mr-2">meia lua</label>
+                    <label class="block mb-1"><input type="checkbox" value="meia lua de pé" class="mr-2">meia lua de pé</label>
+                    <label class="block mb-1"><input type="checkbox" value="metalofone" class="mr-2">metalofone</label>
+                    <label class="block mb-1"><input type="checkbox" value="microfone" class="mr-2">microfone</label>
+                    <label class="block mb-1"><input type="checkbox" value="ocarina" class="mr-2">ocarina</label>
+                    <label class="block mb-1"><input type="checkbox" value="pandeiro" class="mr-2">pandeiro</label>
+                    <label class="block mb-1"><input type="checkbox" value="rabeca" class="mr-2">rabeca</label>
+                    <label class="block mb-1"><input type="checkbox" value="reco-reco" class="mr-2">reco-reco</label>
+                    <label class="block mb-1"><input type="checkbox" value="surdo" class="mr-2">surdo</label>
+                    <label class="block mb-1"><input type="checkbox" value="tambor" class="mr-2">tambor</label>
+                    <label class="block mb-1"><input type="checkbox" value="tamborim" class="mr-2">tamborim</label>
+                    <label class="block mb-1"><input type="checkbox" value="teclado" class="mr-2">teclado</label>
+                    <label class="block mb-1"><input type="checkbox" value="triângulo" class="mr-2">triângulo</label>
+                    <label class="block mb-1"><input type="checkbox" value="tubos sonoros" class="mr-2">tubos sonoros</label>
+                    <label class="block mb-1"><input type="checkbox" value="ukulele" class="mr-2">ukulele</label>
+                    <label class="block mb-1"><input type="checkbox" value="violao" class="mr-2">violão</label>
+                    <label class="block mb-1"><input type="checkbox" value="xilofone" class="mr-2">xilofone</label>
+                </div>
+                <h4 class="font-medium text-gray-800 mt-4 mb-2">Extra-musicais:</h4>
+                <div id="recursosExtraAbordagem" class="pl-4">
+                    <label class="block mb-1"><input type="checkbox" value="baralho convencional" class="mr-2">baralho convencional</label>
+                    <label class="block mb-1"><input type="checkbox" value="baralho musical" class="mr-2">baralho musical</label>
+                    <label class="block mb-1"><input type="checkbox" value="bolas de vinil" class="mr-2">bolas de vinil</label>
+                    <label class="block mb-1"><input type="checkbox" value="bambolê" class="mr-2">bambolê</label>
+                    <label class="block mb-1"><input type="checkbox" value="caneta esferográfica" class="mr-2">caneta esferográfica</label>
+                    <label class="block mb-1"><input type="checkbox" value="caneta marcador a base de álcool" class="mr-2">caneta marcador a base de álcool</label>
+                    <label class="block mb-1"><input type="checkbox" value="cartoes musicais" class="mr-2">cartões musicais</label>
+                    <label class="block mb-1"><input type="checkbox" value="dados" class="mr-2">dados</label>
+                    <label class="block mb-1"><input type="checkbox" value="giz de cera" class="mr-2">giz de cera</label>
+                    <label class="block mb-1"><input type="checkbox" value="jogos de caneta e papel" class="mr-2">jogos de caneta e papel</label>
+                    <label class="block mb-1"><input type="checkbox" value="lapis de cor" class="mr-2">lápis de cor</label>
+                    <label class="block mb-1"><input type="checkbox" value="lapis de escrever" class="mr-2">lápis de escrever</label>
+                    <label class="block mb-1"><input type="checkbox" value="origami" class="mr-2">origami</label>
+                    <label class="block mb-1"><input type="checkbox" value="papel" class="mr-2">papel</label>
+                    <label class="block mb-1"><input type="checkbox" value="pincel" class="mr-2">pincel</label>
+                    <label class="block mb-1"><input type="checkbox" value="tecidos" class="mr-2">tecidos</label>
+                    <label class="block mb-1"><input type="checkbox" value="tesoura" class="mr-2">tesoura</label>
+                    <label class="block mb-1"><input type="checkbox" value="tinta acrílica" class="mr-2">tinta acrílica</label>
+                    <label class="block mb-1"><input type="checkbox" value="tinta guache" class="mr-2">tinta guache</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
+            <label class="block text-gray-700 font-semibold mb-2">Elementos da sala com que o paciente interagiu (escolha um ou mais):</label>
+            <div id="elementosSala" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
+                <label class="block mb-1"><input type="checkbox" value="tapete" class="mr-2">tapete</label>
+                <label class="block mb-1"><input type="checkbox" value="bancos" class="mr-2">bancos</label>
+                <label class="block mb-1"><input type="checkbox" value="cadeiras" class="mr-2">cadeiras</label>
+                <label class="block mb-1"><input type="checkbox" value="pufe" class="mr-2">pufe</label>
+                <label class="block mb-1"><input type="checkbox" value="interruptores" class="mr-2">interruptores</label>
+                <label class="block mb-1"><input type="checkbox" value="chaves" class="mr-2">chaves</label>
+                <label class="block mb-1"><input type="checkbox" value="trinco" class="mr-2">trinco</label>
+                <label class="block mb-1"><input type="checkbox" value="janela" class="mr-2">janela</label>
+                <label class="block mb-1"><input type="checkbox" value="lixo" class="mr-2">lixo</label>
+                <label class="block mb-1"><input type="checkbox" value="álcool em gel" class="mr-2">álcool em gel</label>
+                <label class="block mb-1"><input type="checkbox" value="portas de armário" class="mr-2">portas de armário</label>
             </div>
         </div>
 
@@ -180,6 +268,62 @@
         </div>
 
         <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
+            <h3 class="block text-gray-700 font-semibold mb-4">Resultados:</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">1. Desempenho Geral</h4>
+                    <select id="desempenhoGeral" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="" disabled selected>Selecione um item</option>
+                        <option value="não participou ativamente">não participou ativamente</option>
+                        <option value="demonstrou perceber a intervenção mas não participou">demonstrou perceber a intervenção mas não participou</option>
+                        <option value="demonstrou perceber a intervenção e teve dificuldade em participar">demonstrou perceber a intervenção e teve dificuldade em participar</option>
+                        <option value="participou mas aquém do esperado">participou mas aquém do esperado</option>
+                        <option value="participou conforme esperado">participou conforme esperado</option>
+                        <option value="participou buscando explorar limites">participou buscando explorar limites</option>
+                        <option value="participou além do esperado">participou além do esperado</option>
+                    </select>
+                </div>
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">2. Comparação Histórica</h4>
+                    <select id="desempenhoHistorico" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="" disabled selected>Selecione um item</option>
+                        <option value="performou aquém de encontros anteriores">performou aquém de encontros anteriores</option>
+                        <option value="performou conforme encontros anteriores">performou conforme encontros anteriores</option>
+                        <option value="performou além de encontros anteriores">performou além de encontros anteriores</option>
+                    </select>
+                </div>
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">3. Mudança Emocional</h4>
+                    <select id="mudancaEmocional" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="" disabled selected>Selecione um item</option>
+                        <option value="houve melhoria">houve melhoria</option>
+                        <option value="permaneceu estável">permaneceu estável</option>
+                        <option value="houve agravamento">houve agravamento</option>
+                    </select>
+                </div>
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">4. Mudanças no Esquema Físico</h4>
+                    <div id="mudancasFisicas">
+                        <label class="block mb-1"><input type="checkbox" value="regulação respiratória" class="mr-2">regulação respiratória</label>
+                        <label class="block mb-1"><input type="checkbox" value="ajuste postural" class="mr-2">ajuste postural</label>
+                        <label class="block mb-1"><input type="checkbox" value="ajuste de marcha" class="mr-2">ajuste de marcha</label>
+                        <label class="block mb-1"><input type="checkbox" value="ajuste motor" class="mr-2">ajuste motor</label>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-md border border-gray-200">
+                    <h4 class="font-medium text-gray-800 mb-2">5. Nível de Suporte Percebido</h4>
+                    <div id="suportePercebido">
+                        <label class="block mb-1"><input type="checkbox" value="menor uso de intervenções de suporte" class="mr-2">menor uso de intervenções de suporte</label>
+                        <label class="block mb-1"><input type="checkbox" value="maior necessidade de intervenções de suporte" class="mr-2">maior necessidade de intervenções de suporte</label>
+                        <label class="block mb-1"><input type="checkbox" value="mudanças positivas na qualidade de suporte" class="mr-2">mudanças positivas na qualidade de suporte</label>
+                        <label class="block mb-1"><input type="checkbox" value="retrocessos na qualidade de suporte" class="mr-2">retrocessos na qualidade de suporte</label>
+                        <label class="block mb-1"><input type="checkbox" value="manutenção dos níveis de suporte" class="mr-2">manutenção dos níveis de suporte</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="nivelSuporte" class="block text-gray-700 font-semibold mb-2">Nível de Suporte:</label>
@@ -193,22 +337,14 @@
                     </select>
                 </div>
                 <div>
-                    <label for="resultados" class="block text-gray-700 font-semibold mb-2">Resultados:</label>
-                    <select id="resultados" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="" disabled selected>selecione um resultado</option>
-                        <option value="mudança de disposição significativa">mudança de disposição significativa</option>
-                        <option value="melhora de desempenho significativa">melhora de desempenho significativa</option>
-                        <option value="progresso moderado">progresso moderado</option>
-                        <option value="alteração não aparente">alteração não aparente</option>
-                        <option value="elementos de fortalecimento de vínculo notáveis">elementos de fortalecimento de vínculo notáveis</option>
-                        <option value="diminuição de níveis de suporte">diminuição de níveis de suporte</option>
-                    </select>
+                    <label for="observacoes" class="block text-gray-700 font-semibold mb-2">Observações:</label>
+                    <textarea id="observacoes" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="Adicione observações adicionais aqui..."></textarea>
                 </div>
             </div>
-
+            
             <div class="mt-6">
-                <label for="observacoes" class="block text-gray-700 font-semibold mb-2">Observações:</label>
-                <textarea id="observacoes" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="Adicione observações adicionais aqui..."></textarea>
+                <label for="elementosSimbolicos" class="block text-gray-700 font-semibold mb-2">Elementos Simbólicos:</label>
+                <textarea id="elementosSimbolicos" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="Adicione partilhas de sonhos, relatos de experiências, referências culturais, etc."></textarea>
             </div>
 
             <div class="mt-6">
@@ -222,6 +358,8 @@
                     <label class="block mb-1"><input type="checkbox" value="pediu para sair" class="mr-2">pediu para sair</label>
                     <label class="block mb-1"><input type="checkbox" value="pediu para ver mãe/pai" class="mr-2">pediu para ver mãe/pai</label>
                     <label class="block mb-1"><input type="checkbox" value="pediu por acolhimento/colo" class="mr-2">pediu por acolhimento/colo</label>
+                    <label class="block mb-1"><input type="checkbox" value="tentou fugir/sair da sala" class="mr-2">tentou fugir/sair da sala</label>
+                    <label class="block mb-1"><input type="checkbox" value="subiu em cadeiras e móveis" class="mr-2">subiu em cadeiras e móveis</label>
                 </div>
             </div>
             
@@ -277,88 +415,133 @@
         };
 
         const termosExpCorporal = {
-            masculino: [
-                "gestos rígidos e controlados", "inquieto", "introspectivo/fechado",
-                "movimentos abertos e fluidos", "movimentando-se rapidamente", "movimentando-se vagarosamente"
-            ],
-            feminino: [
-                "gestos rígidos e controlados", "inquieta", "introspectiva/fechada",
-                "movimentos abertos e fluidos", "movimentando-se rapidamente", "movimentando-se vagarosamente"
-            ]
+            masculino: {
+                expressividade: ["gestos rígidos e controlados", "inquieto", "introspectivo/fechado", "movimentos abertos e fluidos", "movimentando-se rapidamente", "movimentando-se vagarosamente"]
+            },
+            feminino: {
+                expressividade: ["gestos rígidos e controlados", "inquieta", "introspectiva/fechada", "movimentos abertos e fluidos", "movimentando-se rapidamente", "movimentando-se vagarosamente"]
+            }
         };
 
         const termosExpFacial = {
-            masculino: [
-                "apático", "cabisbaixo", "choroso", "com olheiras", "com rubor", "mandíbula tensa",
-                "olhar pendente/cansado", "olhar vazio/ausente/disperso", "semblante triste",
-                "sorridente", "sorriso inautêntico", "tranquilo"
-            ],
-            feminino: [
-                "apática", "cabisbaixa", "chorosa", "com olheiras", "com rubor", "mandíbula tensa",
-                "olhar pendente/cansado", "olhar vazio/ausente/disperso", "semblante triste",
-                "sorridente", "sorriso inautêntico", "tranquila"
-            ]
+            masculino: {
+                expressividade: ["apático", "cabisbaixo", "choroso", "com olheiras", "com rubor", "mandíbula tensa", "olhar pendente/cansado", "olhar vazio/ausente/disperso", "semblante triste", "sorridente", "sorriso inautêntico", "tranquilo"]
+            },
+            feminino: {
+                expressividade: ["apática", "cabisbaixa", "chorosa", "com olheiras", "com rubor", "mandíbula tensa", "olhar pendente/cansado", "olhar vazio/ausente/disperso", "semblante triste", "sorridente", "sorriso inautêntico", "tranquila"]
+            }
         };
 
         const termosPosturaTonus = {
-            masculino: [
-                "postura curvada e tônus baixo", "postura desequilibrada e assimétrica",
-                "postura erguida e tônus firme", "tensão evidente em membros inferiores",
-                "tensão evidente em ombros", "tensão evidente em pescoço", "tônus flácido ou fragilizado", "postura curvada com tônus firme"
-            ],
-            feminino: [
-                "postura curvada e tônus baixa", "postura desequilibrada e assimétrica",
-                "postura erguida e tônus firme", "tensão evidente em membros inferiores",
-                "tensão evidente em ombros", "tensão evidente em pescoço", "tônus flácido ou fragilizado", "postura curvada com tônus firme"
-            ]
+            masculino: {
+                postura: ["postura relaxada", "postura neutra e equilibrada", "postura dominante", "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica"],
+                tonus: ["tônus normal", "hipotônico", "hipertônico"],
+                tensao: ["com ombros tensos", "com pescoço tenso", "com braços tensos", "com punhos cerrados", "com pernas esticadas"],
+                desvio: ["com baixa articulação de membros", "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)", "com aparente desvio postural (escoliose)"]
+            },
+            feminino: {
+                postura: ["postura relaxada", "postura neutra e equilibrada", "postura dominante", "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica"],
+                tonus: ["tônus normal", "hipotônica", "hipertônica"],
+                tensao: ["com ombros tensos", "com pescoço tenso", "com braços tensos", "com punhos cerrados", "com pernas esticadas"],
+                desvio: ["com baixa articulação de membros", "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)", "com aparente desvio postural (escoliose)"]
+            }
         };
 
-        const termosRespiracao = { // Geralmente neutros para respiração
-            masculino: [
-                "respiração com arritmia", "respiração contida ou sufocada",
-                "respiração curta e peitoral", "respiração profunda e abdominal",
-                "respiração rápida e ofegante"
-            ],
-            feminino: [
-                "respiração com arritmia", "respiração contida ou sufocada",
-                "respiração curta e peitoral", "respiração profunda e abdominal",
-                "respiração rápida e ofegante"
-            ]
+        const termosRespiracao = { 
+            masculino: {
+                padrao: ["nasal", "bucal", "curta", "longa", "superficial", "profunda"],
+                tipo: ["diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular"],
+                ruidos: ["ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)"],
+                esforco: ["esforço respiratório (músculo de pescoço e ombros)", "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)"],
+                ritmo_frequencia: ["ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)", "frequencia anormalmente lenta (bradipneia)"]
+            },
+            feminino: {
+                padrao: ["nasal", "bucal", "curta", "longa", "superficial", "profunda"],
+                tipo: ["diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular"],
+                ruidos: ["ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)"],
+                esforco: ["esforço respiratório (músculo de pescoço e ombros)", "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)"],
+                ritmo_frequencia: ["ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)", "frequencia anormalmente lenta (bradipneia)"]
+            }
         };
 
 
         function preencherSelect(elementId, termos, genero) {
             const select = document.getElementById(elementId);
             select.innerHTML = '<option value="" disabled selected>Selecione uma opção</option>';
-            termos[genero].forEach((termo, index) => {
-                const option = document.createElement('option');
-                option.value = termos.masculino[index]; 
-                option.textContent = termo;
-                select.appendChild(option);
-            });
+            if (termos.constructor === Object) {
+                // É um objeto de categorias
+                for (const categoria in termos[genero]) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+                    termos[genero][categoria].forEach(termo => {
+                        const option = document.createElement('option');
+                        option.value = termo;
+                        option.textContent = termo;
+                        optgroup.appendChild(option);
+                    });
+                    select.appendChild(optgroup);
+                }
+            } else {
+                // É um array simples
+                termos[genero].forEach((termo, index) => {
+                    const option = document.createElement('option');
+                    option.value = termos.masculino[index]; 
+                    option.textContent = termo;
+                    select.appendChild(option);
+                });
+            }
         }
-
+        
         function preencherCheckboxes(elementId, termos, genero) {
             const container = document.getElementById(elementId);
             const currentCheckedValues = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
             container.innerHTML = '';
             
-            termos[genero].forEach((termo, index) => {
-                const label = document.createElement('label');
-                label.className = 'block mb-1';
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'mr-2';
-                checkbox.value = termos.masculino[index]; 
-                
-                if (currentCheckedValues.includes(checkbox.value)) {
-                    checkbox.checked = true;
-                }
+            if (termos.constructor === Object) {
+                for (const categoria in termos[genero]) {
+                    const h4 = document.createElement('h4');
+                    h4.className = 'font-medium text-gray-800 mt-2 mb-2';
+                    h4.textContent = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+                    container.appendChild(h4);
 
-                label.appendChild(checkbox);
-                label.appendChild(document.createTextNode(termo));
-                container.appendChild(label);
-            });
+                    const div = document.createElement('div');
+                    div.className = 'pl-4';
+                    termos[genero][categoria].forEach((termo, index) => {
+                        const label = document.createElement('label');
+                        label.className = 'block mb-1';
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.className = 'mr-2';
+                        checkbox.value = termos.masculino[categoria][index];
+                        
+                        if (currentCheckedValues.includes(checkbox.value)) {
+                            checkbox.checked = true;
+                        }
+
+                        label.appendChild(checkbox);
+                        label.appendChild(document.createTextNode(termo));
+                        div.appendChild(label);
+                    });
+                    container.appendChild(div);
+                }
+            } else {
+                 termos[genero].forEach((termo, index) => {
+                    const label = document.createElement('label');
+                    label.className = 'block mb-1';
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'mr-2';
+                    checkbox.value = termos.masculino[index]; 
+                    
+                    if (currentCheckedValues.includes(checkbox.value)) {
+                        checkbox.checked = true;
+                    }
+
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(termo));
+                    container.appendChild(label);
+                });
+            }
         }
 
         function ajustarTermosPorGenero() {
@@ -379,18 +562,31 @@
             const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
             return Array.from(checkboxes).map(checkbox => checkbox.value);
         }
+        
+        function getSelectedValues(selectId) {
+            const select = document.getElementById(selectId);
+            return select.value;
+        }
 
         function adaptarTermo(termoOriginal, genero) {
-            const listas = [termosDisposicao, termosExpCorporal, termosExpFacial, termosPosturaTonus, termosRespiracao];
+            const listas = [termosDisposicao, termosExpCorporal, termosExpFacial];
             for (const lista of listas) {
                 const index = lista.masculino.indexOf(termoOriginal);
                 if (index !== -1) {
                     return lista[genero][index];
                 }
             }
+            // Para as listas que têm estrutura de objeto
+            for (const lista of [termosPosturaTonus, termosRespiracao]) {
+                for (const categoria in lista.masculino) {
+                    const index = lista.masculino[categoria].indexOf(termoOriginal);
+                    if (index !== -1) {
+                        return lista[genero][categoria][index];
+                    }
+                }
+            }
             return termoOriginal;
         }
-
 
         function formatList(items, genero) {
             if (items.length === 0) {
@@ -429,13 +625,20 @@
             const acompanhanteStatus = document.getElementById('acompanhanteStatus').value;
             const genero = document.getElementById('genero').value;
             const disposicaoOriginal = document.getElementById('disposicao').value;
-            const resultados = document.getElementById('resultados').value;
             const observacoes = document.getElementById('observacoes').value.trim();
+            const elementosSimbolicos = document.getElementById('elementosSimbolicos').value.trim(); // Novo campo
             const devolutiva = document.getElementById('devolutiva').checked;
             const avaliacao = document.getElementById('avaliacao').checked;
             const paragrafoFinal = document.getElementById('paragrafo-final');
             const estilo = document.getElementById('estilo').value;
             const nivelSuporte = document.getElementById('nivelSuporte').value;
+
+            // Novos resultados
+            const desempenhoGeral = getSelectedValues('desempenhoGeral');
+            const desempenhoHistorico = getSelectedValues('desempenhoHistorico');
+            const mudancaEmocional = getSelectedValues('mudancaEmocional');
+            const mudancasFisicas = getCheckedValues('mudancasFisicas');
+            const suportePercebido = getCheckedValues('suportePercebido');
 
             const esquemasFisicosOriginal = [
                 ...getCheckedValues('expCorporal'),
@@ -444,9 +647,9 @@
                 ...getCheckedValues('respiracao')
             ];
 
-            const recursosMusicais = getCheckedValues('recursosMusicais');
-            const recursosExtraMusicais = getCheckedValues('recursosExtraMusicais');
-            const todosRecursos = [...recursosMusicais, ...recursosExtraMusicais];
+            const recursosInteragiu = getCheckedValues('recursosInteragiu').concat(getCheckedValues('recursosExtraInteragiu'));
+            const recursosAbordagem = getCheckedValues('recursosAbordagem').concat(getCheckedValues('recursosExtraAbordagem'));
+            const elementosSala = getCheckedValues('elementosSala');
 
             const objetivos = getCheckedValues('objetivos');
             const abordagem = getCheckedValues('abordagem');
@@ -454,10 +657,12 @@
 
             const disposicaoAdaptada = adaptarTermo(disposicaoOriginal, genero);
             const textoEsquemas = formatList(esquemasFisicosOriginal, genero);
-            const textoRecursos = formatList(todosRecursos, genero);
+            const textoRecursosInteragiu = formatList(recursosInteragiu, genero);
+            const textoRecursosAbordagem = formatList(recursosAbordagem, genero);
+            const textoElementosSala = formatList(elementosSala, genero);
             const textoObjetivos = formatList(objetivos, genero);
             const textoAbordagem = formatList(abordagem, genero);
-            
+
             let textoIntercorrencias = "";
             if (intercorrencias.length > 0) {
                 if (intercorrencias.includes("não houveram intercorrencias")) {
@@ -490,6 +695,7 @@
             }
 
             let textoObservacoes = observacoes ? ` ${observacoes}.` : "";
+            let textoElementosSimbolicos = elementosSimbolicos ? ` Os seguintes elementos simbólicos foram notados: ${elementosSimbolicos}.` : "";
             
             let textoNivelSuporte = "";
             if (nivelSuporte) {
@@ -512,22 +718,44 @@
                     textoNivelSuporte = ` ${genero === 'masculino' ? 'Ele' : 'Ela'} precisou de um suporte ${descricaoSuporte}.`;
                 }
             }
+            
+            const textoElementosSala = elementosSala.length > 0 ? ` Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com elementos da sala como ${formatList(elementosSala, genero)}.` : "";
+            
+            // Novos textos de resultados
+            let textoResultados = '';
+            if (estilo === 'estilo1' || estilo === 'estilo2') {
+                const desempenhoGeralTxt = desempenhoGeral ? `Em relação ao desempenho geral, o paciente ${desempenhoGeral}. ` : '';
+                const desempenhoHistoricoTxt = desempenhoHistorico ? `Sua performance se apresentou ${desempenhoHistorico}. ` : '';
+                const mudancaEmocionalTxt = mudancaEmocional ? `Quanto à disposição emocional, ${mudancaEmocional}. ` : '';
+                const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `As mudanças no esquema físico observadas foram: ${formatList(mudancasFisicas, genero)}. ` : '';
+                const suportePercebidoTxt = suportePercebido.length > 0 ? `No nível de suporte percebido, foram notadas: ${formatList(suportePercebido, genero)}. ` : '';
+                
+                textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
+            } else if (estilo === 'estilo3' || estilo === 'estilo4') {
+                const desempenhoGeralTxt = desempenhoGeral ? `${nomeCapitalizado} ${desempenhoGeral} nas atividades propostas. ` : '';
+                const desempenhoHistoricoTxt = desempenhoHistorico ? `O que está ${desempenhoHistorico}. ` : '';
+                const mudancaEmocionalTxt = mudancaEmocional ? `Sua disposição emocional ${mudancaEmocional}. ` : '';
+                const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `Houve também mudanças no corpo, como ${formatList(mudancasFisicas, genero)}. ` : '';
+                const suportePercebidoTxt = suportePercebido.length > 0 ? `Sobre o suporte, percebemos: ${formatList(suportePercebido, genero)}. ` : '';
+
+                textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
+            }
 
             let template;
             const estiloEscolhido = estilo === 'aleatorio' ? `estilo${Math.floor(Math.random() * 5) + 1}` : estilo;
             
             switch (estiloEscolhido) {
                 case 'estilo1':
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Seu esquema físico observou a presença de ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
+                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Seu esquema físico observou a presença de ${textoEsquemas}. Os recursos com que ${genero === 'masculino' ? 'ele' : 'ela'} interagiu foram ${textoRecursosInteragiu}. Os recursos utilizados na abordagem terapêutica foram ${textoRecursosAbordagem}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo2':
-                    template = `${nomeCapitalizado}, ${acompanhanteStatus} ${acompanhante}, apresentou uma disposição emocional ${disposicaoAdaptada}. O estado físico evidenciado foi ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}, o que suportou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
+                    template = `${nomeCapitalizado}, que ${acompanhanteStatus} ${acompanhante}, apresentou uma disposição emocional ${disposicaoAdaptada}. O estado físico evidenciado foi ${textoEsquemas}. Os recursos com que ${genero === 'masculino' ? 'ele' : 'ela'} interagiu foram ${textoRecursosInteragiu} e os utilizados na abordagem terapêutica foram ${textoRecursosAbordagem}. A sessão suportou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}. ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo3':
-                    template = `${nomeCapitalizado} chegou com ${acompanhante}, com uma disposição ${disposicaoAdaptada}. No geral, ${genero === 'masculino' ? 'ele' : 'ela'} se mostrou com ${textoEsquemas}. Usamos ${textoRecursos} para trabalhar ${textoObjetivos} e a abordagem de ${textoAbordagem}. A sessão teve um resultado de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
+                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. No geral, ${genero === 'masculino' ? 'ele' : 'ela'} se mostrou com ${textoEsquemas}. Usamos ${textoRecursosInteragiu} e ${textoRecursosAbordagem} para trabalhar ${textoObjetivos} e a abordagem de ${textoAbordagem}. ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo4':
-                    template = `No atendimento de hoje, ${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, mostrando-se ${disposicaoAdaptada}. O esquema corporal evidenciou ${textoEsquemas}. Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com os recursos ${textoRecursos}, explorando os objetivos de ${textoObjetivos} através da abordagem de ${textoAbordagem}, levando aos resultados de ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
+                    template = `No atendimento de hoje, ${nomeCapitalizado}, que ${acompanhanteStatus} ${acompanhante}, mostrou-se ${disposicaoAdaptada}. O esquema corporal evidenciou ${textoEsquemas}. Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com os recursos ${textoRecursosInteragiu}, enquanto os recursos da abordagem foram ${textoRecursosAbordagem}, explorando os objetivos de ${textoObjetivos} através da abordagem de ${textoAbordagem}, levando aos resultados de ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
                     break;
                 case 'estilo5':
                     const observacoesEspeciais = [observacoes];
@@ -552,6 +780,12 @@
                         }
                         observacoesEspeciais.push(`Nível de Suporte Predominante: ${descricaoSuporte}`);
                     }
+                    if (elementosSala.length > 0) {
+                        observacoesEspeciais.push(`Elementos da sala com que interagiu: ${formatList(elementosSala, genero)}.`);
+                    }
+                    if (elementosSimbolicos) {
+                         observacoesEspeciais.push(`Elementos Simbólicos: ${elementosSimbolicos}.`);
+                    }
 
                     const textoObservacoesEstilo5 = observacoesEspeciais.filter(Boolean).map(obs => obs.trim()).join('\n- ');
                     
@@ -559,14 +793,15 @@
                     
 - Disposição Emocional: ${disposicaoAdaptada}
 - Aspectos Físicos/Corporais: ${textoEsquemas}
-- Recursos Utilizados: ${textoRecursos}
+- Recursos que interagiu: ${textoRecursosInteragiu}
+- Recursos da abordagem: ${textoRecursosAbordagem}
 - Objetivos da Sessão: ${textoObjetivos}
 - Abordagem Utilizada: ${textoAbordagem}
-- Resultados: ${resultados}${textoIntercorrencias}
+- Resultados: ${desempenhoGeral} e ${desempenhoHistorico}. Mudança emocional: ${mudancaEmocional}. Mudanças físicas: ${formatList(mudancasFisicas, genero)}. Nível de suporte percebido: ${formatList(suportePercebido, genero)}.${textoIntercorrencias}
 - Observações: ${textoObservacoesEstilo5}`;
                     break;
                 default:
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se a presença de ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursos}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${nomeCapitalizado} demonstrou ${resultados}.${textoObservacoes}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
+                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se a presença de ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursosInteragiu} e ${textoRecursosAbordagem}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${textoResultados}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
                     break;
             }
 
