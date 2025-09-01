@@ -20,7 +20,7 @@
 
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-xl relative">
         <div class="absolute top-4 right-4 text-sm text-gray-500 font-medium">
-            Versão 3.0
+            Versão 4.0
         </div>
         <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Gerador de Relatórios Terapêuticos</h1>
         <p class="text-gray-600 mb-8 text-center">Preencha os campos abaixo para gerar o parágrafo.</p>
@@ -488,13 +488,14 @@
             if (!select) return;
 
             const isMultiple = select.hasAttribute('multiple');
-            const currentValues = Array.from(select.options).filter(opt => opt.selected).map(opt => opt.value);
+            const termosGenero = termos[termoKey][genero];
+            const termosOriginal = termos[termoKey]['masculino'];
+
+            // Salva as opções selecionadas antes de limpar
+            const selectedValues = Array.from(select.options).filter(opt => opt.selected).map(opt => opt.value);
             
             select.innerHTML = '';
             
-            const termosGenero = termos[termoKey][genero];
-            const termosMasculino = termos[termoKey]['masculino'];
-
             if (!isMultiple) {
                 const optionPlaceholder = document.createElement('option');
                 optionPlaceholder.value = "";
@@ -506,9 +507,11 @@
 
             termosGenero.forEach((termo, index) => {
                 const option = document.createElement('option');
-                option.value = termosMasculino[index];
-                option.textContent = termo;
-                if (currentValues.includes(option.value)) {
+                option.value = termosOriginal[index]; // O valor da opção é sempre o termo no gênero masculino para manter a consistência
+                option.textContent = termo; // O texto visível é o termo adaptado
+                
+                // Mantém a seleção se a opção já estava selecionada
+                if (selectedValues.includes(option.value)) {
                     option.selected = true;
                 }
                 select.appendChild(option);
