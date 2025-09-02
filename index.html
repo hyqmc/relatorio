@@ -3,796 +3,1023 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="version" content="1.3"> <!-- Identificador de versão atualizado -->
     <title>Gerador de Relatórios Terapêuticos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
-            background-color: #f4f7f9;
+            background-color: #f0f4f8;
         }
-        select[multiple] {
-            height: 150px;
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 2rem 1rem;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+        }
+        .section-box {
+            background-color: #fdfdfd;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            border-color: #6b7280;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-primary {
+            background-color: #60a5fa;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .btn-primary:hover {
+            background-color: #3b82f6;
+        }
+        .btn-secondary {
+            background-color: #d1d5db;
+            color: #1f2937;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .btn-secondary:hover {
+            background-color: #9ca3af;
+        }
+        .btn-danger {
+            background-color: #f87171;
+        }
+        .btn-danger:hover {
+            background-color: #ef4444;
+        }
+        .btn-info {
+            background-color: #34d399; /* Cor verde para o botão de randomizar */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .btn-info:hover {
+            background-color: #10b981;
+        }
+        .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 0.5rem;
+            accent-color: #60a5fa;
+        }
+        .toast {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        .toast.show {
+            opacity: 1;
         }
     </style>
 </head>
-<body class="p-6">
+<body class="bg-[#f0f4f8] text-[#1f2937] p-4">
 
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-xl relative">
-        <div class="absolute top-4 right-4 text-sm text-gray-500 font-medium">
-            Versão 5.0
-        </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Gerador de Relatórios Terapêuticos</h1>
-        <p class="text-gray-600 mb-8 text-center">Preencha os campos abaixo para gerar o parágrafo.</p>
+    <div class="container">
+        <div class="card">
+            <h1 class="text-4xl font-extrabold text-center mb-2 text-[#1f2937]">Gerador de Relatórios Terapêuticos</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label for="nome" class="block text-gray-700 font-semibold mb-2">Nome do Paciente:</label>
-                <input type="text" id="nome" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: João Silva">
+            <!-- Elemento gráfico da versão -->
+            <div class="text-center mb-6">
+                <span class="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-2.5 py-0.5 rounded-full">Versão: 1.3</span>
             </div>
-            <div>
-                <label for="acompanhante" class="block text-gray-700 font-semibold mb-2">Companhia:</label>
-                <input type="text" id="acompanhante" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: Maria (mãe)">
-            </div>
-            <div class="col-span-1 md:col-span-2">
-                <label for="acompanhanteStatus" class="block text-gray-700 font-semibold mb-2">Status da Companhia:</label>
-                <select id="acompanhanteStatus" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="chegou acompanhado de">chegou acompanhado de</option>
-                    <option value="aguardava junto à">aguardava junto à</option>
-                    <option value="realizou a sessão acompanhado de">realizou a sessão acompanhado de</option>
-                </select>
-            </div>
-            <div class="col-span-1 md:col-span-2">
-                <label for="genero" class="block text-gray-700 font-semibold mb-2">Gênero do Paciente:</label>
-                <select id="genero" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="masculino" selected>Masculino</option>
-                    <option value="feminino">Feminino</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <label for="disposicao" class="block text-gray-700 font-semibold mb-2">Disposição Emocional:</label>
-            <select id="disposicao" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </select>
-        </div>
-
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <h3 class="block text-gray-700 font-semibold mb-4">Esquema Físico/Corporal:</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">1. expressividade corporal</h4>
-                    <select id="expCorporal" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </select>
-                </div>
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">2. expressividade facial</h4>
-                    <select id="expFacial" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </select>
-                </div>
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">3. postura e tônus</h4>
-                    <select id="posturaTonus" multiple class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </select>
-                    <p class="text-sm text-gray-500 mt-2">Segure a tecla Ctrl (Windows) ou Command (Mac) para selecionar múltiplos itens.</p>
-                </div>
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">4. respiração</h4>
-                    <select id="respiracao" multiple class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </select>
-                    <p class="text-sm text-gray-500 mt-2">Segure a tecla Ctrl (Windows) ou Command (Mac) para selecionar múltiplos itens.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <label class="block text-gray-700 font-semibold mb-2">Recursos com que o paciente interagiu durante a sessão (escolha um ou mais):</label>
-            <div class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
-                <h4 class="font-medium text-gray-800 mt-1 mb-2">Sonoro-musicais:</h4>
-                <div id="recursosInteragiu" class="pl-4">
-                    <label class="block mb-1"><input type="checkbox" value="agogô" class="mr-2">agogô</label>
-                    <label class="block mb-1"><input type="checkbox" value="apito" class="mr-2">apito</label>
-                    <label class="block mb-1"><input type="checkbox" value="atabaque" class="mr-2">atabaque</label>
-                    <label class="block mb-1"><input type="checkbox" value="baquetas" class="mr-2">baquetas</label>
-                    <label class="block mb-1"><input type="checkbox" value="berimbau" class="mr-2">berimbau</label>
-                    <label class="block mb-1"><input type="checkbox" value="bumbo" class="mr-2">bumbo</label>
-                    <label class="block mb-1"><input type="checkbox" value="cabulete" class="mr-2">cabulete</label>
-                    <label class="block mb-1"><input type="checkbox" value="caixa de som" class="mr-2">caixa de som</label>
-                    <label class="block mb-1"><input type="checkbox" value="cajon" class="mr-2">cajón</label>
-                    <label class="block mb-1"><input type="checkbox" value="cavaquinho" class="mr-2">cavaquinho</label>
-                    <label class="block mb-1"><input type="checkbox" value="caxixi" class="mr-2">caxixi</label>
-                    <label class="block mb-1"><input type="checkbox" value="clavas" class="mr-2">clavas</label>
-                    <label class="block mb-1"><input type="checkbox" value="flauta de bloco" class="mr-2">flauta de bloco</label>
-                    <label class="block mb-1"><input type="checkbox" value="flauta transversal (pife)" class="mr-2">flauta transversal (pife)</label>
-                    <label class="block mb-1"><input type="checkbox" value="flauta apito" class="mr-2">flauta apito</label>
-                    <label class="block mb-1"><input type="checkbox" value="gaita de boca" class="mr-2">gaita de boca</label>
-                    <label class="block mb-1"><input type="checkbox" value="ganza ovinho" class="mr-2">ganzá ovinho</label>
-                    <label class="block mb-1"><input type="checkbox" value="kalimba" class="mr-2">kalimba</label>
-                    <label class="block mb-1"><input type="checkbox" value="meia lua" class="mr-2">meia lua</label>
-                    <label class="block mb-1"><input type="checkbox" value="meia lua de pé" class="mr-2">meia lua de pé</label>
-                    <label class="block mb-1"><input type="checkbox" value="metalofone" class="mr-2">metalofone</label>
-                    <label class="block mb-1"><input type="checkbox" value="microfone" class="mr-2">microfone</label>
-                    <label class="block mb-1"><input type="checkbox" value="ocarina" class="mr-2">ocarina</label>
-                    <label class="block mb-1"><input type="checkbox" value="pandeiro" class="mr-2">pandeiro</label>
-                    <label class="block mb-1"><input type="checkbox" value="rabeca" class="mr-2">rabeca</label>
-                    <label class="block mb-1"><input type="checkbox" value="reco-reco" class="mr-2">reco-reco</label>
-                    <label class="block mb-1"><input type="checkbox" value="surdo" class="mr-2">surdo</label>
-                    <label class="block mb-1"><input type="checkbox" value="tambor" class="mr-2">tambor</label>
-                    <label class="block mb-1"><input type="checkbox" value="tamborim" class="mr-2">tamborim</label>
-                    <label class="block mb-1"><input type="checkbox" value="teclado" class="mr-2">teclado</label>
-                    <label class="block mb-1"><input type="checkbox" value="triângulo" class="mr-2">triângulo</label>
-                    <label class="block mb-1"><input type="checkbox" value="tubos sonoros" class="mr-2">tubos sonoros</label>
-                    <label class="block mb-1"><input type="checkbox" value="ukulele" class="mr-2">ukulele</label>
-                    <label class="block mb-1"><input type="checkbox" value="violao" class="mr-2">violão</label>
-                    <label class="block mb-1"><input type="checkbox" value="xilofone" class="mr-2">xilofone</label>
-                </div>
-                <h4 class="font-medium text-gray-800 mt-4 mb-2">Extra-musicais:</h4>
-                <div id="recursosExtraInteragiu" class="pl-4">
-                    <label class="block mb-1"><input type="checkbox" value="baralho convencional" class="mr-2">baralho convencional</label>
-                    <label class="block mb-1"><input type="checkbox" value="baralho musical" class="mr-2">baralho musical</label>
-                    <label class="block mb-1"><input type="checkbox" value="bolas de vinil" class="mr-2">bolas de vinil</label>
-                    <label class="block mb-1"><input type="checkbox" value="bambolê" class="mr-2">bambolê</label>
-                    <label class="block mb-1"><input type="checkbox" value="caneta esferográfica" class="mr-2">caneta esferográfica</label>
-                    <label class="block mb-1"><input type="checkbox" value="caneta marcador a base de álcool" class="mr-2">caneta marcador a base de álcool</label>
-                    <label class="block mb-1"><input type="checkbox" value="cartoes musicais" class="mr-2">cartões musicais</label>
-                    <label class="block mb-1"><input type="checkbox" value="dados" class="mr-2">dados</label>
-                    <label class="block mb-1"><input type="checkbox" value="giz de cera" class="mr-2">giz de cera</label>
-                    <label class="block mb-1"><input type="checkbox" value="jogos de caneta e papel" class="mr-2">jogos de caneta e papel</label>
-                    <label class="block mb-1"><input type="checkbox" value="lapis de cor" class="mr-2">lápis de cor</label>
-                    <label class="block mb-1"><input type="checkbox" value="lapis de escrever" class="mr-2">lápis de escrever</label>
-                    <label class="block mb-1"><input type="checkbox" value="origami" class="mr-2">origami</label>
-                    <label class="block mb-1"><input type="checkbox" value="papel" class="mr-2">papel</label>
-                    <label class="block mb-1"><input type="checkbox" value="pincel" class="mr-2">pincel</label>
-                    <label class="block mb-1"><input type="checkbox" value="tecidos" class="mr-2">tecidos</label>
-                    <label class="block mb-1"><input type="checkbox" value="tesoura" class="mr-2">tesoura</label>
-                    <label class="block mb-1"><input type="checkbox" value="tinta acrílica" class="mr-2">tinta acrílica</label>
-                    <label class="block mb-1"><input type="checkbox" value="tinta guache" class="mr-2">tinta guache</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <label class="block text-gray-700 font-semibold mb-2">Recursos utilizados na abordagem terapêutica (escolha um ou mais):</label>
-            <div class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
-                <h4 class="font-medium text-gray-800 mt-1 mb-2">Sonoro-musicais:</h4>
-                <div id="recursosAbordagem" class="pl-4">
-                    <label class="block mb-1"><input type="checkbox" value="agogô" class="mr-2">agogô</label>
-                    <label class="block mb-1"><input type="checkbox" value="apito" class="mr-2">apito</label>
-                    <label class="block mb-1"><input type="checkbox" value="atabaque" class="mr-2">atabaque</label>
-                    <label class="block mb-1"><input type="checkbox" value="baquetas" class="mr-2">baquetas</label>
-                    <label class="block mb-1"><input type="checkbox" value="berimbau" class="mr-2">berimbau</label>
-                    <label class="block mb-1"><input type="checkbox" value="bumbo" class="mr-2">bumbo</label>
-                    <label class="block mb-1"><input type="checkbox" value="cabulete" class="mr-2">cabulete</label>
-                    <label class="block mb-1"><input type="checkbox" value="caixa de som" class="mr-2">caixa de som</label>
-                    <label class="block mb-1"><input type="checkbox" value="cajon" class="mr-2">cajón</label>
-                    <label class="block mb-1"><input type="checkbox" value="cavaquinho" class="mr-2">cavaquinho</label>
-                    <label class="block mb-1"><input type="checkbox" value="caxixi" class="mr-2">caxixi</label>
-                    <label class="block mb-1"><input type="checkbox" value="clavas" class="mr-2">clavas</label>
-                    <label class="block mb-1"><input type="checkbox" value="flauta de bloco" class="mr-2">flauta de bloco</label>
-                    <label class="block mb-1"><input type="checkbox" value="flauta transversal (pife)" class="mr-2">flauta transversal (pife)</label>
-                    <label class="block mb-1"><input type="checkbox" value="flauta apito" class="mr-2">flauta apito</label>
-                    <label class="block mb-1"><input type="checkbox" value="gaita de boca" class="mr-2">gaita de boca</label>
-                    <label class="block mb-1"><input type="checkbox" value="ganza ovinho" class="mr-2">ganzá ovinho</label>
-                    <label class="block mb-1"><input type="checkbox" value="kalimba" class="mr-2">kalimba</label>
-                    <label class="block mb-1"><input type="checkbox" value="meia lua" class="mr-2">meia lua</label>
-                    <label class="block mb-1"><input type="checkbox" value="meia lua de pé" class="mr-2">meia lua de pé</label>
-                    <label class="block mb-1"><input type="checkbox" value="metalofone" class="mr-2">metalofone</label>
-                    <label class="block mb-1"><input type="checkbox" value="microfone" class="mr-2">microfone</label>
-                    <label class="block mb-1"><input type="checkbox" value="ocarina" class="mr-2">ocarina</label>
-                    <label class="block mb-1"><input type="checkbox" value="pandeiro" class="mr-2">pandeiro</label>
-                    <label class="block mb-1"><input type="checkbox" value="rabeca" class="mr-2">rabeca</label>
-                    <label class="block mb-1"><input type="checkbox" value="reco-reco" class="mr-2">reco-reco</label>
-                    <label class="block mb-1"><input type="checkbox" value="surdo" class="mr-2">surdo</label>
-                    <label class="block mb-1"><input type="checkbox" value="tambor" class="mr-2">tambor</label>
-                    <label class="block mb-1"><input type="checkbox" value="tamborim" class="mr-2">tamborim</label>
-                    <label class="block mb-1"><input type="checkbox" value="teclado" class="mr-2">teclado</label>
-                    <label class="block mb-1"><input type="checkbox" value="triângulo" class="mr-2">triângulo</label>
-                    <label class="block mb-1"><input type="checkbox" value="tubos sonoros" class="mr-2">tubos sonoros</label>
-                    <label class="block mb-1"><input type="checkbox" value="ukulele" class="mr-2">ukulele</label>
-                    <label class="block mb-1"><input type="checkbox" value="violao" class="mr-2">violão</label>
-                    <label class="block mb-1"><input type="checkbox" value="xilofone" class="mr-2">xilofone</label>
-                </div>
-                <h4 class="font-medium text-gray-800 mt-4 mb-2">Extra-musicais:</h4>
-                <div id="recursosExtraAbordagem" class="pl-4">
-                    <label class="block mb-1"><input type="checkbox" value="baralho convencional" class="mr-2">baralho convencional</label>
-                    <label class="block mb-1"><input type="checkbox" value="baralho musical" class="mr-2">baralho musical</label>
-                    <label class="block mb-1"><input type="checkbox" value="bolas de vinil" class="mr-2">bolas de vinil</label>
-                    <label class="block mb-1"><input type="checkbox" value="bambolê" class="mr-2">bambolê</label>
-                    <label class="block mb-1"><input type="checkbox" value="caneta esferográfica" class="mr-2">caneta esferográfica</label>
-                    <label class="block mb-1"><input type="checkbox" value="caneta marcador a base de álcool" class="mr-2">caneta marcador a base de álcool</label>
-                    <label class="block mb-1"><input type="checkbox" value="cartoes musicais" class="mr-2">cartões musicais</label>
-                    <label class="block mb-1"><input type="checkbox" value="dados" class="mr-2">dados</label>
-                    <label class="block mb-1"><input type="checkbox" value="giz de cera" class="mr-2">giz de cera</label>
-                    <label class="block mb-1"><input type="checkbox" value="jogos de caneta e papel" class="mr-2">jogos de caneta e papel</label>
-                    <label class="block mb-1"><input type="checkbox" value="lapis de cor" class="mr-2">lápis de cor</label>
-                    <label class="block mb-1"><input type="checkbox" value="lapis de escrever" class="mr-2">lápis de escrever</label>
-                    <label class="block mb-1"><input type="checkbox" value="origami" class="mr-2">origami</label>
-                    <label class="block mb-1"><input type="checkbox" value="papel" class="mr-2">papel</label>
-                    <label class="block mb-1"><input type="checkbox" value="pincel" class="mr-2">pincel</label>
-                    <label class="block mb-1"><input type="checkbox" value="tecidos" class="mr-2">tecidos</label>
-                    <label class="block mb-1"><input type="checkbox" value="tesoura" class="mr-2">tesoura</label>
-                    <label class="block mb-1"><input type="checkbox" value="tinta acrílica" class="mr-2">tinta acrílica</label>
-                    <label class="block mb-1"><input type="checkbox" value="tinta guache" class="mr-2">tinta guache</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <label class="block text-gray-700 font-semibold mb-2">Elementos da sala com que o paciente interagiu (escolha um ou mais):</label>
-            <div id="elementosSala" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
-                <label class="block mb-1"><input type="checkbox" value="tapete" class="mr-2">tapete</label>
-                <label class="block mb-1"><input type="checkbox" value="bancos" class="mr-2">bancos</label>
-                <label class="block mb-1"><input type="checkbox" value="cadeiras" class="mr-2">cadeiras</label>
-                <label class="block mb-1"><input type="checkbox" value="pufe" class="mr-2">pufe</label>
-                <label class="block mb-1"><input type="checkbox" value="interruptores" class="mr-2">interruptores</label>
-                <label class="block mb-1"><input type="checkbox" value="chaves" class="mr-2">chaves</label>
-                <label class="block mb-1"><input type="checkbox" value="trinco" class="mr-2">trinco</label>
-                <label class="block mb-1"><input type="checkbox" value="janela" class="mr-2">janela</label>
-                <label class="block mb-1"><input type="checkbox" value="lixo" class="mr-2">lixo</label>
-                <label class="block mb-1"><input type="checkbox" value="álcool em gel" class="mr-2">álcool em gel</label>
-                <label class="block mb-1"><input type="checkbox" value="portas de armário" class="mr-2">portas de armário</label>
-            </div>
-        </div>
-
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <label class="block text-gray-700 font-semibold mb-2">Principais Objetivos (escolha um ou mais):</label>
-            <div id="objetivos" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
-                <label class="block mb-1"><input type="checkbox" value="desenvolver controle respiratório consciente" class="mr-2">desenvolver controle respiratório consciente</label>
-                <label class="block mb-1"><input type="checkbox" value="desenvolver habilidades cognitivas" class="mr-2">desenvolver habilidades cognitivas</label>
-                <label class="block mb-1"><input type="checkbox" value="dispor ambiente de expressão emocional segura" class="mr-2">dispor ambiente de expressão emocional segura</label>
-                <label class="block mb-1"><input type="checkbox" value="encontro com processos de subjetivação" class="mr-2">encontro com processos de subjetivação</label>
-                <label class="block mb-1"><input type="checkbox" value="estimular a criatividade e a imaginação" class="mr-2">estimular a criatividade e a imaginação</label>
-                <label class="block mb-1"><input type="checkbox" value="facilitar a comunicação verbal e não-verbal" class="mr-2">facilitar a comunicação verbal e não-verbal</label>
-                <label class="block mb-1"><input type="checkbox" value="melhorar o bem-estar psicossomático" class="mr-2">melhorar o bem-estar psicossomático</label>
-                <label class="block mb-1"><input type="checkbox" value="promover autonomia, autoria e desenvolvimento lúdico de papéis" class="mr-2">promover autonomia, autoria e desenvolvimento lúdico de papéis</label>
-                <label class="block mb-1"><input type="checkbox" value="promover conhecimento profundo de si" class="mr-2">promover conhecimento profundo de si</label>
-                <label class="block mb-1"><input type="checkbox" value="promover crescimento pessoal e individuação" class="mr-2">promover crescimento pessoal e individuação</label>
-                <label class="block mb-1"><input type="checkbox" value="promover noções proprioceptivas" class="mr-2">promover noções proprioceptivas</label>
-                <label class="block mb-1"><input type="checkbox" value="promover relaxamento e redução de estresse" class="mr-2">promover relaxamento e redução de estresse</label>
-                <label class="block mb-1"><input type="checkbox" value="tratar de sofrimento psíquico" class="mr-2">tratar de sofrimento psíquico</label>
-            </div>
-        </div>
-
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <label class="block text-gray-700 font-semibold mb-2">Abordagem (escolha um ou mais):</label>
-            <div id="abordagem" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
-                <label class="block mb-1"><input type="checkbox" value="atividades artísticas complementares (AACs)" class="mr-2">atividades artísticas complementares (AACs)</label>
-                <label class="block mb-1"><input type="checkbox" value="corpo e movimento" class="mr-2">corpo e movimento</label>
-                <label class="block mb-1"><input type="checkbox" value="musicoterapia baseada em recursos" class="mr-2">musicoterapia baseada em recursos</label>
-                <label class="block mb-1"><input type="checkbox" value="musicoterapia composicional" class="mr-2">musicoterapia composicional</label>
-                <label class="block mb-1"><input type="checkbox" value="musicoterapia improvisacional" class="mr-2">musicoterapia improvisacional</label>
-                <label class="block mb-1"><input type="checkbox" value="musicoterapia psicodinâmica" class="mr-2">musicoterapia psicodinâmica</label>
-                <label class="block mb-1"><input type="checkbox" value="musicoterapia receptiva" class="mr-2">musicoterapia receptiva</label>
-                <label class="block mb-1"><input type="checkbox" value="musicoterapia recriativa" class="mr-2">musicoterapia recriativa</label>
-                <label class="block mb-1"><input type="checkbox" value="repertório tradicional infantil brasileiro (MTIB)" class="mr-2">repertório tradicional infantil brasileiro (MTIB)</label>
-            </div>
-        </div>
-
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <h3 class="block text-gray-700 font-semibold mb-4">Resultados:</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">1. Desempenho Geral</h4>
-                    <select id="desempenhoGeral" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="" disabled selected>Selecione um item</option>
-                        <option value="não participou ativamente">não participou ativamente</option>
-                        <option value="demonstrou perceber a intervenção mas não participou">demonstrou perceber a intervenção mas não participou</option>
-                        <option value="demonstrou perceber a intervenção e teve dificuldade em participar">demonstrou perceber a intervenção e teve dificuldade em participar</option>
-                        <option value="participou mas aquém do esperado">participou mas aquém do esperado</option>
-                        <option value="participou conforme esperado">participou conforme esperado</option>
-                        <option value="participou buscando explorar limites">participou buscando explorar limites</option>
-                        <option value="participou além do esperado">participou além do esperado</option>
-                    </select>
-                </div>
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">2. Comparação Histórica</h4>
-                    <select id="desempenhoHistorico" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="" disabled selected>Selecione um item</option>
-                        <option value="performou aquém de encontros anteriores">performou aquém de encontros anteriores</option>
-                        <option value="performou conforme encontros anteriores">performou conforme encontros anteriores</option>
-                        <option value="performou além de encontros anteriores">performou além de encontros anteriores</option>
-                    </select>
-                </div>
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">3. Mudança Emocional</h4>
-                    <select id="mudancaEmocional" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="" disabled selected>Selecione um item</option>
-                        <option value="houve melhoria">houve melhoria</option>
-                        <option value="permaneceu estável">permaneceu estável</option>
-                        <option value="houve agravamento">houve agravamento</option>
-                    </select>
-                </div>
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">4. Mudanças no Esquema Físico</h4>
-                    <div id="mudancasFisicas">
-                        <label class="block mb-1"><input type="checkbox" value="regulação respiratória" class="mr-2">regulação respiratória</label>
-                        <label class="block mb-1"><input type="checkbox" value="ajuste postural" class="mr-2">ajuste postural</label>
-                        <label class="block mb-1"><input type="checkbox" value="ajuste de marcha" class="mr-2">ajuste de marcha</label>
-                        <label class="block mb-1"><input type="checkbox" value="ajuste motor" class="mr-2">ajuste motor</label>
+            <!-- Seção de Informações Iniciais -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-user-circle mr-3 text-[#60a5fa]"></i>Informações Iniciais
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome do Paciente</label>
+                        <input type="text" id="nome" class="form-control" placeholder="Ex: João Silva">
                     </div>
-                </div>
-                <div class="bg-white p-4 rounded-md border border-gray-200">
-                    <h4 class="font-medium text-gray-800 mb-2">5. Nível de Suporte Percebido</h4>
-                    <div id="suportePercebido">
-                        <label class="block mb-1"><input type="checkbox" value="menor uso de intervenções de suporte" class="mr-2">menor uso de intervenções de suporte</label>
-                        <label class="block mb-1"><input type="checkbox" value="maior necessidade de intervenções de suporte" class="mr-2">maior necessidade de intervenções de suporte</label>
-                        <label class="block mb-1"><input type="checkbox" value="mudanças positivas na qualidade de suporte" class="mr-2">mudanças positivas na qualidade de suporte</label>
-                        <label class="block mb-1"><input type="checkbox" value="retrocessos na qualidade de suporte" class="mr-2">retrocessos na qualidade de suporte</label>
-                        <label class="block mb-1"><input type="checkbox" value="manutenção dos níveis de suporte" class="mr-2">manutenção dos níveis de suporte</label>
+                    <div>
+                        <label for="companhia" class="block text-sm font-medium text-gray-700 mb-1">Companhia</label>
+                        <input type="text" id="companhia" class="form-control" placeholder="Ex: Pai, Mãe, Professor">
+                    </div>
+                    <div>
+                        <label for="statusCompanhia" class="block text-sm font-medium text-gray-700 mb-1">Status da Companhia</label>
+                        <select id="statusCompanhia" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="aguardava na companhia de">aguardava na companhia de</option>
+                            <option value="foi trazido por">foi trazido por</option>
+                            <option value="teve a participação ativa de">participação ativa de</option>
+                            <option value="teve a participação passiva de">participação passiva de</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="genero" class="block text-sm font-medium text-gray-700 mb-1">Gênero do Paciente</label>
+                        <select id="genero" class="form-control">
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                        </select>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="nivelSuporte" class="block text-gray-700 font-semibold mb-2">Nível de Suporte:</label>
-                    <select id="nivelSuporte" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="" disabled selected>Selecione o nível de suporte predominante</option>
-                        <option value="maximo">Máximo</option>
-                        <option value="moderado">Moderado</option>
-                        <option value="leve">Leve</option>
-                        <option value="minimo">Mínimo</option>
-                        <option value="sem apoio">Sem apoio</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="observacoes" class="block text-gray-700 font-semibold mb-2">Observações:</label>
-                    <textarea id="observacoes" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="Adicione observações adicionais aqui..."></textarea>
-                </div>
-            </div>
-
-            <div class="mt-6">
-                <label for="elementosSimbolicos" class="block text-gray-700 font-semibold mb-2">Elementos Simbólicos:</label>
-                <textarea id="elementosSimbolicos" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="Adicione partilhas de sonhos, relatos de experiências, referências culturais, etc."></textarea>
-            </div>
-
-            <div class="mt-6">
-                <label class="block text-gray-700 font-semibold mb-2">Intercorrencias:</label>
-                <div id="intercorrencias" class="p-3 border border-gray-300 rounded-md max-h-48 overflow-y-auto bg-white">
-                    <label class="block mb-1"><input type="checkbox" value="comeu durante atendimento" class="mr-2">comeu durante o atendimento</label>
-                    <label class="block mb-1"><input type="checkbox" value="pediu para beber água" class="mr-2">pediu para beber água</label>
-                    <label class="block mb-1"><input type="checkbox" value="pediu para ir ao banheiro" class="mr-2">pediu para ir ao banheiro</label>
-                    <label class="block mb-1"><input type="checkbox" value="machucou-se durante movimentação na sala" class="mr-2">machucou-se durante movimentação na sala</label>
-                    <label class="block mb-1"><input type="checkbox" value="não houveram intercorrencias" class="mr-2">não houveram intercorrências</label>
-                    <label class="block mb-1"><input type="checkbox" value="pediu para sair" class="mr-2">pediu para sair</label>
-                    <label class="block mb-1"><input type="checkbox" value="pediu para ver mãe/pai" class="mr-2">pediu para ver mãe/pai</label>
-                    <label class="block mb-1"><input type="checkbox" value="pediu por acolhimento/colo" class="mr-2">pediu por acolhimento/colo</label>
-                    <label class="block mb-1"><input type="checkbox" value="tentou fugir/sair da sala" class="mr-2">tentou fugir/sair da sala</label>
-                    <label class="block mb-1"><input type="checkbox" value="subiu em cadeiras e móveis" class="mr-2">subiu em cadeiras e móveis</label>
-                </div>
-            </div>
-
-            <div class="mt-6 flex flex-col sm:flex-row gap-6">
-                <div class="flex items-center">
-                    <input type="checkbox" id="devolutiva" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500">
-                    <label for="devolutiva" class="ml-2 text-gray-700 font-semibold">Devolutiva</label>
-                </div>
-                <div class="flex items-center">
-                    <input type="checkbox" id="avaliacao" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500">
-                    <label for="avaliacao" class="ml-2 text-gray-700 font-semibold">Avaliação</label>
-                </div>
-            </div>
-
-            <div class="mt-6">
-                <label for="estilo" class="block text-gray-700 font-semibold mb-2">Estilo de Texto:</label>
-                <select id="estilo" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="aleatorio">Aleatório</option>
-                    <option value="estilo1">Estilo 1 (Formal e Direto)</option>
-                    <option value="estilo2">Estilo 2 (Formal e Descritivo)</option>
-                    <option value="estilo3">Estilo 3 (Menos Formal e Direto)</option>
-                    <option value="estilo4">Estilo 4 (Menos Formal e Descritivo)</option>
-                    <option value="estilo5">Estilo 5 (Estruturado em Tópicos)</option>
+            <!-- Seção de Disposição Emocional -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-face-smile mr-3 text-[#60a5fa]"></i>Disposição Emocional
+                </h2>
+                <select id="disposicaoEmocional" class="form-control">
+                    <option value="">Selecione...</option>
+                    <option value="alegre">alegre</option>
+                    <option value="amedrontado(a)">amedrontado(a)</option>
+                    <option value="ansioso(a)">ansioso(a)</option>
+                    <option value="calmo(a)">calmo(a)</option>
+                    <option value="culposo(a)">culposo(a)</option>
+                    <option value="depressivo(a)">depressivo(a)</option>
+                    <option value="enciumado(a)">enciumado(a)</option>
+                    <option value="enojado(a)">enojado(a)</option>
+                    <option value="envergonhado(a)">envergonhado(a)</option>
+                    <option value="entediado(a)">entediado(a)</option>
+                    <option value="esperançoso(a)">esperançoso(a)</option>
+                    <option value="fascinado(a)">fascinado(a)</option>
+                    <option value="grato(a)">grato(a)</option>
+                    <option value="orgulhoso(a)">orgulhoso(a)</option>
+                    <option value="otimista">otimista</option>
+                    <option value="pessimista">pessimista</option>
+                    <option value="queixoso(a)">queixoso(a)</option>
+                    <option value="raivoso(a)">raivoso(a)</option>
+                    <option value="saudoso(a)">saudoso(a)</option>
+                    <option value="surpreso(a)">surpreso(a)</option>
+                    <option value="tranquilo(a)">tranquilo(a)</option>
+                    <option value="triste">triste</option>
+                    <option value="desesperado(a)">desesperado(a)</option>
                 </select>
             </div>
-        </div>
 
-        <button onclick="gerarParagrafo()" class="w-full mt-8 p-4 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition duration-300 shadow-md">
-            Gerar Parágrafo
-        </button>
+            <!-- Seção de Esquema Físico/Corporal -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-person-walking mr-3 text-[#60a5fa]"></i>Esquema Físico/Corporal
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Expressividade Corporal</label>
+                        <select id="expressividadeCorporal" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="gestos rígidos e controlados">gestos rígidos e controlados</option>
+                            <option value="inquieto(a)">inquieto(a)</option>
+                            <option value="introspectivo(a)/fechado(a)">introspectivo(a)/fechado(a)</option>
+                            <option value="movimentos abertos e fluidos">movimentos abertos e fluidos</option>
+                            <option value="movimentando-se rapidamente">movimentando-se rapidamente</option>
+                            <option value="movimentando-se vagarosamente">movimentando-se vagarosamente</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Expressividade Facial</label>
+                        <select id="expressividadeFacial" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="apático(a)">apático(a)</option>
+                            <option value="cabisbaixo(a)">cabisbaixo(a)</option>
+                            <option value="choroso(a)">choroso(a)</option>
+                            <option value="com olheiras">com olheiras</option>
+                            <option value="com rubor">com rubor</option>
+                            <option value="mandíbula tensa">mandíbula tensa</option>
+                            <option value="olhar pendente/cansado">olhar pendente/cansado</option>
+                            <option value="olhar vazio/ausente/disperso">olhar vazio/ausente/disperso</option>
+                            <option value="semblante triste">semblante triste</option>
+                            <option value="sorridente">sorridente</option>
+                            <option value="sorriso inautêntico">sorriso inautêntico</option>
+                            <option value="tranquilo(a)">tranquilo(a)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Postura e Tônus</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="postura relaxada"> postura relaxada</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="postura neutra e equilibrada"> postura neutra e equilibrada</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="postura dominante"> postura dominante</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="postura cabisbaixa"> postura cabisbaixa</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="postura curvada"> postura curvada</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="postura desequilibrada e assimétrica"> postura desequilibrada e assimétrica</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="tônus normal"> tônus normal</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="hipotônico(a)"> hipotônico(a)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="hipertônico(a)"> hipertônico(a)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com ombros tensos"> com ombros tensos</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com pescoço tenso"> com pescoço tenso</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com braços tensos"> com braços tensos</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com punhos cerrados"> com punhos cerrados</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com pernas esticadas"> com pernas esticadas</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com baixa articulação de membros"> com baixa articulação de membros</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com aparente desvio postural (cifose)"> com aparente desvio postural (cifose)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com aparente desvio postural (lordose)"> com aparente desvio postural (lordose)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="posturaTonus" value="com aparente desvio postural (escoliose)"> com aparente desvio postural (escoliose)</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Respiração</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="nasal"> nasal</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="bucal"> bucal</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="curta"> curta</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="longa"> longa</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="superficial"> superficial</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="profunda"> profunda</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="diafragmática/abdominal"> diafragmática/abdominal</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="intercostal/torácica"> intercostal/torácica</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="peitoral/clavicular"> peitoral/clavicular</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="ruidosa (chiado)"> ruidosa (chiado)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="ruidosa (crepitação)"> ruidosa (crepitação)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="ruidosa (estridente)"> ruidosa (estridente)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="esforço respiratório (músculo de pescoço e ombros)"> esforço respiratório (músculo de pescoço e ombros)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="esforço respiratório (retração intercostal)"> esforço respiratório (retração intercostal)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="esforço respiratório (aleteo nasal)"> esforço respiratório (aleteo nasal)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="ritmo regular"> ritmo regular</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="ritmo irregular"> ritmo irregular</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="frequencia muito rápida (taquipneia)"> frequencia muito rápida (taquipneia)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="respiracao" value="frequencia anormalmente lenta (bradipneia)"> frequencia anormalmente lenta (bradipneia)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seção de Recursos do Paciente -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-guitar mr-3 text-[#60a5fa]"></i>Recursos com que o Paciente Interagiu
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sonoro-musicais</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="agogô"> agogô</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="apito"> apito</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="atabaque"> atabaque</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="baquetas"> baquetas</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="berimbau"> berimbau</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="bumbo"> bumbo</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="cabulete"> cabulete</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="caixa de som"> caixa de som</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="cajón"> cajón</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="cavaquinho"> cavaquinho</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="caxixi"> caxixi</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="clavas"> clavas</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="flauta de bloco"> flauta de bloco</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="flauta transversal (pife)"> flauta transversal (pife)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="flauta apito"> flauta apito</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="gaita de boca"> gaita de boca</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="ganzá ovinho"> ganzá ovinho</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="kalimba"> kalimba</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="meia lua"> meia lua</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="meia lua de pé"> meia lua de pé</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="metalofone"> metalofone</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="microfone"> microfone</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="ocarina"> ocarina</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="pandeiro"> pandeiro</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="rabeca"> rabeca</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="reco-reco"> reco-reco</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="surdo"> surdo</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="tambor"> tambor</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="tamborim"> tamborim</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="teclado"> teclado</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="triângulo"> triângulo</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="tubos sonoros"> tubos sonoros</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="ukulele"> ukulele</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="violão"> violão</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteSonoros" value="xilofone"> xilofone</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Extra-musicais</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="baralho convencional"> baralho convencional</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="baralho musical"> baralho musical</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="bolas de vinil"> bolas de vinil</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="bambolê"> bambolê</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="caneta esferográfica"> caneta esferográfica</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="caneta marcador a base de álcool"> caneta marcador a base de álcool</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="cartões musicais"> cartões musicais</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="dados"> dados</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="giz de cera"> giz de cera</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="jogos de caneta e papel"> jogos de caneta e papel</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="lápis de cor"> lápis de cor</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="lápis de escrever"> lápis de escrever</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="origami"> origami</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="papel"> papel</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="pincel"> pincel</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="tecidos"> tecidos</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="tesoura"> tesoura</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="tinta acrílica"> tinta acrílica</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosPacienteExtra" value="tinta guache"> tinta guache</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="mt-8 relative bg-gray-100 p-6 rounded-md border border-gray-300 shadow-inner">
-            <h3 class="text-xl font-bold text-gray-800 mb-3">Parágrafo Gerado:</h3>
-            <p id="paragrafo-final" class="whitespace-pre-line text-gray-700"></p>
-            <button id="copy-button" class="absolute top-4 right-4 bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm hover:bg-gray-300 transition-colors duration-200" onclick="copiarParagrafo()">Copiar</button>
+            <!-- Seção de Recursos do Terapeuta -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-headphones-alt mr-3 text-[#60a5fa]"></i>Recursos Utilizados na Abordagem Terapêutica
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sonoro-musicais</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="agogô"> agogô</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="apito"> apito</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="atabaque"> atabaque</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="baquetas"> baquetas</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="berimbau"> berimbau</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="bumbo"> bumbo</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="cabulete"> cabulete</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="caixa de som"> caixa de som</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="cajón"> cajón</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="cavaquinho"> cavaquinho</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="caxixi"> caxixi</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="clavas"> clavas</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="flauta de bloco"> flauta de bloco</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="flauta transversal (pife)"> flauta transversal (pife)</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="flauta apito"> flauta apito</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="gaita de boca"> gaita de boca</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="ganzá ovinho"> ganzá ovinho</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="kalimba"> kalimba</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="meia lua"> meia lua</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="meia lua de pé"> meia lua de pé</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="metalofone"> metalofone</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="microfone"> microfone</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="ocarina"> ocarina</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="pandeiro"> pandeiro</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="rabeca"> rabeca</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="reco-reco"> reco-reco</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="surdo"> surdo</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="tambor"> tambor</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="tamborim"> tamborim</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="teclado"> teclado</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="triângulo"> triângulo</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="tubos sonoros"> tubos sonoros</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="ukulele"> ukulele</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="violão"> violão</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaSonoros" value="xilofone"> xilofone</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Extra-musicais</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="baralho convencional"> baralho convencional</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="baralho musical"> baralho musical</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="bolas de vinil"> bolas de vinil</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="bambolê"> bambolê</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="caneta esferográfica"> caneta esferográfica</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="caneta marcador a base de álcool"> caneta marcador a base de álcool</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="cartões musicais"> cartões musicais</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="dados"> dados</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="giz de cera"> giz de cera</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="jogos de caneta e papel"> jogos de caneta e papel</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="lápis de cor"> lápis de cor</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="lápis de escrever"> lápis de escrever</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="origami"> origami</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="papel"> papel</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="pincel"> pincel</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="tecidos"> tecidos</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="tesoura"> tesoura</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="tinta acrílica"> tinta acrílica</label>
+                            <label class="checkbox-label"><input type="checkbox" name="recursosTerapeutaExtra" value="tinta guache"> tinta guache</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Elementos da Sala -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-chair mr-3 text-[#60a5fa]"></i>Elementos da Sala
+                </h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="tapete"> tapete</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="bancos"> bancos</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="cadeiras"> cadeiras</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="pufe"> pufe</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="interruptores"> interruptores</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="chaves"> chaves</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="trinco"> trinco</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="janela"> janela</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="lixo"> lixo</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="álcool em gel"> álcool em gel</label>
+                    <label class="checkbox-label"><input type="checkbox" name="elementosSala" value="portas de armário"> portas de armário</label>
+                </div>
+            </div>
+
+            <!-- Seção de Principais Objetivos -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-bullseye mr-3 text-[#60a5fa]"></i>Principais Objetivos
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="desenvolver controle respiratório consciente"> desenvolver controle respiratório consciente</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="desenvolver habilidades cognitivas"> desenvolver habilidades cognitivas</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="dispor ambiente de expressão emocional segura"> dispor ambiente de expressão emocional segura</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="encontro com processos de subjetivação"> encontro com processos de subjetivação</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="estimular a criatividade e a imaginação"> estimular a criatividade e a imaginação</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="facilitar a comunicação verbal e não-verbal"> facilitar a comunicação verbal e não-verbal</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="melhorar o bem-estar psicossomático"> melhorar o bem-estar psicossomático</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="promover autonomia, autoria e desenvolvimento lúdico de papéis"> promover autonomia, autoria e desenvolvimento lúdico de papéis</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="promover conhecimento profundo de si"> promover conhecimento profundo de si</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="promover crescimento pessoal e individuação"> promover crescimento pessoal e individuação</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="promover noções proprioceptivas"> promover noções proprioceptivas</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="promover relaxamento e redução de estresse"> promover relaxamento e redução de estresse</label>
+                    <label class="checkbox-label"><input type="checkbox" name="objetivos" value="tratar de sofrimento psíquico"> tratar de sofrimento psíquico</label>
+                </div>
+            </div>
+
+            <!-- Seção de Abordagem -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-comments mr-3 text-[#60a5fa]"></i>Abordagem
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="atividades artísticas complementares (AACs)"> atividades artísticas complementares (AACs)</label>
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="corpo e movimento"> corpo e movimento</label>
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="musicoterapia baseada em recursos"> musicoterapia baseada em recursos</label>
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="musicoterapia composicional"> musicoterapia composicional</label>
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="musicoterapia improvisacional"> musicoterapia improvisacional</label>
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="musicoterapia psicodinâmica"> musicoterapia psicodinâmica</label>
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="musicoterapia receptiva"> musicoterapia receptiva</label>
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="musicoterapia recriativa"> musicoterapia recriativa</label>
+                    <label class="checkbox-label"><input type="checkbox" name="abordagem" value="repertório tradicional infantil brasileiro (MTIB)"> repertório tradicional infantil brasileiro (MTIB)</label>
+                </div>
+            </div>
+
+            <!-- Seção de Resultados -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-chart-line mr-3 text-[#60a5fa]"></i>Resultados
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Desempenho Geral</label>
+                        <select id="desempenhoGeral" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="não participou ativamente">não participou ativamente</option>
+                            <option value="demonstrou perceber a intervenção mas não participou">demonstrou perceber a intervenção mas não participou</option>
+                            <option value="demonstrou perceber a intervenção e teve dificuldade em participar">demonstrou perceber a intervenção e teve dificuldade em participar</option>
+                            <option value="participou mas aquém do esperado">participou mas aquém do esperado</option>
+                            <option value="participou conforme esperado">participou conforme esperado</option>
+                            <option value="participou buscando explorar limites">participou buscando explorar limites</option>
+                            <option value="participou além do esperado">participou além do esperado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Comparação Histórica</label>
+                        <select id="comparacaoHistorica" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="performou aquém de encontros anteriores">performou aquém de encontros anteriores</option>
+                            <option value="performou conforme encontros anteriores">performou conforme encontros anteriores</option>
+                            <option value="performou além de encontros anteriores">performou além de encontros anteriores</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Mudança Emocional</label>
+                        <select id="mudancaEmocional" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="houve melhoria">houve melhoria</option>
+                            <option value="permaneceu estável">permaneceu estável</option>
+                            <option value="houve agravamento">houve agravamento</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Mudanças no Esquema Físico</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="mudancasFisicas" value="regulação respiratória"> regulação respiratória</label>
+                            <label class="checkbox-label"><input type="checkbox" name="mudancasFisicas" value="ajuste postural"> ajuste postural</label>
+                            <label class="checkbox-label"><input type="checkbox" name="mudancasFisicas" value="ajuste de marcha"> ajuste de marcha</label>
+                            <label class="checkbox-label"><input type="checkbox" name="mudancasFisicas" value="ajuste motor"> ajuste motor</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nível de Suporte Percebido</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="suportePercebido" value="menor uso de intervenções de suporte"> menor uso de intervenções de suporte</label>
+                            <label class="checkbox-label"><input type="checkbox" name="suportePercebido" value="maior necessidade de intervenções de suporte"> maior necessidade de intervenções de suporte</label>
+                            <label class="checkbox-label"><input type="checkbox" name="suportePercebido" value="mudanças positivas na qualidade de suporte"> mudanças positivas na qualidade de suporte</label>
+                            <label class="checkbox-label"><input type="checkbox" name="suportePercebido" value="retrocessos na qualidade de suporte"> retrocessos na qualidade de suporte</label>
+                            <label class="checkbox-label"><input type="checkbox" name="suportePercebido" value="manutenção dos níveis de suporte"> manutenção dos níveis de suporte</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Nível de Suporte e Outras Informações -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-hand-holding-heart mr-3 text-[#60a5fa]"></i>Nível de Suporte e Outras Informações
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="nivelSuporte" class="block text-sm font-medium text-gray-700 mb-1">Nível de Suporte</label>
+                        <select id="nivelSuporte" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="Máximo">Máximo</option>
+                            <option value="Moderado">Moderado</option>
+                            <option value="Leve">Leve</option>
+                            <option value="Mínimo">Mínimo</option>
+                            <option value="Sem apoio">Sem apoio</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="observacoes" class="block text-sm font-medium text-gray-700 mb-1">Observações</label>
+                        <textarea id="observacoes" class="form-control" rows="3" placeholder="Adicione observações gerais..."></textarea>
+                    </div>
+                    <div>
+                        <label for="elementosSimbolicos" class="block text-sm font-medium text-gray-700 mb-1">Elementos Simbólicos</label>
+                        <textarea id="elementosSimbolicos" class="form-control" rows="3" placeholder="Descreva os elementos simbólicos..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Intercorrências</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="comeu durante atendimento"> comeu durante atendimento</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="pediu para beber água"> pediu para beber água</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="pediu para ir ao banheiro"> pediu para ir ao banheiro</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="machucou-se durante movimentação na sala"> machucou-se durante movimentação na sala</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="não houveram intercorrências"> não houveram intercorrências</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="pediu para sair"> pediu para sair</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="pediu para ver mãe/pai"> pediu para ver mãe/pai</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="pediu por acolhimento/colo"> pediu por acolhimento/colo</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="tentou fugir/sair da sala"> tentou fugir/sair da sala</label>
+                            <label class="checkbox-label"><input type="checkbox" name="intercorrencias" value="subiu em cadeiras e móveis"> subiu em cadeiras e móveis</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Opções Finais -->
+            <div class="section-box">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-file-invoice mr-3 text-[#60a5fa]"></i>Opções Finais
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="checkbox-label"><input type="checkbox" id="houveDevolutiva"> Houve Devolutiva</label>
+                        <label class="checkbox-label"><input type="checkbox" id="houveAvaliacao"> Houve Avaliação</label>
+                    </div>
+                    <div>
+                        <label for="estiloTexto" class="block text-sm font-medium text-gray-700 mb-1">Estilo de Texto</label>
+                        <select id="estiloTexto" class="form-control">
+                            <option value="aleatorio">Aleatório</option>
+                            <option value="estilo1">Estilo 1 (Formal e Direto)</option>
+                            <option value="estilo2">Estilo 2 (Formal e Descritivo)</option>
+                            <option value="estilo3">Estilo 3 (Menos Formal e Direto)</option>
+                            <option value="estilo4">Estilo 4 (Menos Formal e Descritivo)</option>
+                            <option value="estilo5">Estilo 5 (Estruturado em Tópicos)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="flex flex-col md:flex-row gap-4 mt-6">
+                <button id="gerarRelatorioBtn" class="btn btn-primary w-full md:w-auto">Gerar Relatório</button>
+                <button id="copiarRelatorioBtn" class="btn btn-secondary w-full md:w-auto">Copiar Relatório</button>
+                <button id="randomizarBtn" class="btn btn-info w-full md:w-auto">Randomizar Campos</button>
+                <button id="limparTudoBtn" class="btn btn-danger w-full md:w-auto">Limpar Tudo</button>
+            </div>
+
+            <!-- Seção de Relatório Gerado -->
+            <div id="relatorioGerado" class="section-box mt-6" style="display: none;">
+                <h2 class="text-2xl font-bold flex items-center mb-4 text-[#374151]">
+                    <i class="fa-solid fa-paste mr-3 text-[#60a5fa]"></i>Relatório Gerado
+                </h2>
+                <div id="relatorioContent" class="bg-[#eef2f6] text-[#1f2937] p-4 rounded-lg whitespace-pre-wrap">
+                    <!-- O relatório gerado será inserido aqui -->
+                </div>
+            </div>
+
+            <!-- Toast Message -->
+            <div id="toast" class="toast"></div>
+
         </div>
     </div>
 
     <script>
-        const termos = {
-            disposicao: {
-                masculino: [
-                    "alegre", "amedrontado", "ansioso", "calmo", "culposo", "depressivo",
-                    "enciumado", "enojado", "envergonhado", "entediado", "esperançoso",
-                    "fascinado", "grato", "orgulhoso", "otimista", "pessimista", "queixoso",
-                    "raivoso", "saudoso", "surpreso", "tranquilo", "triste", "desesperado"
-                ],
-                feminino: [
-                    "alegre", "amedrontada", "ansiosa", "calma", "culposa", "depressiva",
-                    "enciumada", "enojada", "envergonhada", "entediada", "esperançosa",
-                    "fascinada", "grata", "orgulhosa", "otimista", "pessimista", "queixosa",
-                    "raivosa", "saudosa", "surpresa", "tranquila", "triste", "desesperada"
-                ]
-            },
-            expCorporal: {
-                masculino: [
-                    "gestos rígidos e controlados", "inquieto", "introspectivo/fechado",
-                    "movimentos abertos e fluidos", "movimentando-se rapidamente",
-                    "movimentando-se vagarosamente"
-                ],
-                feminino: [
-                    "gestos rígidos e controlados", "inquieta", "introspectiva/fechada",
-                    "movimentos abertos e fluidos", "movimentando-se rapidamente",
-                    "movimentando-se vagarosamente"
-                ]
-            },
-            expFacial: {
-                masculino: [
-                    "apático", "cabisbaixo", "choroso", "com olheiras", "com rubor",
-                    "mandíbula tensa", "olhar pendente/cansado",
-                    "olhar vazio/ausente/disperso", "semblante triste", "sorridente",
-                    "sorriso inautêntico", "tranquilo"
-                ],
-                feminino: [
-                    "apática", "cabisbaixa", "chorosa", "com olheiras", "com rubor",
-                    "mandíbula tensa", "olhar pendente/cansado",
-                    "olhar vazio/ausente/disperso", "semblante triste", "sorridente",
-                    "sorriso inautêntico", "tranquila"
-                ]
-            },
-            posturaTonus: {
-                masculino: [
-                    "postura relaxada", "postura neutra e equilibrada", "postura dominante",
-                    "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica",
-                    "tônus normal", "hipotônico", "hipertônico", "com ombros tensos",
-                    "com pescoço tenso", "com braços tensos", "com punhos cerrados",
-                    "com pernas esticadas", "com baixa articulação de membros",
-                    "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)",
-                    "com aparente desvio postural (escoliose)"
-                ],
-                feminino: [
-                    "postura relaxada", "postura neutra e equilibrada", "postura dominante",
-                    "postura cabisbaixa", "postura curvada", "postura desequilibrada e assimétrica",
-                    "tônus normal", "hipotônica", "hipertônica", "com ombros tensos",
-                    "com pescoço tenso", "com braços tensos", "com punhos cerrados",
-                    "com pernas esticadas", "com baixa articulação de membros",
-                    "com aparente desvio postural (cifose)", "com aparente desvio postural (lordose)",
-                    "com aparente desvio postural (escoliose)"
-                ]
-            },
-            respiracao: {
-                masculino: [
-                    "nasal", "bucal", "curta", "longa", "superficial", "profunda",
-                    "diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular",
-                    "ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)",
-                    "esforço respiratório (músculo de pescoço e ombros)",
-                    "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)",
-                    "ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)",
-                    "frequencia anormalmente lenta (bradipneia)"
-                ],
-                feminino: [
-                    "nasal", "bucal", "curta", "longa", "superficial", "profunda",
-                    "diafragmática/abdominal", "intercostal/torácica", "peitoral/clavicular",
-                    "ruidosa (chiado)", "ruidosa (crepitação)", "ruidosa (estridente)",
-                    "esforço respiratório (músculo de pescoço e ombros)",
-                    "esforço respiratório (retração intercostal)", "esforço respiratório (aleteo nasal)",
-                    "ritmo regular", "ritmo irregular", "frequencia muito rápida (taquipneia)",
-                    "frequencia anormalmente lenta (bradipneia)"
-                ]
-            }
+        // Versão do script: 1.3
+        // Função para mostrar uma mensagem de toast na tela
+        const showToast = (message) => {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         };
 
-        function preencherSelect(elementId, termoKey, genero) {
-            const select = document.getElementById(elementId);
-            if (!select) return;
+        // Função para pegar os valores de checkboxes selecionados
+        const getSelectedValues = (name) => {
+            return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
+        };
 
-            const isMultiple = select.hasAttribute('multiple');
-            const termosGenero = termos[termoKey][genero];
-            const termosOriginal = termos[termoKey]['masculino'];
-
-            const selectedValues = Array.from(select.options)
-                .filter(opt => opt.selected)
-                .map(opt => opt.value);
-            
-            select.innerHTML = '';
-            
-            if (!isMultiple) {
-                const optionPlaceholder = document.createElement('option');
-                optionPlaceholder.value = "";
-                optionPlaceholder.textContent = "Selecione uma opção";
-                optionPlaceholder.disabled = true;
-                optionPlaceholder.selected = true;
-                select.appendChild(optionPlaceholder);
-            }
-
-            termosGenero.forEach((termo, index) => {
-                const option = document.createElement('option');
-                option.value = termosOriginal[index];
-                option.textContent = termo;
-                
-                if (selectedValues.includes(option.value)) {
-                    option.selected = true;
-                }
-                select.appendChild(option);
-            });
-        }
-
-        function ajustarTermosPorGenero() {
-            const genero = document.getElementById('genero').value;
-            preencherSelect('disposicao', 'disposicao', genero);
-            preencherSelect('expCorporal', 'expCorporal', genero);
-            preencherSelect('expFacial', 'expFacial', genero);
-            preencherSelect('posturaTonus', 'posturaTonus', genero);
-            preencherSelect('respiracao', 'respiracao', genero);
-        }
-
-        document.getElementById('genero').addEventListener('change', ajustarTermosPorGenero);
-        
-        // Chamada inicial para preencher os selects ao carregar a página
-        document.addEventListener('DOMContentLoaded', ajustarTermosPorGenero);
-
-        function getCheckedValues(containerId) {
-            const container = document.getElementById(containerId);
-            const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
-            return Array.from(checkboxes).map(checkbox => checkbox.value);
-        }
-
-        function getSelectedValues(selectId) {
+        // Função para pegar o valor de um select
+        const getSelectedText = (selectId) => {
             const select = document.getElementById(selectId);
-            if (!select) return [];
-            const isMultiple = select.hasAttribute('multiple');
-            if (isMultiple) {
-                return Array.from(select.options)
-                    .filter(opt => opt.selected)
-                    .map(opt => opt.value);
-            } else {
-                return select.value ? [select.value] : [];
-            }
-        }
+            return select.options[select.selectedIndex].value;
+        };
 
-        function adaptarTermo(termoOriginal, genero) {
-            for (const key in termos) {
-                const index = termos[key]['masculino'].indexOf(termoOriginal);
-                if (index !== -1) {
-                    return termos[key][genero][index];
-                }
+        // Função para lidar com a concordância de gênero
+        const getGenderedText = (text, genero) => {
+            if (genero === 'feminino' && typeof text === 'string') {
+                return text
+                    .replace(/o\(a\)/g, 'a')
+                    .replace(/a\(a\)/g, 'a')
+                    .replace(/ado\(a\)/g, 'ada')
+                    .replace(/ido\(a\)/g, 'ida')
+                    .replace(/oso\(a\)/g, 'osa')
+                    .replace(/ivo\(a\)/g, 'iva')
+                    .replace(/ento\(a\)/g, 'enta')
+                    .replace(/s\(a\)/g, 's') // for words like "inquieto(a)"
+                    .replace(/\(a\)/g, '')
+                    .replace(/o$/, 'a'); // for words like "calmo"
             }
-            return termoOriginal;
-        }
-        
-        function formatList(items, genero) {
-            if (items.length === 0) {
-                return '';
-            }
-            const itensAdaptados = items.map(item => adaptarTermo(item, genero));
-            if (itensAdaptados.length === 1) {
-                return itensAdaptados[0];
-            }
-            if (itensAdaptados.length === 2) {
-                return itensAdaptados.join(' e ');
-            }
-            const lastItem = itensAdaptados.pop();
-            return itensAdaptados.join(', ') + ' e ' + lastItem;
-        }
+            return text.replace(/\(a\)/g, '');
+        };
 
-        function copiarParagrafo() {
-            const paragrafo = document.getElementById('paragrafo-final').textContent;
-            const copyButton = document.getElementById('copy-button');
-
-            navigator.clipboard.writeText(paragrafo).then(() => {
-                const originalText = copyButton.textContent;
-                copyButton.textContent = "Copiado!";
-                setTimeout(() => {
-                    copyButton.textContent = originalText;
-                }, 2000);
-            }).catch(err => {
-                console.error('Falha ao copiar o texto: ', err);
+        // Função para atualizar a exibição dos textos baseados no gênero
+        const updateGenderedOptions = () => {
+            const genero = getSelectedText('genero');
+            const selectsToUpdate = ['disposicaoEmocional', 'expressividadeCorporal', 'expressividadeFacial', 'desempenhoGeral', 'comparacaoHistorica', 'mudancaEmocional', 'nivelSuporte'];
+            const checkboxesToUpdate = ['posturaTonus', 'respiracao', 'recursosPacienteSonoros', 'recursosPacienteExtra', 'recursosTerapeutaSonoros', 'recursosTerapeutaExtra', 'elementosSala', 'objetivos', 'abordagem', 'mudancasFisicas', 'suportePercebido', 'intercorrencias'];
+            
+            selectsToUpdate.forEach(id => {
+                const select = document.getElementById(id);
+                Array.from(select.options).forEach(option => {
+                    const originalValue = option.getAttribute('data-original-value') || option.value;
+                    option.setAttribute('data-original-value', originalValue);
+                    if (originalValue) {
+                        option.textContent = getGenderedText(originalValue, genero);
+                    }
+                });
             });
-        }
 
-        function gerarParagrafo() {
-            const nome = document.getElementById('nome').value.trim();
-            const acompanhante = document.getElementById('acompanhante').value.trim();
-            const acompanhanteStatus = getSelectedValues('acompanhanteStatus')[0];
-            const genero = getSelectedValues('genero')[0];
-            const disposicaoOriginal = getSelectedValues('disposicao')[0];
-            const observacoes = document.getElementById('observacoes').value.trim();
-            const elementosSimbolicos = document.getElementById('elementosSimbolicos').value.trim();
-            const devolutiva = document.getElementById('devolutiva').checked;
-            const avaliacao = document.getElementById('avaliacao').checked;
-            const paragrafoFinal = document.getElementById('paragrafo-final');
-            const estilo = getSelectedValues('estilo')[0];
-            const nivelSuporte = getSelectedValues('nivelSuporte')[0];
+            checkboxesToUpdate.forEach(name => {
+                Array.from(document.querySelectorAll(`input[name="${name}"]`)).forEach(checkbox => {
+                    const label = checkbox.closest('label');
+                    const originalValue = checkbox.getAttribute('data-original-value') || checkbox.value;
+                    checkbox.setAttribute('data-original-value', originalValue);
+                    if (originalValue) {
+                         label.childNodes[1].nodeValue = " " + getGenderedText(originalValue, genero);
+                    }
+                });
+            });
+        };
 
-            const desempenhoGeral = getSelectedValues('desempenhoGeral')[0];
-            const desempenhoHistorico = getSelectedValues('desempenhoHistorico')[0];
-            const mudancaEmocional = getSelectedValues('mudancaEmocional')[0];
-            const mudancasFisicas = getCheckedValues('mudancasFisicas');
-            const suportePercebido = getCheckedValues('suportePercebido');
+        // Função para selecionar aleatoriamente os campos
+        const randomizeSelections = () => {
+            // Seleciona um gênero aleatório
+            const generoSelect = document.getElementById('genero');
+            const generoOptions = Array.from(generoSelect.options);
+            const randomGeneroIndex = Math.floor(Math.random() * generoOptions.length);
+            generoSelect.value = generoOptions[randomGeneroIndex].value;
 
-            const esquemasFisicosOriginal = [
-                ...getSelectedValues('expCorporal'),
-                ...getSelectedValues('expFacial'),
-                ...getSelectedValues('posturaTonus'),
-                ...getSelectedValues('respiracao')
-            ].filter(Boolean);
+            // Atualiza os textos de acordo com o gênero aleatório
+            updateGenderedOptions();
 
-            const recursosInteragiu = getCheckedValues('recursosInteragiu').concat(getCheckedValues('recursosExtraInteragiu'));
-            const recursosAbordagem = getCheckedValues('recursosAbordagem').concat(getCheckedValues('recursosExtraAbordagem'));
-            const elementosSala = getCheckedValues('elementosSala');
-
-            const objetivos = getCheckedValues('objetivos');
-            const abordagem = getCheckedValues('abordagem');
-            const intercorrencias = getCheckedValues('intercorrencias');
-
-            const disposicaoAdaptada = adaptarTermo(disposicaoOriginal, genero);
-            const textoEsquemas = formatList(esquemasFisicosOriginal, genero);
-            const textoRecursosInteragiu = formatList(recursosInteragiu, genero);
-            const textoRecursosAbordagem = formatList(recursosAbordagem, genero);
-            const textoElementosSala = formatList(elementosSala, genero);
-            const textoObjetivos = formatList(objetivos, genero);
-            const textoAbordagem = formatList(abordagem, genero);
-
-            let textoIntercorrencias = "";
-            if (intercorrencias.length > 0) {
-                if (intercorrencias.includes("não houveram intercorrencias")) {
-                    textoIntercorrencias = " Sem intercorrências.";
-                } else {
-                    textoIntercorrencias = ` As intercorrências observadas foram: ${formatList(intercorrencias, genero)}.`;
+            // Seleciona um valor aleatório para cada select
+            document.querySelectorAll('select').forEach(select => {
+                const options = Array.from(select.options).filter(opt => opt.value !== "");
+                if (options.length > 0) {
+                    const randomOptionIndex = Math.floor(Math.random() * options.length);
+                    select.value = options[randomOptionIndex].value;
                 }
+            });
+
+            // Seleciona aleatoriamente alguns checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = Math.random() < 0.5; // 50% de chance de ser marcado
+            });
+
+            // Garante que a opção 'não houveram intercorrências' não seja marcada com outras
+            const intercorrencias = document.querySelectorAll('input[name="intercorrencias"]');
+            const noIncidents = Array.from(intercorrencias).find(cb => cb.value === 'não houveram intercorrências');
+            if (noIncidents && noIncidents.checked) {
+                intercorrencias.forEach(cb => {
+                    if (cb.value !== 'não houveram intercorrências') {
+                        cb.checked = false;
+                    }
+                });
             } else {
-                 textoIntercorrencias = " Sem intercorrências.";
-            }
-
-            const nomeCapitalizado = nome.charAt(0).toUpperCase() + nome.slice(1);
-
-            let textoAvaliacao = "";
-            if (avaliacao) {
-                if (estilo === 'estilo1' || estilo === 'estilo2') {
-                    textoAvaliacao = ` Avaliação formal foi realizada, e as atividades executadas apoiaram tal processo.`;
-                } else if (estilo === 'estilo3' || estilo === 'estilo4') {
-                    textoAvaliacao = ` A sessão também incluiu uma avaliação formal, com as atividades servindo de apoio para a mesma.`;
-                }
-            }
-
-            let textoDevolutiva = "";
-            if (devolutiva) {
-                if (estilo === 'estilo1' || estilo === 'estilo2') {
-                    textoDevolutiva = ` Devolutiva foi feita aos responsáveis a respeito do processo terapêutico, possibilitando troca de informações, sanando dúvidas e enriquecendo a anamnese e investigação clínica do sistema de cuidados de ${nomeCapitalizado}.`;
-                } else if (estilo === 'estilo3' || estilo === 'estilo4') {
-                    textoDevolutiva = ` Houve uma devolutiva aos responsáveis sobre o progresso de ${nomeCapitalizado}, onde conversamos, tirei dúvidas e aprimorei a compreensão do contexto ${genero === 'masculino' ? 'dele' : 'dela'}.`;
-                }
-            }
-
-            let textoObservacoes = observacoes ? ` ${observacoes}.` : "";
-            let textoElementosSimbolicos = elementosSimbolicos ? ` Os seguintes elementos simbólicos foram notados: ${elementosSimbolicos}.` : "";
-
-            let textoNivelSuporte = "";
-            if (nivelSuporte) {
-                let descricaoSuporte;
-                if (nivelSuporte === 'maximo') {
-                    descricaoSuporte = "totalmente físico, necessitando de assistência completa para realizar a atividade.";
-                } else if (nivelSuporte === 'moderado') {
-                    descricaoSuporte = "parcialmente físico, recebendo um toque ou guia suave para iniciar ou continuar a atividade.";
-                } else if (nivelSuporte === 'leve') {
-                    descricaoSuporte = "visual, sem contato físico, com gestos e demonstrações para entender a ação.";
-                } else if (nivelSuporte === 'minimo') {
-                    descricaoSuporte = "verbal, precisando apenas de uma orientação verbal para completar a tarefa.";
-                } else if (nivelSuporte === 'sem apoio') {
-                    descricaoSuporte = "independente, realizando a atividade de forma completamente autônoma.";
-                }
-
-                if (estilo === 'estilo1' || estilo === 'estilo2') {
-                    textoNivelSuporte = ` O nível de suporte predominante foi ${descricaoSuporte}.`;
-                } else if (estilo === 'estilo3' || estilo === 'estilo4') {
-                    textoNivelSuporte = ` ${genero === 'masculino' ? 'Ele' : 'Ela'} precisou de um suporte ${descricaoSuporte}.`;
-                }
-            }
-
-            const textoElementosSala = elementosSala.length > 0 ? ` Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com elementos da sala como ${formatList(elementosSala, genero)}.` : "";
-
-            let textoResultados = '';
-            if (desempenhoGeral || desempenhoHistorico || mudancaEmocional || mudancasFisicas.length > 0 || suportePercebido.length > 0) {
-                if (estilo === 'estilo1' || estilo === 'estilo2') {
-                    const desempenhoGeralTxt = desempenhoGeral ? `Em relação ao desempenho geral, o paciente ${desempenhoGeral}. ` : '';
-                    const desempenhoHistoricoTxt = desempenhoHistorico ? `Sua performance se apresentou ${desempenhoHistorico}. ` : '';
-                    const mudancaEmocionalTxt = mudancaEmocional ? `Quanto à disposição emocional, ${mudancaEmocional}. ` : '';
-                    const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `As mudanças no esquema físico observadas foram: ${formatList(mudancasFisicas, genero)}. ` : '';
-                    const suportePercebidoTxt = suportePercebido.length > 0 ? `No nível de suporte percebido, foram notadas: ${formatList(suportePercebido, genero)}. ` : '';
-
-                    textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
-                } else if (estilo === 'estilo3' || estilo === 'estilo4') {
-                    const desempenhoGeralTxt = desempenhoGeral ? `${nomeCapitalizado} ${desempenhoGeral} nas atividades propostas. ` : '';
-                    const desempenhoHistoricoTxt = desempenhoHistorico ? `O que está ${desempenhoHistorico}. ` : '';
-                    const mudancaEmocionalTxt = mudancaEmocional ? `Sua disposição emocional ${mudancaEmocional}. ` : '';
-                    const mudancasFisicasTxt = mudancasFisicas.length > 0 ? `Houve também mudanças no corpo, como ${formatList(mudancasFisicas, genero)}. ` : '';
-                    const suportePercebidoTxt = suportePercebido.length > 0 ? `Sobre o suporte, percebemos: ${formatList(suportePercebido, genero)}. ` : '';
-
-                    textoResultados = `${desempenhoGeralTxt}${desempenhoHistoricoTxt}${mudancaEmocionalTxt}${mudancasFisicasTxt}${suportePercebidoTxt}`;
-                }
-            }
-
-
-            let template;
-            const estiloEscolhido = estilo === 'aleatorio' ? `estilo${Math.floor(Math.random() * 5) + 1}` : estilo;
-
-            switch (estiloEscolhido) {
-                case 'estilo1':
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Seu esquema físico observou a presença de ${textoEsquemas}. Os recursos com que ${genero === 'masculino' ? 'ele' : 'ela'} interagiu foram ${textoRecursosInteragiu}. Os recursos utilizados na abordagem terapêutica foram ${textoRecursosAbordagem}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
-                    break;
-                case 'estilo2':
-                    template = `${nomeCapitalizado}, que ${acompanhanteStatus} ${acompanhante}, apresentou uma disposição emocional ${disposicaoAdaptada}. O estado físico evidenciado foi ${textoEsquemas}. Os recursos com que ${genero === 'masculino' ? 'ele' : 'ela'} interagiu foram ${textoRecursosInteragiu} e os utilizados na abordagem terapêutica foram ${textoRecursosAbordagem}. A sessão suportou os objetivos de ${textoObjetivos}, utilizando a abordagem de ${textoAbordagem}. ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
-                    break;
-                case 'estilo3':
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. No geral, ${genero === 'masculino' ? 'ele' : 'ela'} se mostrou com ${textoEsquemas}. Usamos ${textoRecursosInteragiu} e ${textoRecursosAbordagem} para trabalhar ${textoObjetivos} e a abordagem de ${textoAbordagem}. ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
-                    break;
-                case 'estilo4':
-                    template = `No atendimento de hoje, ${nomeCapitalizado}, que ${acompanhanteStatus} ${acompanhante}, mostrou-se ${disposicaoAdaptada}. O esquema corporal evidenciou ${textoEsquemas}. Durante a sessão, ${genero === 'masculino' ? 'ele' : 'ela'} interagiu com os recursos ${textoRecursosInteragiu}, enquanto os recursos da abordagem foram ${textoRecursosAbordagem}, explorando os objetivos de ${textoObjetivos} através da abordagem de ${textoAbordagem}, levando aos resultados de ${textoResultados}${textoElementosSala}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}${textoNivelSuporte}`;
-                    break;
-                case 'estilo5':
-                    const observacoesEspeciais = [observacoes];
-                    if (avaliacao) {
-                        observacoesEspeciais.push("Avaliação formal foi realizada, e as atividades executadas apoiaram tal processo.");
+                let anyOtherChecked = false;
+                intercorrencias.forEach(cb => {
+                    if (cb.checked && cb.value !== 'não houveram intercorrências') {
+                        anyOtherChecked = true;
                     }
-                    if (devolutiva) {
-                        observacoesEspeciais.push(`Devolutiva foi feita aos responsáveis a respeito do processo terapêutico, possibilitando troca de informações, sanando dúvidas e enriquecendo a anamnese e investigação clínica do sistema de cuidados de ${nomeCapitalizado}.`);
+                });
+                if (noIncidents) {
+                    noIncidents.checked = !anyOtherChecked;
+                }
+            }
+
+            // Garante que pelo menos um objetivo seja selecionado
+            const objetivos = document.querySelectorAll('input[name="objetivos"]');
+            if (!Array.from(objetivos).some(cb => cb.checked)) {
+                objetivos[Math.floor(Math.random() * objetivos.length)].checked = true;
+            }
+
+            // Define nome e companhia de exemplo
+            document.getElementById('nome').value = 'Paciente Teste';
+            document.getElementById('companhia').value = 'Exemplo';
+
+            showToast('Campos randomizados com sucesso!');
+        };
+
+
+        // Função principal para gerar o relatório
+        const generateReport = () => {
+            const nome = document.getElementById('nome').value.trim();
+            if (!nome) {
+                showToast('Por favor, preencha o nome do paciente.');
+                return;
+            }
+            
+            const data = {
+                nome: nome,
+                genero: getSelectedText('genero'),
+                companhia: document.getElementById('companhia').value.trim(),
+                statusCompanhia: getSelectedText('statusCompanhia'),
+                disposicaoEmocional: getSelectedText('disposicaoEmocional'),
+                expressividadeCorporal: getSelectedText('expressividadeCorporal'),
+                expressividadeFacial: getSelectedText('expressividadeFacial'),
+                posturaTonus: getSelectedValues('posturaTonus'),
+                respiracao: getSelectedValues('respiracao'),
+                recursosPacienteSonoros: getSelectedValues('recursosPacienteSonoros'),
+                recursosPacienteExtra: getSelectedValues('recursosPacienteExtra'),
+                recursosTerapeutaSonoros: getSelectedValues('recursosTerapeutaSonoros'),
+                recursosTerapeutaExtra: getSelectedValues('recursosTerapeutaExtra'),
+                elementosSala: getSelectedValues('elementosSala'),
+                objetivos: getSelectedValues('objetivos'),
+                abordagem: getSelectedValues('abordagem'), 
+                desempenhoGeral: getSelectedText('desempenhoGeral'),
+                comparacaoHistorica: getSelectedText('comparacaoHistorica'),
+                mudancaEmocional: getSelectedText('mudancaEmocional'),
+                mudancasFisicas: getSelectedValues('mudancasFisicas'),
+                suportePercebido: getSelectedValues('suportePercebido'),
+                nivelSuporte: getSelectedText('nivelSuporte'),
+                observacoes: document.getElementById('observacoes').value.trim(),
+                elementosSimbolicos: document.getElementById('elementosSimbolicos').value.trim(),
+                intercorrencias: getSelectedValues('intercorrencias'),
+                houveDevolutiva: document.getElementById('houveDevolutiva').checked,
+                houveAvaliacao: document.getElementById('houveAvaliacao').checked,
+                estiloTexto: getSelectedText('estiloTexto')
+            };
+
+            const getReportText = () => {
+                const generoPronoun = data.genero === 'masculino' ? 'ele' : 'ela';
+                const generoPossessive = data.genero === 'masculino' ? 'seu' : 'sua';
+                const reportDate = new Date().toLocaleDateString('pt-BR');
+                
+                const formatList = (items) => {
+                    if (items.length === 0) return '';
+                    return items.map(item => getGenderedText(item, data.genero)).join(', ') + '.';
+                };
+
+                const firstLetterUpper = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+                const getIntercorrenciasText = () => {
+                    if (data.intercorrencias.length > 0) {
+                        return `Intercorrências: ${formatList(data.intercorrencias)}`;
+                    } else {
+                        return "Não houveram intercorrências.";
                     }
-                    if (nivelSuporte) {
-                        let descricaoSuporte;
-                        if (nivelSuporte === 'maximo') {
-                            descricaoSuporte = "Máximo (Totalmente Físico): O paciente necessita de assistência física completa do musicoterapeuta para realizar a atividade. O profissional guia os movimentos do paciente, que pode estar passivo ou oferecer pouca resistência. Este tipo de suporte é usado quando a criança não consegue iniciar ou completar a tarefa por conta própria.";
-                        } else if (nivelSuporte === 'moderado') {
-                            descricaoSuporte = "Moderado (Parcialmente Físico): O paciente recebe uma assistência física parcial, como um toque ou uma guia suave para iniciar ou continuar a atividade. O terapeuta não realiza a tarefa pelo paciente, mas o auxilia a completar o movimento.";
-                        } else if (nivelSuporte === 'leve') {
-                            descricaoSuporte = "Leve (Visual): O suporte é visual, sem contato físico. O terapeuta pode usar gestos, demonstrar a atividade ou apontar para o objeto, para que o paciente possa entender e imitar a ação.";
-                        } else if (nivelSuporte === 'minimo') {
-                            descricaoSuporte = "Mínimo (Verbal): O paciente precisa apenas de uma orientação verbal para realizar a atividade. O terapeuta utiliza instruções claras ou pistas verbais para incentivar o paciente a completar a tarefa.";
-                        } else if (nivelSuporte === 'sem apoio') {
-                            descricaoSuporte = "Sem apoio (Independente): O paciente realiza a atividade de forma completamente autônoma, sem a necessidade de qualquer tipo de ajuda verbal, visual ou física. A tarefa é realizada de forma consistente e independente.";
+                };
+
+                const styles = {
+                    estilo1: () => {
+                        let report = `Relatório Terapêutico - ${data.nome}\n\n`;
+                        report += `Data do Relatório: ${reportDate}\n\n`;
+                        report += `O paciente ${data.nome} ${data.statusCompanhia} ${data.companhia} para a sessão. `;
+                        report += `${firstLetterUpper(generoPronoun)} se apresentou ${getGenderedText(data.disposicaoEmocional, data.genero)}.`;
+                        
+                        if (data.expressividadeCorporal || data.expressividadeFacial || data.posturaTonus.length > 0) {
+                            report += ` Fisicamente, ${generoPronoun} demonstrou `;
+                            if (data.expressividadeCorporal) report += `${getGenderedText(data.expressividadeCorporal, data.genero)}, `;
+                            if (data.expressividadeFacial) report += `${getGenderedText(data.expressividadeFacial, data.genero)}. `;
+                            if (data.posturaTonus.length > 0) report += `Sua postura e tônus incluíam: ${formatList(data.posturaTonus)}`;
                         }
-                        observacoesEspeciais.push(`Nível de Suporte Predominante: ${descricaoSuporte}`);
+
+                        if (data.objetivos.length > 0) {
+                            report += ` A sessão teve como objetivo ${formatList(data.objetivos)}.`;
+                        }
+                        if (data.abordagem.length > 0) {
+                            report += ` A abordagem terapêutica utilizada foi a ${formatList(data.abordagem)}.`;
+                        }
+
+                        if (data.desempenhoGeral) {
+                            report += ` O desempenho geral de ${data.nome} ${getGenderedText(data.desempenhoGeral, data.genero)}.`;
+                        }
+
+                        if (data.observacoes) {
+                            report += ` Observações adicionais: ${data.observacoes}.`;
+                        }
+
+                        if (data.houveDevolutiva) {
+                            report += ` Houve devolutiva e avaliação ao final da sessão.`;
+                        }
+                        
+                        report += `\n\n${getIntercorrenciasText()}`; 
+                        return report;
+                    },
+                    estilo2: () => {
+                        let report = `RELATÓRIO DE ATENDIMENTO\n\n`;
+                        report += `Paciente: ${data.nome}\n`;
+                        report += `Data: ${reportDate}\n\n`;
+                        report += `O paciente ${data.nome}, ${getGenderedText(data.disposicaoEmocional, data.genero)}, chegou ao consultório ${data.statusCompanhia} ${data.companhia}.`;
+                        
+                        report += `\n\nOBSERVAÇÕES CLÍNICAS\n`;
+                        report += `Comportamento Emocional: Observou-se que o paciente estava ${getGenderedText(data.disposicaoEmocional, data.genero)}, o que se refletiu em ${generoPossessive}s interações durante a sessão.`;
+                        report += `\n\nEsquema Físico/Corporal:\n`;
+                        if (data.expressividadeCorporal) report += `Expressividade Corporal: ${firstLetterUpper(getGenderedText(data.expressividadeCorporal, data.genero))}. `;
+                        if (data.expressividadeFacial) report += `Expressividade Facial: ${firstLetterUpper(getGenderedText(data.expressividadeFacial, data.genero))}. `;
+                        if (data.posturaTonus.length > 0) report += `Postura e Tônus: ${firstLetterUpper(formatList(data.posturaTonus))}.`;
+                        if (data.respiracao.length > 0) report += ` Respiração: ${formatList(data.respiracao)}.`;
+                        
+                        report += `\n\nRecursos: Durante a sessão, ${generoPronoun} interagiu com os recursos sonoro-musicais (${formatList(data.recursosPacienteSonoros)}) e extra-musicais (${formatList(data.recursosPacienteExtra)}).`;
+                        report += ` Os seguintes recursos foram utilizados na abordagem terapêutica: sonoro-musicais (${formatList(data.recursosTerapeutaSonoros)}) e extra-musicais (${formatList(data.recursosTerapeutaExtra)}).`;
+                        
+                        report += `\n\nResultados: O paciente ${getGenderedText(data.desempenhoGeral, data.genero)}. Em comparação a encontros anteriores, ${generoPronoun} ${getGenderedText(data.comparacaoHistorica, data.genero)}. Houve ${getGenderedText(data.mudancaEmocional, data.genero)} em ${generoPossessive} disposição emocional.`;
+                        if (data.observacoes) report += `\n\nObservações Adicionais: ${data.observacoes}.`;
+                        if (data.houveDevolutiva) report += `\n\nHouve devolutiva ao final da sessão.`;
+                        if (data.houveAvaliacao) report += `\nFoi realizada uma avaliação do encontro.`;
+                        
+                        report += `\n\n${getIntercorrenciasText()}`; 
+                        return report;
+                    },
+                    estilo3: () => {
+                        let report = `Relatório do dia ${reportDate}\n\n`;
+                        report += `Hoje, o paciente ${data.nome} veio acompanhado de ${data.companhia}. ${firstLetterUpper(generoPronoun)} estava ${getGenderedText(data.disposicaoEmocional, data.genero)} durante a sessão.`;
+                        
+                        if (data.recursosPacienteSonoros.length > 0 || data.recursosPacienteExtra.length > 0) {
+                            report += `\n${firstLetterUpper(generoPronoun)} utilizou os seguintes recursos: ${formatList([...data.recursosPacienteSonoros, ...data.recursosPacienteExtra])}`;
+                        }
+                        
+                        if (data.abordagem.length > 0) {
+                            report += `\nA abordagem foi a ${formatList(data.abordagem)}.`;
+                        }
+                        
+                        if (data.desempenhoGeral) {
+                            report += ` No geral, ${generoPronoun} ${getGenderedText(data.desempenhoGeral, data.genero)}.`;
+                        }
+
+                        if (data.observacoes) {
+                            report += `\nOutras anotações: ${data.observacoes}.`;
+                        }
+                        
+                        report += `\n\n${getIntercorrenciasText()}`; 
+                        return report;
+                    },
+                    estilo4: () => {
+                        let report = `Relatório de Sessão Terapêutica\n\n`;
+                        report += `Data: ${reportDate}\n`;
+                        report += `Nome do Paciente: ${data.nome}\n`;
+                        report += `Acompanhante: ${data.companhia}\n\n`;
+                        report += `A sessão iniciou com ${data.nome} apresentando-se ${getGenderedText(data.disposicaoEmocional, data.genero)}. Sua expressão corporal foi descrita como ${getGenderedText(data.expressividadeCorporal, data.genero)} e a facial como ${getGenderedText(data.expressividadeFacial, data.genero)}.`;
+                        
+                        if (data.recursosPacienteSonoros.length > 0) {
+                            report += `\n\nDurante o encontro, ${generoPronoun} interagiu com instrumentos como ${formatList(data.recursosPacienteSonoros)}.`;
+                        }
+                        if (data.recursosPacienteExtra.length > 0) {
+                            report += ` Também explorou materiais como ${formatList(data.recursosPacienteExtra)}.`;
+                        }
+
+                        if (data.objetivos.length > 0) {
+                            report += `\n\nO foco terapêutico buscou ${formatList(data.objetivos)}.`;
+                        }
+
+                        report += `\n\nO desempenho de ${data.nome} foi ${getGenderedText(data.desempenhoGeral, data.genero)}, e a mudança emocional foi ${getGenderedText(data.mudancaEmocional, data.genero)}.`;
+                        
+                        if (data.observacoes) report += `\n\nObservações Gerais: ${data.observacoes}.`;
+                        if (data.houveDevolutiva) report += `\n\nO encontro foi finalizado com uma devolutiva para ${data.companhia}.`;
+                        
+                        report += `\n\n${getIntercorrenciasText()}`; 
+                        return report;
+                    },
+                    estilo5: () => {
+                        let report = "Instrução para Modelo de Linguagem: Com base nas informações a seguir, redija um parágrafo coeso e descritivo sobre o atendimento terapêutico.\n\n";
+                        report += `Relatório de Sessão\n\n`;
+                        report += `* **Informações Iniciais:**\n`;
+                        report += `  - Paciente: ${data.nome}\n`;
+                        report += `  - Data: ${reportDate}\n`;
+                        if (data.companhia) report += `  - Acompanhante: ${data.companhia}\n`;
+                        if (data.disposicaoEmocional) report += `  - Disposição Emocional: ${getGenderedText(data.disposicaoEmocional, data.genero)}.\n`;
+                        report += `* **Aspectos Físicos e Corporais:**\n`;
+                        if (data.expressividadeCorporal) report += `  - Expressividade Corporal: ${getGenderedText(data.expressividadeCorporal, data.genero)}.\n`;
+                        if (data.expressividadeFacial) report += `  - Expressividade Facial: ${getGenderedText(data.expressividadeFacial, data.genero)}.\n`;
+                        if (data.posturaTonus.length > 0) report += `  - Postura e Tônus: ${formatList(data.posturaTonus)}\n`;
+                        if (data.respiracao.length > 0) report += `  - Respiração: ${formatList(data.respiracao)}\n`;
+                        report += `* **Recursos Utilizados:**\n`;
+                        if (data.recursosPacienteSonoros.length > 0) report += `  - Paciente (Sonoros): ${formatList(data.recursosPacienteSonoros)}\n`;
+                        if (data.recursosPacienteExtra.length > 0) report += `  - Paciente (Extra): ${formatList(data.recursosPacienteExtra)}\n`;
+                        if (data.recursosTerapeutaSonoros.length > 0) report += `  - Terapeuta (Sonoros): ${formatList(data.recursosTerapeutaSonoros)}\n`;
+                        if (data.recursosTerapeutaExtra.length > 0) report += `  - Terapeuta (Extra): ${formatList(data.recursosTerapeutaExtra)}\n`;
+                        if (data.elementosSala.length > 0) report += `* **Elementos da Sala:**\n  - ${formatList(data.elementosSala)}\n`;
+                        report += `* **Objetivos e Abordagem:**\n`;
+                        if (data.objetivos.length > 0) report += `  - Objetivos: ${formatList(data.objetivos)}\n`;
+                        if (data.abordagem.length > 0) report += `  - Abordagem: ${formatList(data.abordagem)}\n`;
+                        report += `* **Resultados e Observações:**\n`;
+                        if (data.desempenhoGeral) report += `  - Desempenho Geral: ${getGenderedText(data.desempenhoGeral, data.genero)}.\n`;
+                        if (data.comparacaoHistorica) report += `  - Comparação Histórica: ${getGenderedText(data.comparacaoHistorica, data.genero)}.\n`;
+                        if (data.mudancaEmocional) report += `  - Mudança Emocional: ${getGenderedText(data.mudancaEmocional, data.genero)}.\n`;
+                        if (data.mudancasFisicas.length > 0) report += `  - Mudanças no Esquema Físico: ${formatList(data.mudancasFisicas)}\n`;
+                        if (data.suportePercebido.length > 0) report += `  - Nível de Suporte Percebido: ${formatList(data.suportePercebido)}\n`;
+                        if (data.nivelSuporte) report += `  - Nível de Suporte: ${data.nivelSuporte}\n`;
+                        if (data.observacoes) report += `  - Observações: ${data.observacoes}\n`;
+                        if (data.elementosSimbolicos) report += `  - Elementos Simbólicos: ${data.elementosSimbolicos}\n`;
+                        if (data.houveDevolutiva) report += `  - Devolutiva: Sim\n`;
+                        if (data.houveAvaliacao) report += `  - Avaliação: Sim\n`;
+                        
+                        report += `\n* **Intercorrências:**\n`; 
+                        if (data.intercorrencias.length > 0) {
+                            report += `  - ${formatList(data.intercorrencias)}\n`;
+                        } else {
+                            report += `  - Não houveram intercorrências.\n`;
+                        }
+                        
+                        return report;
                     }
-                    if (elementosSala.length > 0) {
-                        observacoesEspeciais.push(`Elementos da sala com que interagiu: ${formatList(elementosSala, genero)}.`);
-                    }
-                    if (elementosSimbolicos) {
-                         observacoesEspeciais.push(`Elementos Simbólicos: ${elementosSimbolicos}.`);
-                    }
-                    if (intercorrencias.length > 0) {
-                        observacoesEspeciais.push(`Intercorrencias: ${formatList(intercorrencias, genero)}.`);
-                    }
+                };
+                
+                if (data.estiloTexto === 'aleatorio') {
+                    const styleKeys = Object.keys(styles).filter(key => key !== 'aleatorio');
+                    const randomStyle = styleKeys[Math.floor(Math.random() * styleKeys.length)];
+                    return styles[randomStyle]();
+                }
+                
+                return styles[data.estiloTexto] ? styles[data.estiloTexto]() : '';
+            };
+            
+            const generatedReport = getReportText();
+            document.getElementById('relatorioContent').textContent = generatedReport;
+            document.getElementById('relatorioGerado').style.display = 'block';
+            showToast('Relatório gerado!');
+        };
 
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('genero').addEventListener('change', updateGenderedOptions);
+            updateGenderedOptions();
+            document.getElementById('gerarRelatorioBtn').addEventListener('click', generateReport);
+            document.getElementById('randomizarBtn').addEventListener('click', randomizeSelections);
 
-                    const textoObservacoesEstilo5 = observacoesEspeciais.filter(Boolean).map(obs => obs.trim()).join('\n- ');
-                    
-                    const resultadosEstilo5 = [];
-                    if (desempenhoGeral) resultadosEstilo5.push(`- Desempenho Geral: ${desempenhoGeral}.`);
-                    if (desempenhoHistorico) resultadosEstilo5.push(`- Comparação Histórica: ${desempenhoHistorico}.`);
-                    if (mudancaEmocional) resultadosEstilo5.push(`- Mudança Emocional: ${mudancaEmocional}.`);
-                    if (mudancasFisicas.length > 0) resultadosEstilo5.push(`- Mudanças Físicas: ${formatList(mudancasFisicas, genero)}.`);
-                    if (suportePercebido.length > 0) resultadosEstilo5.push(`- Nível de Suporte Percebido: ${formatList(suportePercebido, genero)}.`);
+            document.getElementById('copiarRelatorioBtn').addEventListener('click', () => {
+                const relatorioContent = document.getElementById('relatorioContent').textContent;
+                if (relatorioContent) {
+                    navigator.clipboard.writeText(relatorioContent).then(() => {
+                        showToast('Relatório copiado para a área de transferência!');
+                    }).catch(err => {
+                        console.error('Erro ao copiar: ', err);
+                        showToast('Erro ao copiar o relatório.');
+                    });
+                } else {
+                    showToast('Não há relatório para copiar.');
+                }
+            });
 
-                    template = `Atendimento de ${nomeCapitalizado}
-
-- Disposição Emocional: ${disposicaoAdaptada}
-- Aspectos Físicos/Corporais: ${textoEsquemas}
-- Recursos que interagiu: ${textoRecursosInteragiu}
-- Recursos da abordagem: ${textoRecursosAbordagem}
-- Objetivos da Sessão: ${textoObjetivos}
-- Abordagem Utilizada: ${textoAbordagem}
-- Resultados:
-${resultadosEstilo5.join('\n')}
-- Outras Observações:
-${textoObservacoesEstilo5}`;
-                    break;
-                default:
-                    template = `${nomeCapitalizado} ${acompanhanteStatus} ${acompanhante}, com uma disposição ${disposicaoAdaptada}. Em seu esquema físico, observa-se a presença de ${textoEsquemas}. Os recursos utilizados na sessão foram ${textoRecursosInteragiu} e ${textoRecursosAbordagem}. Os objetivos focados foram ${textoObjetivos}, com abordagens de ${textoAbordagem}. ${textoResultados}${textoObservacoes}${textoElementosSimbolicos}${textoIntercorrencias}${textoAvaliacao}${textoDevolutiva}`;
-                    break;
-            }
-
-            paragrafoFinal.textContent = template;
-        }
+            document.getElementById('limparTudoBtn').addEventListener('click', () => {
+                document.querySelectorAll('input[type="text"], textarea').forEach(input => input.value = '');
+                document.querySelectorAll('select').forEach(select => select.value = '');
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+                document.getElementById('relatorioGerado').style.display = 'none';
+                document.getElementById('relatorioContent').textContent = '';
+                showToast('Formulário limpo com sucesso.');
+            });
+        });
     </script>
 </body>
 </html>
