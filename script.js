@@ -43,16 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
             "items": ["Ansioso", "Calmo", "Agitado", "Triste", "Comunicação clara", "Distraído", "Com pouca expressão"]
         },
         {
-            "category": "Principais Temas Abordados",
-            "type": "multiple",
-            "description": "Quais foram os temas centrais discutidos na sessão?",
-            "items": ["Relacionamentos interpessoais", "Problemas no trabalho/estudo", "Autoconhecimento", "Transtornos de ansiedade", "Questões familiares", "Sentimentos de culpa", "Luto", "Autoestima"]
-        },
-        {
-            "category": "Evolução da Sessão",
-            "type": "single",
-            "description": "Como você avalia a evolução do paciente durante a sessão?",
-            "items": ["Houve avanço significativo", "Houve algum avanço", "O avanço foi limitado", "O paciente mostrou resistência"]
+            "category": "Observações da Sessão",
+            "type": "textarea",
+            "description": "Anote aqui observações detalhadas sobre o andamento da sessão, o comportamento do paciente, ou qualquer ponto relevante.",
+            "items": []
         }
     ];
 
@@ -102,105 +96,117 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             const optionsContainer = card.querySelector('.options-container');
-            const inputType = category.type === 'single' ? 'radio' : 'checkbox';
             const name = category.category.replace(/\s+/g, '-').toLowerCase();
-
-            category.items.forEach(item => {
-                const optionDiv = document.createElement('div');
-                optionDiv.classList.add('option-item');
-                
-                if (typeof item === 'string') {
-                    optionDiv.innerHTML = `
-                        <input type="${inputType}" id="${name}-${item}" name="${name}" value="${item}">
-                        <label for="${name}-${item}">${item}</label>
-                    `;
-                    optionsContainer.appendChild(optionDiv);
-                } else if (typeof item === 'object' && item.main && item.sub) {
-                    optionDiv.innerHTML = `
-                        <input type="checkbox" id="${name}-${item.main}" name="${name}" value="${item.main}">
-                        <label for="${name}-${item.main}">${item.main}</label>
-                        <div class="sub-options" id="${name}-${item.main}-sub"></div>
-                    `;
-                    optionsContainer.appendChild(optionDiv);
-                    
-                    const mainCheckbox = optionDiv.querySelector('input');
-                    const subOptionsDiv = optionDiv.querySelector('.sub-options');
-                    
-                    item.sub.forEach(subItem => {
-                        const subOption = document.createElement('label');
-                        subOption.innerHTML = `<input type="checkbox" name="${name}-${item.main}-sub-item" value="${subItem}"> ${subItem}`;
-                        subOptionsDiv.appendChild(subOption);
-                    });
-
-                    mainCheckbox.addEventListener('change', () => {
-                        if (mainCheckbox.checked) {
-                            subOptionsDiv.style.display = 'block';
-                        } else {
-                            subOptionsDiv.style.display = 'none';
-                            subOptionsDiv.querySelectorAll('input').forEach(subInput => subInput.checked = false);
-                        }
-                    });
-                }
-            });
             
+            if (category.type === 'textarea') {
+                const textarea = document.createElement('textarea');
+                textarea.id = `${name}-textarea`;
+                textarea.name = name;
+                textarea.rows = 5;
+                textarea.placeholder = `Escreva suas observações para a categoria "${category.category}" aqui...`;
+                optionsContainer.appendChild(textarea);
+            } else {
+                const inputType = category.type === 'single' ? 'radio' : 'checkbox';
+                category.items.forEach(item => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.classList.add('option-item');
+                    
+                    if (typeof item === 'string') {
+                        optionDiv.innerHTML = `
+                            <input type="${inputType}" id="${name}-${item.replace(/\s+/g, '-')}" name="${name}" value="${item}">
+                            <label for="${name}-${item.replace(/\s+/g, '-')}">${item}</label>
+                        `;
+                        optionsContainer.appendChild(optionDiv);
+                    } else if (typeof item === 'object' && item.main && item.sub) {
+                        optionDiv.innerHTML = `
+                            <input type="checkbox" id="${name}-${item.main.replace(/\s+/g, '-')}" name="${name}" value="${item.main}">
+                            <label for="${name}-${item.main.replace(/\s+/g, '-')}" class="main-label">${item.main}</label>
+                            <div class="sub-options" id="${name}-${item.main.replace(/\s+/g, '-')}-sub"></div>
+                        `;
+                        optionsContainer.appendChild(optionDiv);
+                        
+                        const mainCheckbox = optionDiv.querySelector('input');
+                        const subOptionsDiv = optionDiv.querySelector('.sub-options');
+                        
+                        item.sub.forEach(subItem => {
+                            const subOption = document.createElement('label');
+                            subOption.innerHTML = `<input type="checkbox" name="${name}-${item.main.replace(/\s+/g, '-')}-sub-item" value="${subItem}"> ${subItem}`;
+                            subOptionsDiv.appendChild(subOption);
+                        });
+
+                        mainCheckbox.addEventListener('change', () => {
+                            if (mainCheckbox.checked) {
+                                subOptionsDiv.style.display = 'block';
+                            } else {
+                                subOptionsDiv.style.display = 'none';
+                                subOptionsDiv.querySelectorAll('input').forEach(subInput => subInput.checked = false);
+                            }
+                        });
+                    }
+                });
+            }
             formContainer.appendChild(card);
         });
     }
 
     generatePromptBtn.addEventListener('click', () => {
         const selectedOptions = {};
+        const descriptiveData = {};
+
+        // Coleta dados dos campos de texto descritivos
+        if (patientNameInput.value.trim()) descriptiveData['Nome do Paciente'] = patientNameInput.value.trim();
+        if (sessionDateInput.value.trim()) descriptiveData['Data da Sessão'] = sessionDateInput.value.trim();
+        if (sessionNotesInput.value.trim()) descriptiveData['Observações Adicionais'] = sessionNotesInput.value.trim();
+
+        // Coleta dados das categorias de seleção e textarea
         categoriesData.forEach(category => {
             const name = category.category.replace(/\s+/g, '-').toLowerCase();
-            const inputs = document.querySelectorAll(`input[name="${name}"]:checked`);
-            
-            const items = [];
-            inputs.forEach(input => {
-                let itemValue = input.value;
-                const subInputs = document.querySelectorAll(`input[name="${name}-${itemValue}-sub-item"]:checked`);
-                
-                if (subInputs.length > 0) {
-                    const subItems = Array.from(subInputs).map(subInput => subInput.value);
-                    itemValue += ` (${subItems.join(', ')})`;
+
+            if (category.type === 'textarea') {
+                const textareaValue = document.getElementById(`${name}-textarea`).value.trim();
+                if (textareaValue) {
+                    selectedOptions[category.category] = [textareaValue];
                 }
-                items.push(itemValue);
-            });
-            
-            if (items.length > 0) {
-                selectedOptions[category.category] = items;
+            } else {
+                const inputs = document.querySelectorAll(`input[name="${name}"]:checked`);
+                const items = [];
+                inputs.forEach(input => {
+                    let itemValue = input.value;
+                    const subInputs = document.querySelectorAll(`input[name="${name}-${itemValue.replace(/\s+/g, '-')}-sub-item"]:checked`);
+                    
+                    if (subInputs.length > 0) {
+                        const subItems = Array.from(subInputs).map(subInput => subInput.value);
+                        itemValue += ` (${subItems.join(', ')})`;
+                    }
+                    items.push(itemValue);
+                });
+                
+                if (items.length > 0) {
+                    selectedOptions[category.category] = items;
+                }
             }
         });
 
-        const patientName = patientNameInput.value.trim();
-        const sessionDate = sessionDateInput.value.trim();
-        const sessionNotes = sessionNotesInput.value.trim();
-
-        if (Object.keys(selectedOptions).length === 0 && !patientName && !sessionDate && !sessionNotes) {
+        if (Object.keys(selectedOptions).length === 0 && Object.keys(descriptiveData).length === 0) {
             alert('Por favor, preencha pelo menos um campo ou selecione uma opção para gerar o relatório.');
             return;
         }
 
-        const promptText = buildPrompt(selectedOptions, patientName, sessionDate, sessionNotes);
+        const promptText = buildPrompt(selectedOptions, descriptiveData);
         outputPrompt.value = promptText;
         outputContainer.style.display = 'block';
     });
 
-    function buildPrompt(options, patientName, sessionDate, sessionNotes) {
+    function buildPrompt(options, descriptiveData) {
         let prompt = "Crie um relatório de sessão terapêutica detalhado, coeso e profissional. Utilize a estrutura de um relatório padrão (observações iniciais, descrição da sessão, etc.). Baseie-se nas seguintes informações:\n\n";
 
-        if (patientName) {
-            prompt += `- **Nome do Paciente**: ${patientName}\n`;
-        }
-        if (sessionDate) {
-            prompt += `- **Data da Sessão**: ${sessionDate}\n`;
+        for (const key in descriptiveData) {
+            prompt += `- **${key}**: ${descriptiveData[key]}\n`;
         }
         
         for (const category in options) {
             const items = options[category];
             prompt += `- **${category}**: ${items.join(', ')}.\n`;
-        }
-        
-        if (sessionNotes) {
-            prompt += `- **Observações Adicionais**: ${sessionNotes}\n`;
         }
 
         prompt += "\nPor favor, adapte o texto para que flua de forma natural, integrando esses pontos de maneira orgânica e evolutiva. Não se limite a apenas listar os itens, crie um texto descritivo e explicativo para cada tópico, de forma que o relatório tenha sentido e coerência.";
