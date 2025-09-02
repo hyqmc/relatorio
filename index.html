@@ -22,6 +22,22 @@
             <p id="loading-message">Carregue um arquivo JSON para começar.</p>
         </div>
 
+        <div id="descriptive-fields" style="display: none;">
+            <h3>Detalhes da Sessão</h3>
+            <div class="input-group">
+                <label for="patientName">Nome do Paciente:</label>
+                <input type="text" id="patientName" placeholder="Ex: João Silva">
+            </div>
+            <div class="input-group">
+                <label for="sessionDate">Data da Sessão:</label>
+                <input type="date" id="sessionDate">
+            </div>
+            <div class="input-group">
+                <label for="sessionNotes">Observações Adicionais:</label>
+                <textarea id="sessionNotes" placeholder="Descreva observações importantes que não se encaixam nas categorias."></textarea>
+            </div>
+        </div>
+
         <button id="generatePrompt" style="display: none;">Gerar Texto para IA</button>
         
         <div id="output-container" style="display: none;">
