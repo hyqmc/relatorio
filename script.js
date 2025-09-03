@@ -165,7 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (category.type === 'textarea') {
                 const textareaValue = document.getElementById(`${name}-textarea`).value.trim();
                 if (textareaValue) {
-                    selectedOptions[category.category] = [textareaValue];
+                    selectedOptions[category.category] = {
+                        description: category.description,
+                        items: [textareaValue]
+                    };
                 }
             } else {
                 const inputs = document.querySelectorAll(`input[name="${name}"]:checked`);
@@ -182,7 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 if (items.length > 0) {
-                    selectedOptions[category.category] = items;
+                    selectedOptions[category.category] = {
+                        description: category.description,
+                        items: items
+                    };
                 }
             }
         });
@@ -205,8 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         for (const category in options) {
-            const items = options[category];
-            prompt += `- **${category}**: ${items.join(', ')}.\n`;
+            const categoryObj = options[category];
+            prompt += `\n- **${category}**: ${categoryObj.description}\n`
+            prompt += `   - **Itens Selecionados**: ${categoryObj.items.join(', ')}.\n`;
         }
 
         prompt += "\nPor favor, adapte o texto para que flua de forma natural, integrando esses pontos de maneira orgânica e evolutiva. Não se limite a apenas listar os itens, crie um texto descritivo e explicativo para cada tópico, de forma que o relatório tenha sentido e coerência.";
