@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     });
 
+    // A SEÇÃO CORRIGIDA PARA UPLOAD DE ARQUIVOS JSON
     uploadFile.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -82,15 +83,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
-                categoriesData = JSON.parse(e.target.result);
-                renderForm(categoriesData);
+                // Tenta fazer o parse do JSON lido
+                categoriesData = JSON.parse(e.target.result); 
+                
+                // Verifica se a estrutura carregada é um Array
+                if (!Array.isArray(categoriesData) || categoriesData.length === 0) {
+                    throw new Error("O arquivo JSON deve ser uma lista (Array) não vazia de categorias.");
+                }
+                
+                // Se tudo estiver OK, renderiza o formulário
+                renderForm(categoriesData); 
                 generatePromptBtn.style.display = 'block';
                 descriptiveFields.style.display = 'block';
                 outputContainer.style.display = 'none';
                 setupAutoNavigation(); // Configura a navegação após o carregamento
             } catch (error) {
-                alert('Erro ao carregar o arquivo. Certifique-se de que é um JSON válido.');
-                console.error('Erro de parsing JSON:', error);
+                alert(`Erro ao carregar o arquivo: ${error.message}. Verifique a sintaxe JSON e o formato da lista.`);
+                console.error('Erro de parsing ou estrutura JSON:', error);
+                
+                // Limpa o formulário e reseta o estado
+                formContainer.innerHTML = '<p id="loading-message">Carregue um arquivo JSON para começar.</p>';
+                generatePromptBtn.style.display = 'none';
+                descriptiveFields.style.display = 'none';
             }
         };
         reader.readAsText(file);
@@ -210,14 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             });
-            
-            // Adiciona evento para pular após preenchimento completo de campos de texto
-            if (element.type === 'text' || element.tagName === 'TEXTAREA') {
-                 element.addEventListener('blur', () => {
-                    // Opcional: Se preenchido, pula para o próximo no evento blur
-                    // Isso é útil para campos de texto, mas a navegação primária é pelo Enter
-                 });
-            }
         });
     }
 
@@ -284,3 +290,91 @@ document.addEventListener('DOMContentLoaded', () => {
         let prompt = "Você é um assistente especializado em psicoterapia, com a tarefa de gerar um relatório de evolução de sessão. Sua resposta deve ser coesa, profissional, e seguir a estrutura de um relatório clínico (Ex: Observações Iniciais, Desenvolvimento, Conclusão/Plano). Baseie-se unicamente nos 'Dados da Sessão' fornecidos abaixo.\n\n";
 
         // 2. Título da Seção de Dados
+        prompt += "--- DADOS DA SESSÃO ---\n\n";
+
+        // 3. Dados Descritivos (Nome, Data, Notas Adicionais)
+        for (const key in descriptiveData) {
+            prompt += `- **${key}**: ${descriptiveData[key]}\n`;
+        }
+
+        // 4. Separação visual
+        prompt += "\n--- CATEGORIAS E ITENS SELECIONADOS ---\n\n";
+
+        // 5. Dados das Categorias (Seleções e Textareas)
+        for (const category in options) {
+            // Encontra o objeto da categoria nos dados carregados para obter a descrição
+            const categoryObject = categoriesData.find(c => c.category === category);
+            const description = categoryObject ? categoryObject.description : "Sem descrição fornecida.";
+            const isTextarea = categoryObject && categoryObject.type === 'textarea';
+
+            // Inclui a descrição da categoria como contexto
+            prompt += `### ${category.toUpperCase()}\n`;
+            prompt += `*Contexto para IA: ${description}*\n`;
+            
+            // Verifica se é um textarea (anotação) para formatar como bloco de texto
+            if (options[category].length === 1 && isTextarea) {
+                // Bloco de texto da anotação
+                prompt += `${options[category][0]}\n\n`;
+            } else {
+                // Lista os itens selecionados ou opções únicas
+                prompt += `Itens Selecionados: ${options[category].join('; ')}.\n\n`;
+            }
+        }
+
+        // 6. Instrução Final e Formato de Saída
+        prompt += "\n--- INSTRUÇÃO FINAL ---\n";
+        prompt += "Gere o relatório completo utilizando uma linguagem clínica e integrando todos os pontos listados de forma orgânica. Inicie o relatório sem repetir o nome e a data da sessão. Priorize a coerência e o fluxo natural do texto.";
+
+        return prompt;
+    }
+
+    // --- FUNÇÕES AUXILIARES ---
+
+    copyPromptBtn.addEventListener('click', () => {
+        outputPrompt.select();
+        document.execCommand('copy');
+        alert('Texto copiado para a área de transferência!');
+    });
+
+    // --- FUNÇÃO DE EXPORTAÇÃO DA TABELA (CSV) ---
+
+    exportTableBtn.addEventListener('click', () => {
+        if (Object.keys(sessionData).length === 0) {
+            alert('Nenhum dado selecionado para exportar.');
+            return;
+        }
+
+        let csv = "Categoria;Itens Selecionados\n";
+
+        for (const category in sessionData) {
+            const items = sessionData[category];
+            let itemsString = Array.isArray(items) ? items.join(' | ') : items;
+            
+            // Remove quebras de linha e aspas duplas para evitar problemas com CSV
+            itemsString = itemsString.replace(/"/g, '""').replace(/\n/g, ' '); 
+
+            csv += `"${category}";"${itemsString}"\n`;
+        }
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        let filename = 'relatorio_dados';
+        const date = sessionData['Data da Sessão'] || new Date().toISOString().slice(0, 10);
+        const patientName = sessionData['Nome do Paciente'] ? sessionData['Nome do Paciente'].replace(/[^a-zA-Z0-9]/g, '_') : 'paciente';
+
+        filename = `${date}_${patientName}_dados_sessao.csv`;
+        
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('Tabela de dados exportada com sucesso!');
+    });
+
+    // Garante que a navegação seja configurada após o DOM inicial, embora será re-configurada após o upload
+    setupAutoNavigation();
+});
