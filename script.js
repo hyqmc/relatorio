@@ -10,28 +10,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const patientNameInput = document.getElementById('patientName');
     const sessionDateInput = document.getElementById('sessionDate');
     const sessionNotesInput = document.getElementById('sessionNotes');
+    
     // Novo botão para exportar tabela
     const exportTableBtn = document.createElement('button');
     exportTableBtn.id = 'exportTable';
     exportTableBtn.textContent = 'Exportar Tabela de Dados (CSV)';
     exportTableBtn.style.marginTop = '10px';
-    exportTableBtn.style.display = 'none'; // Inicialmente oculto
+    exportTableBtn.style.display = 'none';
     outputContainer.appendChild(exportTableBtn);
 
     let categoriesData = [];
+    let sessionData = {}; // Armazena os dados brutos coletados para prompt e exportação
 
     // Estrutura de modelo de dados (usada para o botão "Baixar Lista de Exemplo")
     const templateData = [
         {
             "category": "Abordagem Terapêutica",
             "type": "single",
-            "description": "Selecione a abordagem teórica que guia a sessão.",
+            "description": "Selecione a abordagem teórica que guia a sessão. Esta informação ditará a linguagem e a perspectiva da análise gerada pela IA.",
             "items": ["TCC (Terapia Cognitivo-Comportamental)", "Psicanálise", "Terapia Humanista", "Terapia Sistêmica", "Análise do Comportamento"]
         },
         {
             "category": "Recursos e Técnicas Utilizadas",
             "type": "multiple",
-            "description": "Selecione os recursos ou técnicas aplicadas durante a sessão.",
+            "description": "Selecione os recursos ou técnicas aplicadas durante a sessão, incluindo detalhes de aplicação se disponíveis.",
             "items": [
                 {
                     "main": "Recursos gráficos (desenho, escrita)",
@@ -47,13 +49,13 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "category": "Estado Inicial do Paciente",
             "type": "multiple",
-            "description": "Marque as características observadas na chegada do paciente.",
+            "description": "Marque as características observadas na chegada do paciente, para que a IA possa descrever a evolução ou contraste.",
             "items": ["Ansioso", "Calmo", "Agitado", "Triste", "Comunicação clara", "Distraído", "Com pouca expressão"]
         },
         {
             "category": "Observações da Sessão",
             "type": "textarea",
-            "description": "Anote aqui observações detalhadas sobre o andamento da sessão, o comportamento do paciente, ou qualquer ponto relevante.",
+            "description": "Anote aqui observações detalhadas sobre o andamento da sessão, o comportamento do paciente, ou qualquer ponto relevante para o relatório.",
             "items": []
         }
     ];
@@ -85,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 generatePromptBtn.style.display = 'block';
                 descriptiveFields.style.display = 'block';
                 outputContainer.style.display = 'none';
+                setupAutoNavigation(); // Configura a navegação após o carregamento
             } catch (error) {
                 alert('Erro ao carregar o arquivo. Certifique-se de que é um JSON válido.');
                 console.error('Erro de parsing JSON:', error);
@@ -161,10 +164,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- COLETA E GERAÇÃO DE PROMPT ---
+    // --- NAVEGAÇÃO AUTOMÁTICA ---
+    
+    function setupAutoNavigation() {
+        // Coleta todos os campos que podem ser focados na ordem do DOM
+        const focusableElements = Array.from(document.querySelectorAll(
+            '#descriptive-fields input, #descriptive-fields textarea, #form-container input:not([type="checkbox"]):not([type="radio"]), #form-container textarea, #form-container input[type="radio"], #form-container input[type="checkbox"]'
+        ));
 
-    // Armazena os dados brutos coletados (para uso no prompt e na exportação da tabela)
-    let sessionData = {};
+        // Filtra para pegar apenas o primeiro radio/checkbox de cada grupo
+        const uniqueFocusable = [];
+        const seenNames = new Set();
+        
+        focusableElements.forEach(el => {
+            const isRadioOrCheckbox = el.type === 'radio' || el.type === 'checkbox';
+            const name = el.name;
+
+            if (isRadioOrCheckbox) {
+                if (!seenNames.has(name)) {
+                    uniqueFocusable.push(el);
+                    seenNames.add(name);
+                }
+            } else {
+                uniqueFocusable.push(el);
+            }
+        });
+
+        uniqueFocusable.forEach((element, index) => {
+            element.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    // Impede o envio do formulário no Enter
+                    e.preventDefault(); 
+                    
+                    // Lógica de navegação
+                    const nextElement = uniqueFocusable[index + 1];
+                    if (nextElement) {
+                        nextElement.focus();
+                        // Se o próximo for input de texto, seleciona o conteúdo para digitar mais rápido
+                        if (nextElement.type === 'text' || nextElement.tagName === 'TEXTAREA') {
+                             nextElement.select();
+                        }
+                    } else {
+                        // Se for o último, foca no botão de gerar
+                        generatePromptBtn.focus();
+                    }
+                }
+            });
+            
+            // Adiciona evento para pular após preenchimento completo de campos de texto
+            if (element.type === 'text' || element.tagName === 'TEXTAREA') {
+                 element.addEventListener('blur', () => {
+                    // Opcional: Se preenchido, pula para o próximo no evento blur
+                    // Isso é útil para campos de texto, mas a navegação primária é pelo Enter
+                 });
+            }
+        });
+    }
+
+
+    // --- COLETA E GERAÇÃO DE PROMPT ---
 
     generatePromptBtn.addEventListener('click', () => {
         const selectedOptions = {};
@@ -219,90 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
         exportTableBtn.style.display = 'block'; // Mostra o botão de exportar
     });
 
+    // --- FUNÇÃO CORE: BUILD PROMPT (ATUALIZADA) ---
+
     function buildPrompt(options, descriptiveData) {
         // 1. System Prompt (Instrução de Função para a IA)
         let prompt = "Você é um assistente especializado em psicoterapia, com a tarefa de gerar um relatório de evolução de sessão. Sua resposta deve ser coesa, profissional, e seguir a estrutura de um relatório clínico (Ex: Observações Iniciais, Desenvolvimento, Conclusão/Plano). Baseie-se unicamente nos 'Dados da Sessão' fornecidos abaixo.\n\n";
 
         // 2. Título da Seção de Dados
-        prompt += "--- DADOS DA SESSÃO ---\n\n";
-
-        // 3. Dados Descritivos (Nome, Data, Notas Adicionais)
-        for (const key in descriptiveData) {
-            prompt += `- **${key}**: ${descriptiveData[key]}\n`;
-        }
-
-        // 4. Separação visual
-        prompt += "\n--- CATEGORIAS E ITENS SELECIONADOS ---\n\n";
-
-        // 5. Dados das Categorias (Seleções e Textareas)
-        for (const category in options) {
-            // Verifica se é um textarea (anotação) para formatar como bloco de texto
-            const isTextarea = categoriesData.find(c => c.category === category && c.type === 'textarea');
-
-            if (options[category].length === 1 && isTextarea) {
-                prompt += `## ${category.toUpperCase()}\n`;
-                prompt += `${options[category][0]}\n\n`; // Bloco de texto
-            } else {
-                // Lista os itens selecionados ou opções únicas
-                prompt += `- **${category}**: ${options[category].join('; ')}.\n`;
-            }
-        }
-
-        // 6. Instrução Final e Formato de Saída
-        prompt += "\n--- INSTRUÇÃO FINAL ---\n";
-        prompt += "Gere o relatório completo utilizando uma linguagem clínica e integrando todos os pontos listados de forma orgânica. Inicie o relatório sem repetir o nome e a data da sessão. Priorize a coerência e o fluxo natural do texto.";
-
-        return prompt;
-    }
-
-    // --- FUNÇÕES AUXILIARES ---
-
-    copyPromptBtn.addEventListener('click', () => {
-        outputPrompt.select();
-        document.execCommand('copy');
-        alert('Texto copiado para a área de transferência!');
-    });
-
-    // --- FUNÇÃO DE EXPORTAÇÃO DA TABELA (CSV) ---
-
-    exportTableBtn.addEventListener('click', () => {
-        if (Object.keys(sessionData).length === 0) {
-            alert('Nenhum dado selecionado para exportar.');
-            return;
-        }
-
-        // Cabeçalho: Nome da Coluna 1 (Categoria), Nome da Coluna 2 (Itens Selecionados)
-        let csv = "Categoria;Itens Selecionados\n";
-
-        // Iterar sobre os dados da sessão (descritivos + categorias)
-        for (const category in sessionData) {
-            const items = sessionData[category];
-            let itemsString = Array.isArray(items) ? items.join(' | ') : items;
-            
-            // Remove quebras de linha e aspas duplas para evitar problemas com CSV
-            itemsString = itemsString.replace(/"/g, '""').replace(/\n/g, ' '); 
-
-            // Adiciona a linha ao CSV
-            csv += `"${category}";"${itemsString}"\n`;
-        }
-
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        
-        // Define o nome do arquivo, usando a data e, se possível, o nome do paciente
-        let filename = 'relatorio_dados';
-        const date = sessionData['Data da Sessão'] || new Date().toISOString().slice(0, 10);
-        const patientName = sessionData['Nome do Paciente'] ? sessionData['Nome do Paciente'].replace(/\s/g, '_') : '';
-
-        filename = `${date}_${patientName}_dados_sessao.csv`;
-        
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        alert('Tabela de dados exportada com sucesso!');
-    });
-});
