@@ -10,9 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const patientNameInput = document.getElementById('patientName');
     const sessionDateInput = document.getElementById('sessionDate');
     const sessionNotesInput = document.getElementById('sessionNotes');
+    // Novo botão para exportar tabela
+    const exportTableBtn = document.createElement('button');
+    exportTableBtn.id = 'exportTable';
+    exportTableBtn.textContent = 'Exportar Tabela de Dados (CSV)';
+    exportTableBtn.style.marginTop = '10px';
+    exportTableBtn.style.display = 'none'; // Inicialmente oculto
+    outputContainer.appendChild(exportTableBtn);
 
     let categoriesData = [];
 
+    // Estrutura de modelo de dados (usada para o botão "Baixar Lista de Exemplo")
     const templateData = [
         {
             "category": "Abordagem Terapêutica",
@@ -49,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
             "items": []
         }
     ];
+
+    // --- FUNÇÕES DE CARREGAMENTO E RENDERIZAÇÃO ---
 
     downloadTemplateBtn.addEventListener('click', () => {
         const dataStr = JSON.stringify(templateData, null, 2);
@@ -111,17 +121,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     const optionDiv = document.createElement('div');
                     optionDiv.classList.add('option-item');
                     
+                    const itemText = typeof item === 'object' ? item.main : item;
+                    
                     if (typeof item === 'string') {
                         optionDiv.innerHTML = `
-                            <input type="${inputType}" id="${name}-${item.replace(/\s+/g, '-')}" name="${name}" value="${item}">
-                            <label for="${name}-${item.replace(/\s+/g, '-')}">${item}</label>
+                            <input type="${inputType}" id="${name}-${itemText.replace(/\s+/g, '-')}" name="${name}" value="${itemText}">
+                            <label for="${name}-${itemText.replace(/\s+/g, '-')}">${itemText}</label>
                         `;
                         optionsContainer.appendChild(optionDiv);
                     } else if (typeof item === 'object' && item.main && item.sub) {
                         optionDiv.innerHTML = `
-                            <input type="checkbox" id="${name}-${item.main.replace(/\s+/g, '-')}" name="${name}" value="${item.main}">
-                            <label for="${name}-${item.main.replace(/\s+/g, '-')}" class="main-label">${item.main}</label>
-                            <div class="sub-options" id="${name}-${item.main.replace(/\s+/g, '-')}-sub"></div>
+                            <input type="checkbox" id="${name}-${itemText.replace(/\s+/g, '-')}" name="${name}" value="${itemText}">
+                            <label for="${name}-${itemText.replace(/\s+/g, '-')}" class="main-label">${itemText}</label>
+                            <div class="sub-options" id="${name}-${itemText.replace(/\s+/g, '-')}-sub"></div>
                         `;
                         optionsContainer.appendChild(optionDiv);
                         
@@ -130,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         item.sub.forEach(subItem => {
                             const subOption = document.createElement('label');
-                            subOption.innerHTML = `<input type="checkbox" name="${name}-${item.main.replace(/\s+/g, '-')}-sub-item" value="${subItem}"> ${subItem}`;
+                            subOption.innerHTML = `<input type="checkbox" name="${name}-${itemText.replace(/\s+/g, '-')}-sub-item" value="${subItem}"> ${subItem}`;
                             subOptionsDiv.appendChild(subOption);
                         });
 
@@ -149,26 +161,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- COLETA E GERAÇÃO DE PROMPT ---
+
+    // Armazena os dados brutos coletados (para uso no prompt e na exportação da tabela)
+    let sessionData = {};
+
     generatePromptBtn.addEventListener('click', () => {
         const selectedOptions = {};
         const descriptiveData = {};
-
-        // Coleta dados dos campos de texto descritivos
+        
+        // 1. Coleta dados descritivos
         if (patientNameInput.value.trim()) descriptiveData['Nome do Paciente'] = patientNameInput.value.trim();
         if (sessionDateInput.value.trim()) descriptiveData['Data da Sessão'] = sessionDateInput.value.trim();
-        if (sessionNotesInput.value.trim()) descriptiveData['Observações Adicionais'] = sessionNotesInput.value.trim();
+        if (sessionNotesInput.value.trim()) descriptiveData['Observações Adicionais (Gerais)'] = sessionNotesInput.value.trim();
 
-        // Coleta dados das categorias de seleção e textarea
+        // 2. Coleta dados das categorias de seleção e textarea
         categoriesData.forEach(category => {
             const name = category.category.replace(/\s+/g, '-').toLowerCase();
 
             if (category.type === 'textarea') {
                 const textareaValue = document.getElementById(`${name}-textarea`).value.trim();
                 if (textareaValue) {
-                    selectedOptions[category.category] = {
-                        description: category.description,
-                        items: [textareaValue]
-                    };
+                    selectedOptions[category.category] = [textareaValue];
                 }
             } else {
                 const inputs = document.querySelectorAll(`input[name="${name}"]:checked`);
@@ -179,16 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (subInputs.length > 0) {
                         const subItems = Array.from(subInputs).map(subInput => subInput.value);
-                        itemValue += ` (${subItems.join(', ')})`;
+                        // Junta item principal e sub-itens para o PROMPT
+                        itemValue += ` (Detalhes: ${subItems.join(', ')})`;
                     }
                     items.push(itemValue);
                 });
                 
                 if (items.length > 0) {
-                    selectedOptions[category.category] = {
-                        description: category.description,
-                        items: items
-                    };
+                    selectedOptions[category.category] = items;
                 }
             }
         });
@@ -198,32 +210,99 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Armazena os dados para uso em outras funções (exportação)
+        sessionData = { ...descriptiveData, ...selectedOptions };
+
         const promptText = buildPrompt(selectedOptions, descriptiveData);
         outputPrompt.value = promptText;
         outputContainer.style.display = 'block';
+        exportTableBtn.style.display = 'block'; // Mostra o botão de exportar
     });
 
     function buildPrompt(options, descriptiveData) {
-        let prompt = "Crie um relatório de sessão terapêutica detalhado, coeso e profissional. Utilize a estrutura de um relatório padrão (observações iniciais, descrição da sessão, etc.). Baseie-se nas seguintes informações:\n\n";
+        // 1. System Prompt (Instrução de Função para a IA)
+        let prompt = "Você é um assistente especializado em psicoterapia, com a tarefa de gerar um relatório de evolução de sessão. Sua resposta deve ser coesa, profissional, e seguir a estrutura de um relatório clínico (Ex: Observações Iniciais, Desenvolvimento, Conclusão/Plano). Baseie-se unicamente nos 'Dados da Sessão' fornecidos abaixo.\n\n";
 
+        // 2. Título da Seção de Dados
+        prompt += "--- DADOS DA SESSÃO ---\n\n";
+
+        // 3. Dados Descritivos (Nome, Data, Notas Adicionais)
         for (const key in descriptiveData) {
             prompt += `- **${key}**: ${descriptiveData[key]}\n`;
         }
-        
+
+        // 4. Separação visual
+        prompt += "\n--- CATEGORIAS E ITENS SELECIONADOS ---\n\n";
+
+        // 5. Dados das Categorias (Seleções e Textareas)
         for (const category in options) {
-            const categoryObj = options[category];
-            prompt += `\n- **${category}**: ${categoryObj.description}\n`
-            prompt += `   - **Itens Selecionados**: ${categoryObj.items.join(', ')}.\n`;
+            // Verifica se é um textarea (anotação) para formatar como bloco de texto
+            const isTextarea = categoriesData.find(c => c.category === category && c.type === 'textarea');
+
+            if (options[category].length === 1 && isTextarea) {
+                prompt += `## ${category.toUpperCase()}\n`;
+                prompt += `${options[category][0]}\n\n`; // Bloco de texto
+            } else {
+                // Lista os itens selecionados ou opções únicas
+                prompt += `- **${category}**: ${options[category].join('; ')}.\n`;
+            }
         }
 
-        prompt += "\nPor favor, adapte o texto para que flua de forma natural, integrando esses pontos de maneira orgânica e evolutiva. Não se limite a apenas listar os itens, crie um texto descritivo e explicativo para cada tópico, de forma que o relatório tenha sentido e coerência.";
+        // 6. Instrução Final e Formato de Saída
+        prompt += "\n--- INSTRUÇÃO FINAL ---\n";
+        prompt += "Gere o relatório completo utilizando uma linguagem clínica e integrando todos os pontos listados de forma orgânica. Inicie o relatório sem repetir o nome e a data da sessão. Priorize a coerência e o fluxo natural do texto.";
 
         return prompt;
     }
+
+    // --- FUNÇÕES AUXILIARES ---
 
     copyPromptBtn.addEventListener('click', () => {
         outputPrompt.select();
         document.execCommand('copy');
         alert('Texto copiado para a área de transferência!');
+    });
+
+    // --- FUNÇÃO DE EXPORTAÇÃO DA TABELA (CSV) ---
+
+    exportTableBtn.addEventListener('click', () => {
+        if (Object.keys(sessionData).length === 0) {
+            alert('Nenhum dado selecionado para exportar.');
+            return;
+        }
+
+        // Cabeçalho: Nome da Coluna 1 (Categoria), Nome da Coluna 2 (Itens Selecionados)
+        let csv = "Categoria;Itens Selecionados\n";
+
+        // Iterar sobre os dados da sessão (descritivos + categorias)
+        for (const category in sessionData) {
+            const items = sessionData[category];
+            let itemsString = Array.isArray(items) ? items.join(' | ') : items;
+            
+            // Remove quebras de linha e aspas duplas para evitar problemas com CSV
+            itemsString = itemsString.replace(/"/g, '""').replace(/\n/g, ' '); 
+
+            // Adiciona a linha ao CSV
+            csv += `"${category}";"${itemsString}"\n`;
+        }
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        // Define o nome do arquivo, usando a data e, se possível, o nome do paciente
+        let filename = 'relatorio_dados';
+        const date = sessionData['Data da Sessão'] || new Date().toISOString().slice(0, 10);
+        const patientName = sessionData['Nome do Paciente'] ? sessionData['Nome do Paciente'].replace(/\s/g, '_') : '';
+
+        filename = `${date}_${patientName}_dados_sessao.csv`;
+        
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('Tabela de dados exportada com sucesso!');
     });
 });
